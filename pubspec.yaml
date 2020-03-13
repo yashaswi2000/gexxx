@@ -1,5 +1,5 @@
 name: gexxx_flutter
-description: A new Flutter application.
+description: A new Flutter project.
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -39,6 +39,16 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  assets:
+   - assets/logos/facebook.jpg
+   - assets/logos/google.jpg
+
+
+  fonts:
+    - family: OpenSans
+      fonts:
+        - asset: assets/fonts/OpenSans.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:
