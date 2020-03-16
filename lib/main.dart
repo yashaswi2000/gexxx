@@ -1,6 +1,10 @@
 
 import 'package:flutter/material.dart';
-import 'screens/Home.dart';
+import 'package:gexxx_flutter/screens/AuthenticationHome.dart';
+import 'package:gexxx_flutter/screens/Home.dart';
+import 'package:gexxx_flutter/screens/Settings.dart';
+
+
 import 'screens/Login.dart';
 void main() => runApp(MyApp());
 
@@ -12,7 +16,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Login UI',
       debugShowCheckedModeBanner: false,
-      home: Home(),
+      home: AuthenticationHome(),
+      routes:<String,WidgetBuilder>{
+        "/settings":(BuildContext context)=>new Settings("Settings"),
+      },
     );
   }
 }

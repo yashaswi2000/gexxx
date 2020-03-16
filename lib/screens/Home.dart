@@ -1,8 +1,12 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import '../screens/Login.dart';
-import 'package:flutter/services.dart';
-import '../utilities/constants.dart';
-import '../screens/signup.dart';
+import 'package:gexxx_flutter/models/Crop.dart';
+import 'package:gexxx_flutter/screens/CropProfile.dart';
+import 'package:gexxx_flutter/screens/MainDrawer.dart';
+import 'package:gexxx_flutter/utilities/constants.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:convert';
 
 class Home extends StatefulWidget {
   @override
@@ -10,106 +14,203 @@ class Home extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<Home> {
-  Widget _loginbutton() {
+  Map data;
+  List CropData;
+
+  Future getData() async {
+    http.Response response = await http.get(
+        "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001cdd3946e44ce4aad7209ff7b23ac571b&format=json&offset=0&limit=30");
+    data = json.decode(response.body);
+    //debugPrint(response.body);
+    setState(() {
+      CropData = data["records"];
+    });
+
+    debugPrint(CropData.toString());
+    print(CropData.length);
+  }
+
+  Container MyFeed(String crop_name, String state) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 25.0),
-      width: double.infinity,
-      child: RaisedButton(
-        elevation: 5.0,
-        onPressed:(){Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()),
-          );},
-        padding: EdgeInsets.all(15.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-        color: Colors.white,
-        child: Text(
-          'LOGIN',
-          style: TextStyle(
-            color: Colors.cyan[800],
-            letterSpacing: 1.5,
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
+      margin: EdgeInsets.all(15),
+      width: MediaQuery.of(context).size.width,
+      height: 300,
+      decoration: BoxDecoration(
+        color: Colors.black,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        children: <Widget>[
+          AutoSizeText(
+            crop_name,
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily: 'OpenSans',
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+            ),
+            minFontSize: 15,
+            overflow: TextOverflow.ellipsis,
           ),
-        ),
+          SizedBox(height: 10),
+          AutoSizeText(
+            state,
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily: 'OpenSans',
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+            ),
+            minFontSize: 10,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
       ),
     );
   }
-  Widget _signupbutton() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 25.0),
-      width: double.infinity,
-      child: RaisedButton(
-        elevation: 5.0,
-        onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>Signup()),
-          );},
-        padding: EdgeInsets.all(15.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-        color: Colors.white,
-        child: Text(
-          'SINGNUP',
-          style: TextStyle(
-            color: Colors.cyan[800],
-            letterSpacing: 1.5,
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-          ),
-        ),
-      ),
-    );
-  }
-@override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.light,
-        child: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: Stack(
-            children: <Widget>[
-              Container(
-                height: double.infinity,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                color: Colors.black
-                ),
-              ),
-              Container(
-                height: double.infinity,
-                child: SingleChildScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 40.0,
-                    vertical: 120.0,
-                  ),
+
+  GestureDetector MyCrop(String imageval, String crop_name, String price) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => CropProfile()),
+        );
+      },
+      child: Container(
+        margin: EdgeInsets.all(15),
+        width: 200,
+        decoration: BoxDecoration(
+            color: Colors.grey, borderRadius: BorderRadius.circular(20)),
+        child: Stack(
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(left: 5, top: 5),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text(
-                        'Home',
+                      Container(
+                        width: 70,
+                        height: 70,
+                        margin: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                            color: Colors.green,
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                                image: NetworkImage(imageval),
+                                fit: BoxFit.fill)),
+                      ),
+                      AutoSizeText(
+                        crop_name,
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
                           fontFamily: 'OpenSans',
-                          fontSize: 30.0,
+                          fontSize: 15,
                           fontWeight: FontWeight.bold,
                         ),
+                        minFontSize: 10,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      SizedBox(height: 30.0),
-                      _loginbutton(),
-                      
-                      _signupbutton(),
                     ],
                   ),
                 ),
-              )
-            ],
-          ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        'Price',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'OpenSans',
+                          fontSize: 35.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      AutoSizeText(
+                        price,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'OpenSans',
+                          fontSize: 25,
+                        ),
+                        minFontSize: 20,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
-}
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Scaffold(
+        appBar: AppBar(
+          title: Center(
+            child: Text('GEXXX'),
+          ),
+          backgroundColor: Colors.black,
+        ),
+        backgroundColor: Colors.black,
+        drawer: MainDrawer(),
+        body: Column(
+          children: <Widget>[
+            Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10)),
+                margin: EdgeInsets.all(20),
+                height: 150,
+                width: MediaQuery.of(context).size.width,
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: CropData == null ? 0 : CropData.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return MyCrop(
+                          "https://media.gettyimages.com/photos/cropped-image-of-person-eye-picture-id942369796?s=612x612",
+                          "${CropData[index]["variety"]}",
+                          "${CropData[index]["modal_price"]}");
+                    })),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              margin: EdgeInsets.all(10),
+              height: 600,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(20),
+                      topLeft: Radius.circular(
+                        20,
+                      ))),
+              child: ListView.builder(
+                itemCount: CropData == null ? 0 : CropData.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return MyFeed("${CropData[index]["variety"]}",
+                      "${CropData[index]["state"]}");
+                },
+              ),
+            ),
+          ],
+        ));
+  }
 }
