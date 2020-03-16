@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:gexxx_flutter/screens/AuthenticationHome.dart';
 import 'package:gexxx_flutter/screens/Home.dart';
+import 'package:gexxx_flutter/screens/Phone_code.dart';
 import 'package:gexxx_flutter/screens/Settings.dart';
 
 

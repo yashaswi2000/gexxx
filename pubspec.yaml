@@ -25,6 +25,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   http: ^0.12.0+4
   auto_size_text: ^2.1.0  
+  flutter_svg: ^0.17.3+1
 
 dev_dependencies:
   flutter_test:
@@ -43,6 +44,7 @@ flutter:
   uses-material-design: true
 
   assets:
+   - Phone_code/Phone_code.json
    - assets/logos/facebook.jpg
    - assets/logos/google.jpg
 

@@ -78,6 +78,7 @@ class _OtpScreenState extends State<Otp> {
         child: Center(
           child: Column(
             children: <Widget>[
+              
               Row(
                 children: <Widget>[
                   Padding(
