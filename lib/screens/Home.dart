@@ -1,14 +1,23 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:gexxx_flutter/models/Crop.dart';
+import 'package:gexxx_flutter/models/user.dart';
 import 'package:gexxx_flutter/screens/CropProfile.dart';
 import 'package:gexxx_flutter/screens/MainDrawer.dart';
+import 'package:gexxx_flutter/screens/authenticate/AuthenticationHome.dart';
+import 'package:gexxx_flutter/services/auth.dart';
 import 'package:gexxx_flutter/utilities/constants.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 
 class Home extends StatefulWidget {
+
+  final User user;
+
+  const Home({Key key, this.user}) : super(key: key);
+
+   
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -157,60 +166,69 @@ class _HomeScreenState extends State<Home> {
     super.initState();
     getData();
   }
-
+  final AuthService _auth=AuthService();
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(
+          actions: <Widget>[
+            FlatButton.icon(onPressed: () async{
+              await _auth.signOut();
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>AuthenticationHome()));
+            }, icon: Icon(Icons.person,color: Colors.white,), label: Text('Logout',style: TextStyle(color: Colors.white),))
+          ],
           title: Center(
-            child: Text('GEXXX'),
+            child: Text('GEXXX' ),
           ),
           backgroundColor: Colors.black,
         ),
         backgroundColor: Colors.black,
         drawer: MainDrawer(),
-        body: Column(
-          children: <Widget>[
-            Container(
+        body: SingleChildScrollView(
+                  child: Column(
+            children: <Widget>[
+              Text('${widget.user.uid}}',style: TextStyle(color: Colors.white)),
+              Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10)),
+                  margin: EdgeInsets.all(20),
+                  height: 150,
+                  width: MediaQuery.of(context).size.width,
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: CropData == null ? 0 : CropData.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return MyCrop(
+                            "https://media.gettyimages.com/photos/cropped-image-of-person-eye-picture-id942369796?s=612x612",
+                            "${CropData[index]["variety"]}",
+                            "${CropData[index]["modal_price"]}");
+                      })),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                margin: EdgeInsets.all(10),
+                height: 600,
+                width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(10)),
-                margin: EdgeInsets.all(20),
-                height: 150,
-                width: MediaQuery.of(context).size.width,
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(20),
+                        topLeft: Radius.circular(
+                          20,
+                        ))),
                 child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: CropData == null ? 0 : CropData.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return MyCrop(
-                          "https://media.gettyimages.com/photos/cropped-image-of-person-eye-picture-id942369796?s=612x612",
-                          "${CropData[index]["variety"]}",
-                          "${CropData[index]["modal_price"]}");
-                    })),
-            SizedBox(
-              height: 10,
-            ),
-            Container(
-              margin: EdgeInsets.all(10),
-              height: 600,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(20),
-                      topLeft: Radius.circular(
-                        20,
-                      ))),
-              child: ListView.builder(
-                itemCount: CropData == null ? 0 : CropData.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return MyFeed("${CropData[index]["variety"]}",
-                      "${CropData[index]["state"]}");
-                },
+                  itemCount: CropData == null ? 0 : CropData.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return MyFeed("${CropData[index]["variety"]}",
+                        "${CropData[index]["state"]}");
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ));
   }
 }

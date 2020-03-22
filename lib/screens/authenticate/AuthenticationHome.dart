@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:gexxx_flutter/screens/Login.dart';
+import 'package:gexxx_flutter/screens/authenticate/signup.dart';
+
+import 'Login.dart';
+
 
 class AuthenticationHome extends StatefulWidget {
   @override
@@ -8,6 +11,9 @@ class AuthenticationHome extends StatefulWidget {
 }
 
 class _AuthenticationHomeScreenState extends State<AuthenticationHome> {
+
+
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -105,7 +111,9 @@ class _AuthenticationHomeScreenState extends State<AuthenticationHome> {
                 width: MediaQuery.of(context).size.width * 0.9,
                 child: RaisedButton(
                   elevation: 5.0,
-                  onPressed: () => print('Login Button Pressed'),
+                  onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>Signup()));
+                  },
                   padding: EdgeInsets.all(15.0),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(25.0),
@@ -115,7 +123,7 @@ class _AuthenticationHomeScreenState extends State<AuthenticationHome> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        'Signup',
+                        'Register',
                         style: TextStyle(
                           color: Colors.black,
                           letterSpacing: 1.5,
@@ -130,7 +138,7 @@ class _AuthenticationHomeScreenState extends State<AuthenticationHome> {
               ),
               SizedBox(height: 20),
               GestureDetector(
-                onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()));
+                onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>Login(),fullscreenDialog: true));
                 },
                 child: Text(
                         'Already a User? .Signin',

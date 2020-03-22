@@ -56,6 +56,7 @@ class _MainDrawerScreenState extends State<MainDrawer> {
                         ),
                       ),
                       onTap: ()=> Navigator.of(context).pushNamed("/settings"),
+            
                       )
         
 

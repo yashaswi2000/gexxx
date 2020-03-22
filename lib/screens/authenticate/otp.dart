@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gexxx_flutter/screens/Phone_code.dart';
+import 'package:gexxx_flutter/utilities/MyVerticalDivider.dart';
 import 'package:gexxx_flutter/utilities/constants.dart';
 
 class Otp extends StatefulWidget {
@@ -13,7 +15,7 @@ class _OtpScreenState extends State<Otp> {
         Text(
           '- OR -',
           style: TextStyle(
-            color: Colors.indigo,
+            color: Colors.blue,
             fontWeight: FontWeight.w400,
           ),
         ),
@@ -26,48 +28,9 @@ class _OtpScreenState extends State<Otp> {
     );
   }
 
-  Widget _buildSocialBtn(Function onTap, AssetImage logo) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 60.0,
-        width: 60.0,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              offset: Offset(0, 2),
-              blurRadius: 6.0,
-            ),
-          ],
-          image: DecorationImage(
-            image: logo,
-          ),
-        ),
-      ),
-    );
-  }
 
-  Widget _buildSocialBtnRow() {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 30.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          _buildSocialBtn(
-            () => print('Login with Facebook'),
-            AssetImage('assets/logos/facebook.jpg'),
-          ),
-          _buildSocialBtn(
-            () => print('Login with Google'),
-            AssetImage('assets/logos/google.jpg'),
-          ),
-        ],
-      ),
-    );
-  }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -78,78 +41,77 @@ class _OtpScreenState extends State<Otp> {
         child: Center(
           child: Column(
             children: <Widget>[
-              
+              SizedBox(height: 30),
               Row(
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20, top: 50),
+                  RaisedButton(
+                    color: Colors.black,
                     child: Container(
-                      alignment: Alignment.centerLeft,
-                      width: MediaQuery.of(context).size.width * 0.15,
-                      height: 60,
+                      width: MediaQuery.of(context).size.width * 0.33,
+                      height: MediaQuery.of(context).size.height * 0.05,
                       decoration: BoxDecoration(
-                        color: Colors.indigo,
-                        borderRadius: BorderRadius.circular(10.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black12,
-                            blurRadius: 6.0,
-                            offset: Offset(0, 2),
+                          border:
+                              Border(bottom: BorderSide(color: Colors.blue))),
+                      child: Row(
+                        children: <Widget>[
+                          Image(
+                              width: MediaQuery.of(context).size.width * 0.095,
+                              height: MediaQuery.of(context).size.height * 0.03,
+                              image: NetworkImage(
+                                  "https://cdn.pixabay.com/photo/2016/08/24/17/07/india-1617463__340.png"),
+                              fit: BoxFit.fill),
+                          MyVerticalDivider(),
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.095,
+                            height: MediaQuery.of(context).size.height * 0.05,
+                            child: Center(
+                              child: Text(
+                                '+91',
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold),
+                                
+                              ),
+                            ),
                           ),
+                          Icon(Icons.arrow_drop_down,
+                              size: 30, color: Colors.white),
                         ],
                       ),
-                      child: TextField(
-                        keyboardType: TextInputType.phone,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontFamily: 'OpenSans'),
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.only(left: 14.0, right: 5.0),
-                          hintText: '+91',
-                          hintStyle: kHintTextStyle,
-                        ),
+                    ),
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>Phone_code()));
+                      print('code pressed');
+                    },
+                  ),
+                  SizedBox(width: 1),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.57,
+                    height: MediaQuery.of(context).size.height * 0.05,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.blue, width: 1),
+                        borderRadius: BorderRadius.all(Radius.circular(15))),
+                    child: TextFormField(
+                      validator: (val) =>
+                          val.isEmpty ? 'Enter Email Address' : null,
+                      keyboardType: TextInputType.phone,
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                      decoration: InputDecoration(
+                        fillColor: Colors.white,
+                        focusColor: Colors.yellow,
+                        prefixIcon: Icon(Icons.phone, color: Colors.white),
+                        border: InputBorder.none,
+                        hintText: 'Phone Number',
+                        hintStyle: TextStyle(color: Colors.grey),
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20, top: 50),
-                    child: Container(
-                      alignment: Alignment.centerRight,
-                      height: 60,
-                      width: MediaQuery.of(context).size.width * 0.70,
-                      decoration: BoxDecoration(
-                        color: Colors.indigo,
-                        borderRadius: BorderRadius.circular(10.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black12,
-                            blurRadius: 6.0,
-                            offset: Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: TextField(
-                        keyboardType: TextInputType.phone,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontFamily: 'OpenSans'),
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          contentPadding:
-                              EdgeInsets.only(left: 14.0, right: 5.0, top: 14.0),
-                          prefixIcon: Icon(
-                            Icons.phone,
-                            color: Colors.white,
-                          ),
-                          hintText: 'Enter your phone number',
-                          hintStyle: kHintTextStyle,
-                        ),
-                      ),
-                    ),
-                  )
+
+                 
                 ],
               ),
               Container(
@@ -175,7 +137,6 @@ class _OtpScreenState extends State<Otp> {
                   ),
                 ),
               ),
-              
               _buildSignInWithText(),
               SizedBox(height: 30),
               Container(
