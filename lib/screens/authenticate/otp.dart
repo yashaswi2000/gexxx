@@ -1,5 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gexxx_flutter/screens/Phone_code.dart';
+import 'package:gexxx_flutter/screens/wrapper.dart';
+import 'package:gexxx_flutter/services/auth.dart';
 import 'package:gexxx_flutter/utilities/MyVerticalDivider.dart';
 import 'package:gexxx_flutter/utilities/constants.dart';
 
@@ -9,6 +13,12 @@ class Otp extends StatefulWidget {
 }
 
 class _OtpScreenState extends State<Otp> {
+  String phonenumber;
+  String code = '91';
+  String image = 'https://restcountries.eu/data/ind.svg';
+  String verificationID;
+  String smsCode;
+
   Widget _buildSignInWithText() {
     return Column(
       children: <Widget>[
@@ -28,9 +38,79 @@ class _OtpScreenState extends State<Otp> {
     );
   }
 
+  _phonecode(BuildContext context) async {
+    final dynamic result = await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => Phone_code()));
+    setState(() {
+      code = result.dial_code;
+      image = result.imageval;
+    });
+    print(code);
+  }
 
+  Future<void> verifyPhone() async {
+    final PhoneCodeAutoRetrievalTimeout autoRetrieve = (String verID) {
+      this.verificationID = verID;
+    };
 
-  
+    final PhoneCodeSent smsCodeSent = (String verID, [int forceCodeResend]) {
+      this.verificationID = verID;
+    };
+    final PhoneVerificationCompleted verifiedSuccess = (AuthCredential authResults) {
+      AuthService().signInWithphone(authResults);
+    } as PhoneVerificationCompleted;
+
+    final PhoneVerificationFailed verifiedFailed = (AuthException exception) {
+      print('${exception.message}');
+    };
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: this.phonenumber,
+      codeAutoRetrievalTimeout: autoRetrieve,
+      codeSent: smsCodeSent,
+      timeout: const Duration(seconds: 5),
+      verificationCompleted: verifiedSuccess,
+      verificationFailed: verifiedFailed,
+    );
+  }
+
+  Future<bool> smsCodeDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return new AlertDialog(
+            title: Text('Enter sms code'),
+            content: TextField(
+              onChanged: (value) {
+                this.smsCode = value;
+              },
+            ),
+            contentPadding: EdgeInsets.all(10),
+            actions: <Widget>[
+              new FlatButton(
+                onPressed: (){
+                  FirebaseAuth.instance.currentUser().then((user){
+                    if(user!=null)
+                    {
+                      Navigator.of(context).pop();
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>Wrapper()));
+
+                    }
+                    else
+                    {
+                      Navigator.of(context).pop();
+                    }
+                  });
+                }, 
+                child: Text('Done'))
+            ],
+          );
+        });
+  }
+
+  sigIn(){
+    
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,37 +122,46 @@ class _OtpScreenState extends State<Otp> {
           child: Column(
             children: <Widget>[
               SizedBox(height: 30),
-              Row(
+              new Row(
                 children: <Widget>[
                   RaisedButton(
                     color: Colors.black,
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.33,
-                      height: MediaQuery.of(context).size.height * 0.05,
                       decoration: BoxDecoration(
                           border:
                               Border(bottom: BorderSide(color: Colors.blue))),
                       child: Row(
                         children: <Widget>[
-                          Image(
-                              width: MediaQuery.of(context).size.width * 0.095,
-                              height: MediaQuery.of(context).size.height * 0.03,
-                              image: NetworkImage(
-                                  "https://cdn.pixabay.com/photo/2016/08/24/17/07/india-1617463__340.png"),
-                              fit: BoxFit.fill),
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.075,
+                            height: MediaQuery.of(context).size.height * 0.03,
+                            child: SvgPicture.network(
+                              '$image',
+                              placeholderBuilder: (context) {
+                                CircularProgressIndicator();
+                              },
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                          /*Image(
+                                width: MediaQuery.of(context).size.width * 0.085,
+                                height: MediaQuery.of(context).size.height * 0.03,
+                                image: new NetworkImage(
+                                    "$image"),
+                                fit: BoxFit.fill),*/
                           MyVerticalDivider(),
                           Container(
-                            width: MediaQuery.of(context).size.width * 0.095,
+                            width: MediaQuery.of(context).size.width * 0.12,
                             height: MediaQuery.of(context).size.height * 0.05,
                             child: Center(
-                              child: Text(
-                                '+91',
+                              child: new Text(
+                                "$code",
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold),
-                                
                               ),
                             ),
                           ),
@@ -81,37 +170,40 @@ class _OtpScreenState extends State<Otp> {
                         ],
                       ),
                     ),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>Phone_code()));
-                      print('code pressed');
+                    onPressed: () async {
+                      _phonecode(context);
                     },
                   ),
                   SizedBox(width: 1),
                   Container(
+                    alignment: Alignment.center,
                     width: MediaQuery.of(context).size.width * 0.57,
-                    height: MediaQuery.of(context).size.height * 0.05,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.blue, width: 1),
-                        borderRadius: BorderRadius.all(Radius.circular(15))),
                     child: TextFormField(
+                      onChanged: (val) {
+                        setState(() {
+                          this.phonenumber = '+' + code + val;
+                        });
+                      },
                       validator: (val) =>
-                          val.isEmpty ? 'Enter Email Address' : null,
+                          val.isEmpty ? 'Enter Phone Number' : null,
                       keyboardType: TextInputType.phone,
                       textAlign: TextAlign.left,
                       style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20),
                       decoration: InputDecoration(
                         fillColor: Colors.white,
                         focusColor: Colors.yellow,
                         prefixIcon: Icon(Icons.phone, color: Colors.white),
-                        border: InputBorder.none,
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue),
+                            borderRadius: BorderRadius.circular(16)),
                         hintText: 'Phone Number',
                         hintStyle: TextStyle(color: Colors.grey),
                       ),
                     ),
                   ),
-
-                 
                 ],
               ),
               Container(
@@ -119,7 +211,9 @@ class _OtpScreenState extends State<Otp> {
                 width: 300,
                 child: RaisedButton(
                   elevation: 5.0,
-                  onPressed: () => print('Login Button Pressed'),
+                  onPressed: () {
+                    verifyPhone();
+                  },
                   padding: EdgeInsets.all(15.0),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0),

@@ -149,8 +149,7 @@ class _SignupScreenState extends State<Signup> {
                 error = 'Please Suplly valid Email';
               });
             } else {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Home(user: result)));
+              Navigator.pop(context,true);
             }
 
             print(name);

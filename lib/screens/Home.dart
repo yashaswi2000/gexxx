@@ -1,23 +1,23 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:gexxx_flutter/models/Crop.dart';
 import 'package:gexxx_flutter/models/user.dart';
 import 'package:gexxx_flutter/screens/CropProfile.dart';
 import 'package:gexxx_flutter/screens/MainDrawer.dart';
 import 'package:gexxx_flutter/screens/authenticate/AuthenticationHome.dart';
 import 'package:gexxx_flutter/services/auth.dart';
-import 'package:gexxx_flutter/utilities/constants.dart';
+import 'package:gexxx_flutter/utilities/MyhorizantalDivider.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
+import 'package:gexxx_flutter/database/database.dart';
+import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Home extends StatefulWidget {
-
   final User user;
 
   const Home({Key key, this.user}) : super(key: key);
 
-   
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -35,8 +35,8 @@ class _HomeScreenState extends State<Home> {
       CropData = data["records"];
     });
 
-    debugPrint(CropData.toString());
-    print(CropData.length);
+    //debugPrint(CropData.toString());
+    //print(CropData.length);
   }
 
   Container MyFeed(String crop_name, String state) {
@@ -80,85 +80,48 @@ class _HomeScreenState extends State<Home> {
 
   GestureDetector MyCrop(String imageval, String crop_name, String price) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => CropProfile()),
-        );
-      },
-      child: Container(
-        margin: EdgeInsets.all(15),
-        width: 200,
-        decoration: BoxDecoration(
-            color: Colors.grey, borderRadius: BorderRadius.circular(20)),
-        child: Stack(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    CropProfile(cropname: crop_name, price: price)),
+          );
+        },
+        child: Row(
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(left: 5, top: 5),
+            Container(
+                width: MediaQuery.of(context).size.width * 0.3,
+                decoration: BoxDecoration(color: Colors.black),
+                child: Center(
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
+                      SizedBox(height: 10),
                       Container(
-                        width: 70,
-                        height: 70,
-                        margin: EdgeInsets.all(8),
+                        width: 90,
+                        height: 90,
                         decoration: BoxDecoration(
-                            color: Colors.green,
+                            color: Colors.white,
                             shape: BoxShape.circle,
                             image: DecorationImage(
                                 image: NetworkImage(imageval),
                                 fit: BoxFit.fill)),
                       ),
-                      AutoSizeText(
+                      SizedBox(height: 10),
+                      Text(
                         crop_name,
                         style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'OpenSans',
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        minFontSize: 10,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: <Widget>[
-                      Text(
-                        'Price',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'OpenSans',
-                          fontSize: 35.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      AutoSizeText(
-                        price,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'OpenSans',
-                          fontSize: 25,
-                        ),
-                        minFontSize: 20,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700),
                       )
                     ],
                   ),
-                ),
-              ],
-            ),
+                )),
+            //MyVerticalDivider2(),
           ],
-        ),
-      ),
-    );
+        ));
   }
 
   @override
@@ -166,69 +129,129 @@ class _HomeScreenState extends State<Home> {
     super.initState();
     getData();
   }
-  final AuthService _auth=AuthService();
+
+  final AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold(
-        appBar: AppBar(
-          actions: <Widget>[
-            FlatButton.icon(onPressed: () async{
-              await _auth.signOut();
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>AuthenticationHome()));
-            }, icon: Icon(Icons.person,color: Colors.white,), label: Text('Logout',style: TextStyle(color: Colors.white),))
-          ],
-          title: Center(
-            child: Text('GEXXX' ),
+    final users = Provider.of<QuerySnapshot>(context);
+    return StreamProvider<QuerySnapshot>.value(
+      value: DatabaseService().userData,
+      child: Scaffold(
+          appBar: AppBar(
+            actions: <Widget>[
+              FlatButton.icon(
+                  onPressed: () async {
+                    await _auth.signOut();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AuthenticationHome()));
+                  },
+                  icon: Icon(
+                    Icons.person,
+                    color: Colors.white,
+                  ),
+                  label: Text(
+                    'Logout',
+                    style: TextStyle(color: Colors.white),
+                  ))
+            ],
+            title: Center(
+              child: Text('GEXXX'),
+            ),
+            backgroundColor: Colors.black,
           ),
           backgroundColor: Colors.black,
-        ),
-        backgroundColor: Colors.black,
-        drawer: MainDrawer(),
-        body: SingleChildScrollView(
-                  child: Column(
-            children: <Widget>[
-              Text('${widget.user.uid}}',style: TextStyle(color: Colors.white)),
-              Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10)),
-                  margin: EdgeInsets.all(20),
-                  height: 150,
-                  width: MediaQuery.of(context).size.width,
-                  child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: CropData == null ? 0 : CropData.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return MyCrop(
-                            "https://media.gettyimages.com/photos/cropped-image-of-person-eye-picture-id942369796?s=612x612",
-                            "${CropData[index]["variety"]}",
-                            "${CropData[index]["modal_price"]}");
-                      })),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                margin: EdgeInsets.all(10),
-                height: 600,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(20),
-                        topLeft: Radius.circular(
-                          20,
-                        ))),
-                child: ListView.builder(
-                  itemCount: CropData == null ? 0 : CropData.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return MyFeed("${CropData[index]["variety"]}",
-                        "${CropData[index]["state"]}");
-                  },
+          drawer: MainDrawer(),
+          body: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: 20),
+                Text('${widget.user.uid}',
+                    style: TextStyle(color: Colors.white)),
+                Container(
+                    decoration: BoxDecoration(color: Colors.black),
+                    margin: EdgeInsets.only(top: 20),
+                    height: MediaQuery.of(context).size.height * 0.15,
+                    width: MediaQuery.of(context).size.width,
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: CropData == null ? 0 : CropData.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return //Text('as');
+                              MyCrop(
+                                  "https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=701&q=80",
+                                  "${CropData[index]["variety"]}",
+                                  "${CropData[index]["modal_price"]}");
+                        })),
+                SizedBox(
+                  height: 20,
                 ),
-              ),
-            ],
-          ),
-        ));
+                MyhorizontalDivider(),
+                SizedBox(height: 20),
+                Text(
+                  'CARDS',
+                  style: TextStyle(
+                      fontSize: 30,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 2,
+                      fontFamily: "OpenSans"),
+                ),
+                SizedBox(height: 40),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(height: 20),
+                    GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        margin: EdgeInsets.only(left: 20, right: 20),
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.08,
+                        decoration: BoxDecoration(
+                            color: Colors.blue[800],
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Center(
+                            child: Text(
+                          'News',
+                          style: TextStyle(
+                              fontSize: 30,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 2,
+                              fontFamily: "OpenSans"),
+                        )),
+                      ),
+                    ),
+                    SizedBox(height: 15),
+                    GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        margin: EdgeInsets.only(left: 20, right: 20),
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.08,
+                        decoration: BoxDecoration(
+                            color: Colors.blue[800],
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Center(
+                            child: Text(
+                          'Crops',
+                          style: TextStyle(
+                              fontSize: 30,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 2,
+                              fontFamily: "OpenSans"),
+                        )),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          )),
+    );
   }
 }

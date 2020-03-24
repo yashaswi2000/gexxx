@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as prefix0;
 import 'package:gexxx_flutter/screens/Home.dart';
 import 'package:gexxx_flutter/services/auth.dart';
 import 'package:gexxx_flutter/utilities/Loading.dart';
@@ -23,6 +24,7 @@ class _EmailScreenState extends State<Email> {
 
   Widget _email() {
     return TextFormField(
+      
       
       
       controller: _emailcontroller,
@@ -164,11 +166,8 @@ class _EmailScreenState extends State<Email> {
                                     loading = false;
                                   });
                                 } else {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              Home(user: result)));
+                                  Navigator.pop(context,true);
+                                  
                                 }
                               }
                             },

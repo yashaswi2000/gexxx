@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 
 class CropProfile extends StatelessWidget {
+
+  final String cropname;
+  final String price;
+
+  const CropProfile({Key key, this.cropname, this.price}) : super(key: key);
   
 
   Container ImageSlides(BuildContext context,String imageval){
     return Container(
                     width: MediaQuery.of(context).size.width,
-                    height: 300,
+                    height: MediaQuery.of(context).size.height*0.3,
                     decoration: BoxDecoration(
                       image: DecorationImage(image: NetworkImage(imageval),fit: BoxFit.fill),
 
@@ -21,14 +26,14 @@ class CropProfile extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.black,
-          title: Text('Cropprofile'),
+          title: Text('CropProfile'),
         ),
         backgroundColor: Colors.black,
         body: SingleChildScrollView(
                   child: Column(
             children: <Widget>[
               Container(
-                height: 300,
+                height: MediaQuery.of(context).size.height*0.3,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: <Widget>[
@@ -38,13 +43,32 @@ class CropProfile extends StatelessWidget {
                 ),
               ),
               SizedBox(height:10),
-              Text(
-                'Tomato',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'OpenSans',
-                  fontSize: 30.0,
-                  fontWeight: FontWeight.bold,
+              Padding(
+                padding: const EdgeInsets.only(left:20.0,right:20,top:10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    
+                    Text(
+                      this.cropname,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'OpenSans',
+                        fontSize: 30.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      this.price,
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'OpenSans',
+                        fontSize: 30.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               SizedBox(height: 10),
@@ -56,7 +80,7 @@ class CropProfile extends StatelessWidget {
                     color: Colors.white,
                     fontFamily: 'OpenSans',
                     fontSize: 15.0,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.normal,
                   ),
                 ),
               ),        

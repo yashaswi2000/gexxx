@@ -1,10 +1,20 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gexxx_flutter/screens/Home.dart';
+import 'package:gexxx_flutter/screens/authenticate/Password.dart';
+import 'package:gexxx_flutter/screens/authenticate/otp.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import 'package:gexxx_flutter/utilities/constants.dart';
+class phonecodedata{
+  String name;
+  String dial_code;
+  String imageval;
+  
+  phonecodedata(this.name,this.dial_code,this.imageval);
+}
 
 class Phone_code extends StatefulWidget {
   @override
@@ -12,7 +22,14 @@ class Phone_code extends StatefulWidget {
 }
 
 class _Phone_codeScreenState extends State<Phone_code> {
+
+  List returnlist=[];
+  String name;
+  String dial_code;
+  String imageval;
+ 
   GestureDetector Phone_container(String name, String dial_code,String imageval)  {
+   
     return GestureDetector(
       child: Container(
         margin: EdgeInsets.all(4),
@@ -81,7 +98,11 @@ class _Phone_codeScreenState extends State<Phone_code> {
           ],
         ),
       ),
-      onTap: () => print('sad'),
+      onTap: (){
+        phonecodedata obj = new phonecodedata(name,dial_code,imageval);
+        
+        Navigator.pop(context,obj);
+      },
     );
   }
 
@@ -105,7 +126,9 @@ class _Phone_codeScreenState extends State<Phone_code> {
                         color: Colors.white,
                         size: 30,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                     ),
                   ),
                 ],
@@ -127,7 +150,7 @@ class _Phone_codeScreenState extends State<Phone_code> {
                   ),
                 ],
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 20),
               Row(
                 children: <Widget>[
                   Padding(
