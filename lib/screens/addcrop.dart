@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gexxx_flutter/screens/Home.dart';
-import 'package:gexxx_flutter/screens/additionaldetails.dart';
 import 'package:gexxx_flutter/screens/authenticate/Password.dart';
 import 'package:gexxx_flutter/services/auth.dart';
 import 'package:gexxx_flutter/utilities/constants.dart';
 
-class Signup extends StatefulWidget {
+class addcrop extends StatefulWidget {
   @override
-  _SignupScreenState createState() => _SignupScreenState();
+  _addcropScreenState createState() => _addcropScreenState();
 }
 
-class _SignupScreenState extends State<Signup> {
+class _addcropScreenState extends State<addcrop> {
   final AuthService _auth = AuthService();
   final _formkey = GlobalKey<FormState>();
 
@@ -150,9 +149,7 @@ class _SignupScreenState extends State<Signup> {
                 error = 'Please Suplly valid Email';
               });
             } else {
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>additionaldetails()));
-              //Navigator.pop(context,true);
-
+              Navigator.pop(context,true);
             }
 
             print(name);
@@ -183,74 +180,61 @@ class _SignupScreenState extends State<Signup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.light,
-        child: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: Stack(
-            children: <Widget>[
-              Container(
-                height: double.infinity,
-                width: double.infinity,
-                decoration: BoxDecoration(color: Colors.black),
-              ),
-              Container(
-                height: double.infinity,
-                child: SingleChildScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 40.0,
-                    vertical: 120.0,
-                  ),
-                  child: Form(
-                    key: _formkey,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+      backgroundColor: Colors.black,
+      body: SingleChildScrollView(
+        child: Form(
+                key: _formkey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(height: 60),
+                    Row(
+                      
                       children: <Widget>[
+                        SizedBox(width: 20),
                         Text(
-                          'Signup',
+                          'AddCrop',
                           style: TextStyle(
                             color: Colors.white,
                             fontFamily: 'OpenSans',
-                            fontSize: 30.0,
+                            fontSize: 25.0,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: 30.0),
-                        _name(),
-                        SizedBox(height: 30.0),
-                        _email(),
-                        SizedBox(
-                          height: 30.0,
-                        ),
-                        _password(),
-                        SizedBox(
-                          height: 30.0,
-                        ),
-                        _password2(),
-                        SizedBox(height: 10),
-                        Center(
-                          child: Text(
-                            error,
-                            style: TextStyle(
-                              color: Colors.red,
-                              letterSpacing: 1.5,
-                              fontSize: 10.0,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'OpenSans',
-                            ),
-                          ),
-                        ),
-                        _buildSignupBtn(),
                       ],
                     ),
-                  ),
+                    SizedBox(height: 30.0),
+                    Container(
+                      margin: EdgeInsets.all(20),
+                      child: _name()),
+                    SizedBox(height: 30.0),
+                    _email(),
+                    SizedBox(
+                      height: 30.0,
+                    ),
+                    _password(),
+                    SizedBox(
+                      height: 30.0,
+                    ),
+                    _password2(),
+                    SizedBox(height: 10),
+                    Center(
+                      child: Text(
+                        error,
+                        style: TextStyle(
+                          color: Colors.red,
+                          letterSpacing: 1.5,
+                          fontSize: 10.0,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'OpenSans',
+                        ),
+                      ),
+                    ),
+                    _buildSignupBtn(),
+                  ],
                 ),
-              )
-            ],
-          ),
-        ),
+              ),
       ),
-    );
+      );
   }
 }

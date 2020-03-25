@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gexxx_flutter/screens/Home.dart';
 import 'package:gexxx_flutter/screens/Phone_code.dart';
 import 'package:gexxx_flutter/screens/Settings.dart';
+import 'package:gexxx_flutter/screens/additionaldetails.dart';
 import 'package:gexxx_flutter/screens/wrapper.dart';
 import 'package:gexxx_flutter/services/auth.dart';
 import 'package:provider/provider.dart';

@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gexxx_flutter/models/user.dart';
 
 class DatabaseService{
   final String uid;
+
+ 
    DatabaseService({this.uid});
 
   final CollectionReference UsersCollection =  Firestore.instance.collection('Users');
@@ -15,12 +18,22 @@ class DatabaseService{
       'émail':email
     });
   }
+   UserData  _userDataFromSnapShot(DocumentSnapshot snapshot)
+  {
+    return UserData(
+      uid: uid,
+      name: snapshot.data['name'],
+      email: snapshot.data['email'],
+    );
+  }
 
   //collection stream
-  Stream<QuerySnapshot> get userstream{
-    return UsersCollection.snapshots();
+  Stream<UserData> get userData{
+    return UsersCollection.document(uid).snapshots().map(_userDataFromSnapShot);
 
   }
+
+ 
 
 
 }

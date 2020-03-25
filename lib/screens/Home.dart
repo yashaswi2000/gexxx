@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gexxx_flutter/models/user.dart';
 import 'package:gexxx_flutter/screens/CropProfile.dart';
 import 'package:gexxx_flutter/screens/MainDrawer.dart';
+import 'package:gexxx_flutter/screens/addcrop.dart';
 import 'package:gexxx_flutter/screens/authenticate/AuthenticationHome.dart';
 import 'package:gexxx_flutter/services/auth.dart';
 import 'package:gexxx_flutter/utilities/MyhorizantalDivider.dart';
@@ -134,10 +135,14 @@ class _HomeScreenState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    final users = Provider.of<QuerySnapshot>(context);
-    return StreamProvider<QuerySnapshot>.value(
-      value: DatabaseService().userData,
-      child: Scaffold(
+    final user = Provider.of<User>(context);
+    return StreamBuilder<UserData>(
+      stream: DatabaseService(uid:user.uid).userData,
+      builder: (context,snapshot)
+      {
+      
+          UserData userData = snapshot.data;
+          return Scaffold(
           appBar: AppBar(
             actions: <Widget>[
               FlatButton.icon(
@@ -168,9 +173,33 @@ class _HomeScreenState extends State<Home> {
             child: Column(
               children: <Widget>[
                 SizedBox(height: 20),
-                Text('${widget.user.uid}',
+                Text('Welcome ${userData.name}',
                     style: TextStyle(color: Colors.white)),
-                Container(
+                    
+                Stack(
+                      children: <Widget>[
+                        Container(
+                      margin: EdgeInsets.only(top: 20,left:20,right:20),
+                    height: MediaQuery.of(context).size.height * 0.18,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(color: Colors.grey[900],borderRadius: BorderRadius.circular(10)),
+                    child:Center(child: Text('Empty',style: TextStyle(color: Colors.white),)),
+                        ),
+                        Center(
+                          child: Container(
+                            margin: EdgeInsets.only(top:160),
+                            width: 50,
+                            height: 50,
+                            decoration: BoxDecoration(color: Colors.blue[700],shape: BoxShape.circle),
+                            child: IconButton(icon: Icon(Icons.add,color: Colors.white,),
+                            onPressed: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=>addcrop()));
+                            },)),
+                        ),
+                      ]),
+
+              
+                /*Container(
                     decoration: BoxDecoration(color: Colors.black),
                     margin: EdgeInsets.only(top: 20),
                     height: MediaQuery.of(context).size.height * 0.15,
@@ -184,7 +213,7 @@ class _HomeScreenState extends State<Home> {
                                   "https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=701&q=80",
                                   "${CropData[index]["variety"]}",
                                   "${CropData[index]["modal_price"]}");
-                        })),
+                        })),*/
                 SizedBox(
                   height: 20,
                 ),
@@ -251,7 +280,11 @@ class _HomeScreenState extends State<Home> {
                 )
               ],
             ),
-          )),
+          ));
+        
+      }
+
+      
     );
   }
 }
