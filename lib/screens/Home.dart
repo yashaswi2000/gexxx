@@ -177,6 +177,7 @@ class _HomeScreenState extends State<Home> {
                     style: TextStyle(color: Colors.white)),
                     
                 Stack(
+                  
                       children: <Widget>[
                         Container(
                       margin: EdgeInsets.only(top: 20,left:20,right:20),
@@ -185,16 +186,16 @@ class _HomeScreenState extends State<Home> {
                     decoration: BoxDecoration(color: Colors.grey[900],borderRadius: BorderRadius.circular(10)),
                     child:Center(child: Text('Empty',style: TextStyle(color: Colors.white),)),
                         ),
-                        Center(
-                          child: Container(
-                            margin: EdgeInsets.only(top:160),
-                            width: 50,
-                            height: 50,
-                            decoration: BoxDecoration(color: Colors.blue[700],shape: BoxShape.circle),
-                            child: IconButton(icon: Icon(Icons.add,color: Colors.white,),
-                            onPressed: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (context)=>addcrop()));
-                            },)),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 50.0),
+                          child: Center(
+                            child:  FloatingActionButton(
+                              child: Icon(Icons.add),
+                              onPressed: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>addcrop()));
+                              },
+                              ),
+                          ),
                         ),
                       ]),
 

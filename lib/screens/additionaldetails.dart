@@ -396,7 +396,10 @@ class _additionaldetailsScreenState extends State<additionaldetails> {
                   width: MediaQuery.of(context).size.width*0.5,
                   height: MediaQuery.of(context).size.height*0.05,
                   child: RaisedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      
+                      Navigator.pop(context,true);
+                    },
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0),
                     ),
