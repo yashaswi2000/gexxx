@@ -130,7 +130,7 @@ class _AuthenticationHomeScreenState extends State<AuthenticationHome> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          'Register',
+                          'ਰਜਿਸਟਰ',
                           style: TextStyle(
                             color: Colors.black,
                             letterSpacing: 1.5,
@@ -144,6 +144,36 @@ class _AuthenticationHomeScreenState extends State<AuthenticationHome> {
                   ),
                 ),
                 SizedBox(height: 20),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: RaisedButton(
+                    elevation: 5.0,
+                    onPressed: ()async {
+                      
+                    },
+                    padding: EdgeInsets.all(15.0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25.0),
+                    ),
+                    color: Colors.blueGrey,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          'Guest Login',
+                          style: TextStyle(
+                            color: Colors.black,
+                            letterSpacing: 1.5,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'OpenSans',
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20,),
                 GestureDetector(
                   onTap: () async {
                     final result = await Navigator.push(context, MaterialPageRoute(builder: (context)=>Login(),fullscreenDialog: true));

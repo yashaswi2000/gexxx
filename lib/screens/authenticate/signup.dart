@@ -39,9 +39,9 @@ class _SignupScreenState extends State<Signup> {
       textAlign: TextAlign.left,
       style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       decoration: InputDecoration(
-        labelText: "Email",
+        labelText: "Name",
         fillColor: Colors.white,
-        prefixIcon: Icon(Icons.mail, color: Colors.white),
+        prefixIcon: Icon(Icons.person, color: Colors.white),
         border: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.red),
             borderRadius: BorderRadius.circular(16)),
