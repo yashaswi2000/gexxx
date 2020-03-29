@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:gexxx_flutter/models/user.dart';
 import 'package:gexxx_flutter/screens/CropProfile.dart';
+import 'package:gexxx_flutter/screens/Cropslist.dart';
 import 'package:gexxx_flutter/screens/MainDrawer.dart';
 import 'package:gexxx_flutter/screens/addcrop.dart';
 import 'package:gexxx_flutter/screens/NewsPage.dart';
@@ -336,8 +337,10 @@ class _HomeScreenState extends State<Home> {
                       height: MediaQuery.of(context).size.height * 0.07,
                       child: RaisedButton(
                           elevation: 5.0,
-                          onPressed: () =>
-                              print(' Treatment methods Pressed'),
+                          onPressed: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>Cropslist()));
+                          },
+                              
                           padding: EdgeInsets.all(15.0),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
