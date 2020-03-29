@@ -18,6 +18,16 @@ class DatabaseService{
       'émail':email
     });
   }
+
+  Future UpdateCropCollection(String name,String email)async
+  {
+    return await UsersCollection.document(uid).setData({
+      'name':name,
+      'émail':email
+    });
+  }
+
+
    UserData  _userDataFromSnapShot(DocumentSnapshot snapshot)
   {
     return UserData(

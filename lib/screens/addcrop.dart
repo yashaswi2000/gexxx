@@ -14,121 +14,129 @@ class _addcropScreenState extends State<addcrop> {
   final AuthService _auth = AuthService();
   final _formkey = GlobalKey<FormState>();
 
-  String error = '';
-  String name = '';
-  String email = '';
-  String password = '';
-  String password2 = '';
-  TextEditingController _namecontroller = TextEditingController();
-  TextEditingController _emailcontroller = TextEditingController();
-  TextEditingController _passwordcontroller = TextEditingController();
-  TextEditingController _password2controller = TextEditingController();
+  DateTime selectedDate = DateTime.now();
 
-  Widget _name() {
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+      });
+  }
+
+  String error = '';
+  String crop_name = '';
+  String date = '';
+  String type_seed = '';
+  String area = '';
+  TextEditingController _cropcontroller = TextEditingController();
+  //TextEditingController _datecontroller = TextEditingController();
+  TextEditingController _type_seedcontroller = TextEditingController();
+  TextEditingController _areacontroller = TextEditingController();
+
+  Widget _crop() {
     return TextFormField(
-      controller: _namecontroller,
+      controller: _cropcontroller,
       validator: (val) => val.isEmpty ? 'Enter Your name' : null,
       autofocus: true,
       autocorrect: true,
       onChanged: (val) {
         setState(() {
-          name = val;
+          crop_name = val;
         });
       },
       textAlign: TextAlign.left,
       style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       decoration: InputDecoration(
-        labelText: "Email",
+        labelText: "Crop",
         fillColor: Colors.white,
         prefixIcon: Icon(Icons.mail, color: Colors.white),
         border: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.red),
             borderRadius: BorderRadius.circular(16)),
-        hintText: 'Enter your Name',
+        hintText: 'Enter Crop Name',
         hintStyle: TextStyle(color: Colors.grey),
       ),
     );
   }
 
-  Widget _email() {
-    return TextFormField(
-      controller: _emailcontroller,
-      validator: (val) => val.isEmpty ? 'Enter Email Address' : null,
-      keyboardType: TextInputType.emailAddress,
-      autofocus: true,
-      autocorrect: true,
-      onChanged: (val) {
-        setState(() {
-          email = val;
-        });
-      },
-      textAlign: TextAlign.left,
-      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-      decoration: InputDecoration(
-        labelText: "Email",
-        fillColor: Colors.white,
-        prefixIcon: Icon(Icons.mail, color: Colors.white),
-        border: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.red),
-            borderRadius: BorderRadius.circular(16)),
-        hintText: 'Enter your Email',
-        hintStyle: TextStyle(color: Colors.grey),
-      ),
+  Widget _date() {
+    return GestureDetector(
+          onTap: () => _selectDate(context),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(
+                "${selectedDate.toLocal()}".split(' ')[0],
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.left,
+              ),
+              // SizedBox(height: 20.0,),
+              // RaisedButton(
+              //   onPressed: () => _selectDate(context),
+              //   child: Text('Select date'),
+              // ),
+            ],
+          ),
     );
   }
 
-  Widget _password() {
+  Widget _seed() {
     return TextFormField(
       validator: (val) =>
-          val.length < 6 ? 'Enter Password of atleast 6 Characters' : null,
-      controller: _passwordcontroller,
-      keyboardType: TextInputType.emailAddress,
+          val.isEmpty ? 'Enter Seed type' : null,
+      controller: _type_seedcontroller,
+      keyboardType: TextInputType.phone,
       obscureText: true,
       autofocus: true,
       autocorrect: true,
       onChanged: (val) {
         setState(() {
-          password = val;
+          type_seed = val;
         });
       },
       textAlign: TextAlign.left,
       style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       decoration: InputDecoration(
-        labelText: "Password",
+        labelText: "seed type",
         prefixIcon: Icon(
-          Icons.lock,
+          Icons.toc,
           color: Colors.white,
         ),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
-        hintText: 'Enter your Password',
+        hintText: 'Enter seed type',
         hintStyle: TextStyle(color: Colors.grey),
       ),
     );
   }
 
-  Widget _password2() {
+  Widget _area() {
     return TextFormField(
-      validator: (val) => val != password ? 'Password Donot Match' : null,
-      controller: _password2controller,
-      keyboardType: TextInputType.emailAddress,
+      validator: (val) => val.isEmpty ? 'Enter area of cultivation' : null,
+      controller: _areacontroller,
+      keyboardType: TextInputType.phone,
       obscureText: true,
       autofocus: true,
       autocorrect: true,
       onChanged: (val) {
         setState(() {
-          password2 = val;
+          area = val;
         });
       },
       textAlign: TextAlign.left,
       style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       decoration: InputDecoration(
-        labelText: "Password",
+        labelText: "Land Area",
         prefixIcon: Icon(
-          Icons.lock,
+          Icons.crop_3_2,
           color: Colors.white,
         ),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
-        hintText: 'Enter your Password Again',
+        hintText: 'Enter your cutivation area',
         hintStyle: TextStyle(color: Colors.grey),
       ),
     );
@@ -152,11 +160,7 @@ class _addcropScreenState extends State<addcrop> {
               Navigator.pop(context,true);
             }
 
-            print(name);
-            print(email);
-            print(password);
-            print(password2);
-          }
+         }
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
@@ -206,17 +210,17 @@ class _addcropScreenState extends State<addcrop> {
                     SizedBox(height: 30.0),
                     Container(
                       margin: EdgeInsets.all(20),
-                      child: _name()),
+                      child: _crop()),
                     SizedBox(height: 30.0),
-                    _email(),
+                    _date(),
                     SizedBox(
                       height: 30.0,
                     ),
-                    _password(),
+                    _seed(),
                     SizedBox(
                       height: 30.0,
                     ),
-                    _password2(),
+                    _area(),
                     SizedBox(height: 10),
                     Center(
                       child: Text(
@@ -230,7 +234,7 @@ class _addcropScreenState extends State<addcrop> {
                         ),
                       ),
                     ),
-                    _buildSignupBtn(),
+                    //_buildSignupBtn(),
                   ],
                 ),
               ),

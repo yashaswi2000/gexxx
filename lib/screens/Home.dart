@@ -173,31 +173,39 @@ class _HomeScreenState extends State<Home> {
             child: Column(
               children: <Widget>[
                 SizedBox(height: 20),
-                Text('Welcome ${userData.name}',
+                Row(
+                  children: <Widget>[
+                    SizedBox(width: MediaQuery.of(context).size.width*0.2),
+                     Text('Welcome ${userData.name}',
                     style: TextStyle(color: Colors.white)),
-                    
-                Stack(
-                  
-                      children: <Widget>[
-                        Container(
-                      margin: EdgeInsets.only(top: 20,left:20,right:20),
-                    height: MediaQuery.of(context).size.height * 0.18,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(color: Colors.grey[900],borderRadius: BorderRadius.circular(10)),
-                    child:Center(child: Text('Empty',style: TextStyle(color: Colors.white),)),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 50.0),
-                          child: Center(
-                            child:  FloatingActionButton(
-                              child: Icon(Icons.add),
+                    SizedBox(width: MediaQuery.of(context).size.width*0.2),
+                    FloatingActionButton(
+                              child: Icon(Icons.add,size:50.0),
                               onPressed: (){
                                   Navigator.push(context, MaterialPageRoute(builder: (context)=>addcrop()));
                               },
                               ),
-                          ),
-                        ),
-                      ]),
+                ],),
+
+
+                    
+                // Stack(
+                  
+                //       children: <Widget>[
+                //         Container(
+                //       margin: EdgeInsets.only(top: 20,left:20,right:20),
+                //     height: MediaQuery.of(context).size.height * 0.18,
+                //     width: MediaQuery.of(context).size.width,
+                //     decoration: BoxDecoration(color: Colors.grey[900],borderRadius: BorderRadius.circular(10)),
+                //     child:Center(child: Text('Empty',style: TextStyle(color: Colors.white),)),
+                //         ),
+                //         Padding(
+                //           padding: const EdgeInsets.only(top: 50.0),
+                //           child: Center(
+                //             child:  ,
+                //           ),
+                //         ),
+                //       ]),
 
               
                 /*Container(
