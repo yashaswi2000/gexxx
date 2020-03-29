@@ -90,8 +90,7 @@ class _addcropScreenState extends State<addcrop> {
       validator: (val) =>
           val.isEmpty ? 'Enter Seed type' : null,
       controller: _type_seedcontroller,
-      keyboardType: TextInputType.phone,
-      obscureText: true,
+            obscureText: false,
       autofocus: true,
       autocorrect: true,
       onChanged: (val) {
@@ -119,7 +118,7 @@ class _addcropScreenState extends State<addcrop> {
       validator: (val) => val.isEmpty ? 'Enter area of cultivation' : null,
       controller: _areacontroller,
       keyboardType: TextInputType.phone,
-      obscureText: true,
+      obscureText: false,
       autofocus: true,
       autocorrect: true,
       onChanged: (val) {
@@ -142,44 +141,7 @@ class _addcropScreenState extends State<addcrop> {
     );
   }
 
-  Widget _buildSignupBtn() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 25.0),
-      width: double.infinity,
-      child: RaisedButton(
-        elevation: 5.0,
-        onPressed: () async {
-          if (_formkey.currentState.validate()) {
-            dynamic result =
-                await _auth.registerWithEmailAndPassword(email, password, name);
-            if (result == null) {
-              setState(() {
-                error = 'Please Suplly valid Email';
-              });
-            } else {
-              Navigator.pop(context,true);
-            }
 
-         }
-        },
-        padding: EdgeInsets.all(15.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-        color: Colors.white,
-        child: Text(
-          'Signup',
-          style: TextStyle(
-            color: Color(0xFF527DAA),
-            letterSpacing: 1.5,
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-          ),
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -211,8 +173,35 @@ class _addcropScreenState extends State<addcrop> {
                     Container(
                       margin: EdgeInsets.all(20),
                       child: _crop()),
-                    SizedBox(height: 30.0),
-                    _date(),
+                    SizedBox(height: 20.0),
+
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Row(
+                        
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                        'Date of Cultivation',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'OpenSans',
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+
+                          Container(
+                            width: 100,
+                            height: 20,
+                            decoration: BoxDecoration(
+                              border: Border.all(width: 1,color: Colors.blue)
+                              
+                            ),
+                            child: _date()),
+                        ],
+                      ),
+                    ),
                     SizedBox(
                       height: 30.0,
                     ),
@@ -221,7 +210,32 @@ class _addcropScreenState extends State<addcrop> {
                       height: 30.0,
                     ),
                     _area(),
-                    SizedBox(height: 10),
+                    SizedBox(height: 30),
+                    Container(
+                  width: MediaQuery.of(context).size.width*0.5,
+                  height: MediaQuery.of(context).size.height*0.05,
+                  child: RaisedButton(
+                    onPressed: () {
+                      
+                      Navigator.pop(context,true);
+                    },
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    color: Colors.blue,
+                    child: Text(
+                      'Done',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'OpenSans',
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 15),
+                
                     Center(
                       child: Text(
                         error,

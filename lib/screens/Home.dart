@@ -79,6 +79,38 @@ class _HomeScreenState extends State<Home> {
     );
   }
 
+  GestureDetector cropcircle(String imageval,String crop_name)
+  {
+    return GestureDetector(
+      onTap: (){
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    CropProfile(cropname: crop_name, price: 'Rs 18')),
+          );
+      },
+      child: Column(
+        children: <Widget>[
+          Container(
+            width: 50,
+            height: 50,
+            decoration:BoxDecoration(color: Colors.white,shape: BoxShape.circle,image: DecorationImage(image: NetworkImage(imageval),fit: BoxFit.fill)),
+          ),
+          SizedBox(height: 10),
+          Text(
+                        crop_name,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700),
+                      )
+          
+        ],
+      ),
+    );
+  }
+
   GestureDetector MyCrop(String imageval, String crop_name, String price) {
     return GestureDetector(
         onTap: () {
@@ -93,15 +125,15 @@ class _HomeScreenState extends State<Home> {
           children: <Widget>[
             Container(
                 width: MediaQuery.of(context).size.width * 0.3,
-                decoration: BoxDecoration(color: Colors.black),
+                decoration: BoxDecoration(color: Colors.grey[800]),
                 child: Center(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       SizedBox(height: 10),
                       Container(
-                        width: 90,
-                        height: 90,
+                        width: 30,
+                        height: 30,
                         decoration: BoxDecoration(
                             color: Colors.white,
                             shape: BoxShape.circle,
@@ -137,78 +169,97 @@ class _HomeScreenState extends State<Home> {
     // TODO: implement build
     final user = Provider.of<User>(context);
     return StreamBuilder<UserData>(
-      stream: DatabaseService(uid:user.uid).userData,
-      builder: (context,snapshot)
-      {
-      
+        stream: DatabaseService(uid: user.uid).userData,
+        builder: (context, snapshot) {
           UserData userData = snapshot.data;
           return Scaffold(
-          appBar: AppBar(
-            actions: <Widget>[
-              FlatButton.icon(
-                  onPressed: () async {
-                    await _auth.signOut();
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AuthenticationHome()));
-                  },
-                  icon: Icon(
-                    Icons.person,
-                    color: Colors.white,
-                  ),
-                  label: Text(
-                    'Logout',
-                    style: TextStyle(color: Colors.white),
-                  ))
-            ],
-            title: Center(
-              child: Text('GEXXX'),
-            ),
-            backgroundColor: Colors.black,
-          ),
-          backgroundColor: Colors.black,
-          drawer: MainDrawer(),
-          body: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                SizedBox(height: 20),
-                Row(
+              appBar: AppBar(
+                actions: <Widget>[
+                  FlatButton.icon(
+                      onPressed: () async {
+                        await _auth.signOut();
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AuthenticationHome()));
+                      },
+                      icon: Icon(
+                        Icons.person,
+                        color: Colors.white,
+                      ),
+                      label: Text(
+                        'Logout',
+                        style: TextStyle(color: Colors.white),
+                      ))
+                ],
+                title: Center(
+                  child: Text('GEXXX'),
+                ),
+                backgroundColor: Colors.black,
+              ),
+              backgroundColor: Colors.black,
+              drawer: MainDrawer(),
+              body: SingleChildScrollView(
+                child: Column(
                   children: <Widget>[
-                    SizedBox(width: MediaQuery.of(context).size.width*0.2),
-                     Text('Welcome ${userData.name}',
-                    style: TextStyle(color: Colors.white)),
-                    SizedBox(width: MediaQuery.of(context).size.width*0.2),
-                    FloatingActionButton(
-                              child: Icon(Icons.add,size:50.0),
-                              onPressed: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>addcrop()));
-                              },
-                              ),
-                ],),
+                    SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10, right: 10),
+                      child: Row(
+                        children: <Widget>[
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.75,
+                            height: MediaQuery.of(context).size.height * 0.12,
+                            decoration: BoxDecoration(
+                                color: Colors.grey[800],
+                                borderRadius: BorderRadius.circular(20)),
+                            /*child: Center(
+                                child: Text('Welcome ${userData.name}',
+                                    style: TextStyle(color: Colors.white))),*/
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left:20,top:15,bottom:15),
+                                      child: Row(
+                                        children: <Widget>[
+                                          cropcircle('https://images.unsplash.com/photo-1529511582893-2d7e684dd128?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80','wheat'),
+                                          SizedBox(width: 20),
+                                          cropcircle('https://images.unsplash.com/photo-1567461007299-4df855e56ed3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80','paddy'),
+                                        ],
+                                      ),
+                                    ),
+                          ),
+                          SizedBox(width: 20),
+                          FloatingActionButton(
+                            child: Icon(Icons.add, size: 50.0),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => addcrop()));
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
 
+                    // Stack(
 
-                    
-                // Stack(
-                  
-                //       children: <Widget>[
-                //         Container(
-                //       margin: EdgeInsets.only(top: 20,left:20,right:20),
-                //     height: MediaQuery.of(context).size.height * 0.18,
-                //     width: MediaQuery.of(context).size.width,
-                //     decoration: BoxDecoration(color: Colors.grey[900],borderRadius: BorderRadius.circular(10)),
-                //     child:Center(child: Text('Empty',style: TextStyle(color: Colors.white),)),
-                //         ),
-                //         Padding(
-                //           padding: const EdgeInsets.only(top: 50.0),
-                //           child: Center(
-                //             child:  ,
-                //           ),
-                //         ),
-                //       ]),
+                    //       children: <Widget>[
+                    //         Container(
+                    //       margin: EdgeInsets.only(top: 20,left:20,right:20),
+                    //     height: MediaQuery.of(context).size.height * 0.18,
+                    //     width: MediaQuery.of(context).size.width,
+                    //     decoration: BoxDecoration(color: Colors.grey[900],borderRadius: BorderRadius.circular(10)),
+                    //     child:Center(child: Text('Empty',style: TextStyle(color: Colors.white),)),
+                    //         ),
+                    //         Padding(
+                    //           padding: const EdgeInsets.only(top: 50.0),
+                    //           child: Center(
+                    //             child:  ,
+                    //           ),
+                    //         ),
+                    //       ]),
 
-              
-                /*Container(
+                    /*Container(
                     decoration: BoxDecoration(color: Colors.black),
                     margin: EdgeInsets.only(top: 20),
                     height: MediaQuery.of(context).size.height * 0.15,
@@ -223,77 +274,73 @@ class _HomeScreenState extends State<Home> {
                                   "${CropData[index]["variety"]}",
                                   "${CropData[index]["modal_price"]}");
                         })),*/
-                SizedBox(
-                  height: 20,
-                ),
-                MyhorizontalDivider(),
-                SizedBox(height: 20),
-                Text(
-                  'CARDS',
-                  style: TextStyle(
-                      fontSize: 30,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 2,
-                      fontFamily: "OpenSans"),
-                ),
-                SizedBox(height: 40),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
+                    SizedBox(
+                      height: 20,
+                    ),
+                    MyhorizontalDivider(),
                     SizedBox(height: 20),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        margin: EdgeInsets.only(left: 20, right: 20),
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height * 0.08,
-                        decoration: BoxDecoration(
-                            color: Colors.blue[800],
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Center(
-                            child: Text(
-                          'News',
-                          style: TextStyle(
-                              fontSize: 30,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 2,
-                              fontFamily: "OpenSans"),
-                        )),
-                      ),
+                    Text(
+                      'CARDS',
+                      style: TextStyle(
+                          fontSize: 30,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 2,
+                          fontFamily: "OpenSans"),
                     ),
-                    SizedBox(height: 15),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        margin: EdgeInsets.only(left: 20, right: 20),
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height * 0.08,
-                        decoration: BoxDecoration(
-                            color: Colors.blue[800],
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Center(
-                            child: Text(
-                          'Crops',
-                          style: TextStyle(
-                              fontSize: 30,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 2,
-                              fontFamily: "OpenSans"),
-                        )),
-                      ),
-                    ),
+                    SizedBox(height: 40),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        SizedBox(height: 20),
+                        GestureDetector(
+                          onTap: () {},
+                          child: Container(
+                            margin: EdgeInsets.only(left: 20, right: 20),
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height * 0.08,
+                            decoration: BoxDecoration(
+                                color: Colors.blue[800],
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Center(
+                                child: Text(
+                              'News',
+                              style: TextStyle(
+                                  fontSize: 30,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 2,
+                                  fontFamily: "OpenSans"),
+                            )),
+                          ),
+                        ),
+                        SizedBox(height: 15),
+                        GestureDetector(
+                          onTap: () {},
+                          child: Container(
+                            margin: EdgeInsets.only(left: 20, right: 20),
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height * 0.08,
+                            decoration: BoxDecoration(
+                                color: Colors.blue[800],
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Center(
+                                child: Text(
+                              'Crops',
+                              style: TextStyle(
+                                  fontSize: 30,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 2,
+                                  fontFamily: "OpenSans"),
+                            )),
+                          ),
+                        ),
+                      ],
+                    )
                   ],
-                )
-              ],
-            ),
-          ));
-        
-      }
-
-      
-    );
+                ),
+              ));
+        });
   }
 }
