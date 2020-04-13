@@ -15,6 +15,7 @@ import 'dart:convert';
 import 'package:gexxx_flutter/database/database.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:translator/translator.dart';
 
 class Home extends StatefulWidget {
   final User user;
@@ -28,6 +29,10 @@ class Home extends StatefulWidget {
 class _HomeScreenState extends State<Home> {
   Map data;
   List CropData;
+  String news = 'news';
+  final translate = new GoogleTranslator();
+
+ 
 
   Future getData() async {
     http.Response response = await http.get(
@@ -38,8 +43,7 @@ class _HomeScreenState extends State<Home> {
       CropData = data["records"];
     });
 
-    //debugPrint(CropData.toString());
-    //print(CropData.length);
+    
   }
 
   Container MyFeed(String crop_name, String state) {
@@ -114,6 +118,8 @@ class _HomeScreenState extends State<Home> {
   }
 
   GestureDetector MyCrop(String imageval, String crop_name, String price) {
+    var cropt = translate.translate(crop_name,to:'kn');
+
     return GestureDetector(
         onTap: () {
           Navigator.push(
@@ -170,6 +176,7 @@ class _HomeScreenState extends State<Home> {
   Widget build(BuildContext context) {
     // TODO: implement build
     final user = Provider.of<User>(context);
+  
     return StreamBuilder<UserData>(
         stream: DatabaseService(uid: user.uid).userData,
         builder: (context, snapshot) {
@@ -227,7 +234,7 @@ class _HomeScreenState extends State<Home> {
                                       'https://images.unsplash.com/photo-1529511582893-2d7e684dd128?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80',
                                       'wheat'),
                                   SizedBox(width: 20),
-                                cropcircle(
+                                  cropcircle(
                                       'https://images.unsplash.com/photo-1567461007299-4df855e56ed3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80',
                                       'paddy'),
                                 ],
@@ -295,15 +302,18 @@ class _HomeScreenState extends State<Home> {
                           letterSpacing: 2,
                           fontFamily: "OpenSans"),
                     ),
-                    
+
                     SizedBox(height: 20),
                     Container(
                       width: MediaQuery.of(context).size.width * 0.9,
                       height: MediaQuery.of(context).size.height * 0.07,
                       child: RaisedButton(
                           elevation: 5.0,
-                          onPressed: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>NewsPage()));
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => NewsPage()));
                           },
                           padding: EdgeInsets.all(15.0),
                           shape: RoundedRectangleBorder(
@@ -311,11 +321,10 @@ class _HomeScreenState extends State<Home> {
                           ),
                           color: Colors.blue[800],
                           child: Row(
-                            mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text(
-                                'News',
+                                'news',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontFamily: 'OpenSans',
@@ -337,18 +346,19 @@ class _HomeScreenState extends State<Home> {
                       height: MediaQuery.of(context).size.height * 0.07,
                       child: RaisedButton(
                           elevation: 5.0,
-                          onPressed: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>Cropslist()));
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Cropslist()));
                           },
-                              
                           padding: EdgeInsets.all(15.0),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           color: Colors.blue[800],
                           child: Row(
-                            mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text(
                                 'Crops',
@@ -374,5 +384,4 @@ class _HomeScreenState extends State<Home> {
   }
 }
 
-class News {
-}
+class News {}

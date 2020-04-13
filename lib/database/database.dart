@@ -1,5 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gexxx_flutter/models/Crop.dart';
+import 'package:gexxx_flutter/models/UserProfile.dart';
+
+
 import 'package:gexxx_flutter/models/user.dart';
+
 
 class DatabaseService{
   final String uid;
@@ -8,7 +13,7 @@ class DatabaseService{
    DatabaseService({this.uid});
 
   final CollectionReference UsersCollection =  Firestore.instance.collection('Users');
-
+  final CollectionReference UserProfileCollection = Firestore.instance.collection('Userprofile');
  
 
   Future UpdateUsersCollection(String name,String email)async
@@ -19,15 +24,18 @@ class DatabaseService{
     });
   }
 
-  Future UpdateCropCollection(String name,String email)async
+  Future UpdateProfileCollection(String location,String soiltype,String landsize,double waterlevel,String language)async
   {
     return await UsersCollection.document(uid).setData({
-      'name':name,
-      'émail':email
+      'location':location,
+      'soiltype':soiltype,
+      'landsize':landsize,
+      'waterlevel':waterlevel,
+      'lannguage':language,
     });
   }
 
-
+  
    UserData  _userDataFromSnapShot(DocumentSnapshot snapshot)
   {
     return UserData(
@@ -37,13 +45,32 @@ class DatabaseService{
     );
   }
 
-  //collection stream
-  Stream<UserData> get userData{
-    return UsersCollection.document(uid).snapshots().map(_userDataFromSnapShot);
-
-  }
-
  
 
 
-}
+  UserProfile _userProfileFromSnapshot(DocumentSnapshot snapshot){
+      return UserProfile(
+        uid: uid,
+        location: snapshot.data['location'],
+        soiltype: snapshot.data['soiltype'],
+        landsize: snapshot.data['landsize'],
+        waterlevel: snapshot.data['waterlevel'],
+        language:snapshot.data['language'],
+      );
+    }
+    
+      //collection stream
+      Stream<UserData> get userData{
+        return UsersCollection.document(uid).snapshots().map(_userDataFromSnapShot);
+    
+      }
+    
+      Stream<UserProfile> get userProfile{
+        return UserProfileCollection.document(uid).snapshots().map(_userProfileFromSnapshot);
+      }
+    
+     
+    
+    
+    }
+  

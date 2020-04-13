@@ -30,11 +30,14 @@ dependencies:
   provider: ^3.1.0
   flutter_spinkit: "^4.1.2"
   cloud_firestore: ^0.12.10
+  translator: ^0.1.1
+  location: ^2.4.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+    
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -49,6 +52,7 @@ flutter:
 
   assets:
    - Phone_code/Phone_code.json
+   - State_names/State_names.json
    - assets/logos/facebook.jpg
    - assets/logos/google.jpg
 

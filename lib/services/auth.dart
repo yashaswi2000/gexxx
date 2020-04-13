@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:gexxx_flutter/database/database.dart';
 import 'package:gexxx_flutter/models/user.dart';
-import 'package:gexxx_flutter/screens/Home.dart';
 import 'package:gexxx_flutter/screens/authenticate/AuthenticationHome.dart';
 import 'package:gexxx_flutter/screens/wrapper.dart';
 class AuthService{

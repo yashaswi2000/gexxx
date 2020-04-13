@@ -1,13 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gexxx_flutter/screens/Home.dart';
-import 'package:gexxx_flutter/screens/authenticate/Password.dart';
-import 'package:gexxx_flutter/screens/authenticate/otp.dart';
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 
-import 'package:gexxx_flutter/utilities/constants.dart';
 class phonecodedata{
   String name;
   String dial_code;
