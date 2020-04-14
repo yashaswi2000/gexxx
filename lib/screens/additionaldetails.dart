@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gexxx_flutter/database/database.dart';
 import 'package:gexxx_flutter/services/auth.dart';
+import 'package:gexxx_flutter/utilities/Loading.dart';
 import 'dart:convert';
 import 'package:provider/provider.dart';
 import 'package:gexxx_flutter/models/user.dart';
@@ -32,6 +33,8 @@ class _additionaldetailsScreenState extends State<additionaldetails> {
   String selectedlanguage;
   var waterlevel = 0.0;
   String landsize;
+  String error='';
+  bool loading = false;
 
   Widget _soiltype() {
     return Container(
@@ -62,6 +65,7 @@ class _additionaldetailsScreenState extends State<additionaldetails> {
                   onChanged: (selected) {
                     setState(() {
                       selectedsoil = selected;
+                      error='';
                     });
                   },
                   value: selectedsoil,
@@ -225,6 +229,7 @@ class _additionaldetailsScreenState extends State<additionaldetails> {
         onChanged: (val){
           setState(() {
             landsize=val;
+            error='';
           });
         },
         validator: (val) => val.isEmpty ? 'Land size' : null,
@@ -253,7 +258,7 @@ class _additionaldetailsScreenState extends State<additionaldetails> {
     final user = Provider.of<User>(context);
     
    
-          return Scaffold(
+          return loading ? Loading() : Scaffold(
             backgroundColor: Colors.black,
             body: SingleChildScrollView(
               child: Form(
@@ -294,6 +299,9 @@ class _additionaldetailsScreenState extends State<additionaldetails> {
                       SizedBox(height: 15.0),
                       GestureDetector(
                         onTap: () {
+                          setState(() {
+                            error='';
+                          });
                           _locationMenu();
                         },
                         child: Container(
@@ -402,6 +410,7 @@ class _additionaldetailsScreenState extends State<additionaldetails> {
                           onChanged: (value) {
                             setState(
                               () {
+                                error='';
                                 waterlevel = value;
                               },
                             );
@@ -429,8 +438,26 @@ class _additionaldetailsScreenState extends State<additionaldetails> {
                         height: MediaQuery.of(context).size.height * 0.05,
                         child: RaisedButton(
                           onPressed: () async{
-                            await DatabaseService(uid:user.uid).UpdateProfileCollection(location, selectedsoil, landsize, waterlevel,selectedlanguage);
-                            Navigator.pop(context, true);
+                            if(location!='Tap here to select state' && selectedsoil!=null && landsize!=null && waterlevel!=0)
+                            {
+                              setState(() {
+                                loading=true;
+                              });
+                              dynamic result = await DatabaseService(uid:user.uid).UpdateProfileCollection(location, selectedsoil, landsize, waterlevel,selectedlanguage);
+                              print('ass');
+                              print(result); 
+                              Navigator.pop(context, true);
+                               
+                               
+                            }
+                            else{
+                              setState(() {
+                                error='enter all details';
+                              });
+                            }
+
+
+                           
                           },
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30.0),
@@ -446,7 +473,21 @@ class _additionaldetailsScreenState extends State<additionaldetails> {
                             ),
                           ),
                         ),
-                      )
+                      ),
+                      SizedBox(height: 5),
+                        Center(
+                          child: Text(
+                            error,
+                            style: TextStyle(
+                              color: Colors.red,
+                              letterSpacing: 1.5,
+                              fontSize: 10.0,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'OpenSans',
+                            ),
+                          ),
+                        ),
+
                     ],
                   ),
                 ),

@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:gexxx_flutter/models/user.dart';
+import 'package:provider/provider.dart';
 
 class MainDrawer extends StatefulWidget {
   @override
@@ -6,6 +9,14 @@ class MainDrawer extends StatefulWidget {
 }
 
 class _MainDrawerScreenState extends State<MainDrawer> {
+  final databaseReference = Firestore.instance;
+  String name;
+  String landsize;
+  String location;
+
+ 
+  
+  
   @override
   Widget build(BuildContext context) {
     // TODO: implement build

@@ -26,7 +26,7 @@ class DatabaseService{
 
   Future UpdateProfileCollection(String location,String soiltype,String landsize,double waterlevel,String language)async
   {
-    return await UsersCollection.document(uid).setData({
+    return await UserProfileCollection.document(uid).setData({
       'location':location,
       'soiltype':soiltype,
       'landsize':landsize,

@@ -24,13 +24,9 @@ class _EmailScreenState extends State<Email> {
 
   Widget _email() {
     return TextFormField(
-      
-      
-      
       controller: _emailcontroller,
       validator: (val) => val.isEmpty ? 'Enter Email Address' : null,
       keyboardType: TextInputType.emailAddress,
-      
       onChanged: (val) {
         setState(() {
           email = val;
@@ -39,16 +35,14 @@ class _EmailScreenState extends State<Email> {
       textAlign: TextAlign.left,
       style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       decoration: InputDecoration(
+         hintText: 'Enter your Email',
+        hintStyle: TextStyle(color: Colors.grey),
         labelText: "Email",
-        fillColor: Colors.white,
-        focusColor: Colors.yellow,
         prefixIcon: Icon(Icons.mail, color: Colors.white),
         enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.blue),
-            
             borderRadius: BorderRadius.circular(16)),
-        hintText: 'Enter your Email',
-        hintStyle: TextStyle(color: Colors.grey),
+       
       ),
     );
   }
@@ -76,8 +70,8 @@ class _EmailScreenState extends State<Email> {
           color: Colors.white,
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.blue),
-          borderRadius: BorderRadius.circular(16)),
+            borderSide: BorderSide(color: Colors.blue),
+            borderRadius: BorderRadius.circular(16)),
         hintText: 'Enter your Password',
         hintStyle: TextStyle(color: Colors.grey),
       ),
@@ -113,7 +107,6 @@ class _EmailScreenState extends State<Email> {
             body: SingleChildScrollView(
               child: Center(
                 child: Container(
-                  
                   margin: EdgeInsets.only(left: 20, right: 20),
                   child: Form(
                     key: _formkey,
@@ -124,17 +117,17 @@ class _EmailScreenState extends State<Email> {
                         SizedBox(height: 20),
                         _password(),
                         SizedBox(height: 20),
-                         GestureDetector(
-                           onTap: (){
-                             print('forgot password pressed');
-                           },
+                        GestureDetector(
+                          onTap: () {
+                            print('forgot password pressed');
+                          },
                           child: Container(
-                            margin: EdgeInsets.only(right:10),
+                            margin: EdgeInsets.only(right: 10),
                             child: Align(
                               alignment: Alignment.centerRight,
-                                                        child: Text('Forgot Password?',
-                              textAlign: TextAlign.right,
-                              
+                              child: Text(
+                                'Forgot Password?',
+                                textAlign: TextAlign.right,
                                 style: TextStyle(
                                   color: Colors.white,
                                   letterSpacing: 1,
@@ -145,8 +138,7 @@ class _EmailScreenState extends State<Email> {
                               ),
                             ),
                           ),
-                        ) ,
-                        
+                        ),
                         Container(
                           padding: EdgeInsets.symmetric(vertical: 20.0),
                           width: 300,
@@ -166,8 +158,7 @@ class _EmailScreenState extends State<Email> {
                                     loading = false;
                                   });
                                 } else {
-                                  Navigator.pop(context,true);
-                                  
+                                  Navigator.pop(context, true);
                                 }
                               }
                             },
@@ -188,9 +179,6 @@ class _EmailScreenState extends State<Email> {
                             ),
                           ),
                         ),
-                        
-                        
-
                         SizedBox(height: 5),
                         Center(
                           child: Text(

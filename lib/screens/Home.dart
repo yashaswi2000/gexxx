@@ -95,24 +95,27 @@ class _HomeScreenState extends State<Home> {
                   CropProfile(cropname: crop_name, price: 'Rs 18')),
         );
       },
-      child: Column(
-        children: <Widget>[
-          Container(
-            width: 50,
-            height: 50,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                    image: NetworkImage(imageval), fit: BoxFit.fill)),
-          ),
-          SizedBox(height: 10),
-          Text(
-            crop_name,
-            style: TextStyle(
-                color: Colors.white, fontSize: 15, fontWeight: FontWeight.w700),
-          )
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(3.0),
+        child: Column(
+          children: <Widget>[
+            Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                      image: NetworkImage(imageval), fit: BoxFit.fill)),
+            ),
+            SizedBox(height: 8),
+            Text(
+              crop_name,
+              style: TextStyle(
+                  color: Colors.white, fontSize: 10, fontWeight: FontWeight.w700),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -212,8 +215,9 @@ class _HomeScreenState extends State<Home> {
                 child: Column(
                   children: <Widget>[
                     SizedBox(height: 20),
+                    Center(child: Text('welcome ${userData.name}',style: TextStyle(color: Colors.white,fontFamily: 'OpenSans',fontWeight: FontWeight.bold,fontSize:20),),),
                     Padding(
-                      padding: const EdgeInsets.only(left: 10, right: 10),
+                      padding: const EdgeInsets.only(left: 10, right: 10,top:10),
                       child: Row(
                         children: <Widget>[
                           Container(

@@ -130,7 +130,7 @@ class _AuthenticationHomeScreenState extends State<AuthenticationHome> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          'ਰਜਿਸਟਰ',
+                          'Register',
                           style: TextStyle(
                             color: Colors.black,
                             letterSpacing: 1.5,
