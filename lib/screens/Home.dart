@@ -177,7 +177,7 @@ class _HomeScreenState extends State<Home> {
   final AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    
     final user = Provider.of<User>(context);
   
     return StreamBuilder<UserData>(
@@ -190,10 +190,6 @@ class _HomeScreenState extends State<Home> {
                   FlatButton.icon(
                       onPressed: () async {
                         await _auth.signOut();
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => AuthenticationHome()));
                       },
                       icon: Icon(
                         Icons.person,
@@ -388,4 +384,4 @@ class _HomeScreenState extends State<Home> {
   }
 }
 
-class News {}
+

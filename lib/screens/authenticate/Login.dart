@@ -22,7 +22,7 @@ class _LoginScreenState extends State<Login>
   void initState() {
     // TODO: implement initState
     super.initState();
-    tabController = TabController(length: 3, vsync: this);
+    tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -58,7 +58,7 @@ class _LoginScreenState extends State<Login>
               TabBar(
                   controller: tabController,
                   indicatorColor: Colors.blue,
-                  indicatorWeight: 3.0,
+                  indicatorWeight: 2.0,
                   labelColor: Colors.white,
                   unselectedLabelColor: Colors.grey,
                   isScrollable: true,
@@ -69,12 +69,7 @@ class _LoginScreenState extends State<Login>
                         style: TextStyle(fontSize: 20, fontFamily: 'OpenSans'),
                       ),
                     ),
-                    Tab(
-                      child: Text(
-                        "Password",
-                        style: TextStyle(fontSize: 20, fontFamily: 'OpenSans'),
-                      ),
-                    ),
+                    
                     Tab(
                       child: Text(
                         "Email",
@@ -86,7 +81,6 @@ class _LoginScreenState extends State<Login>
                 child: Container(
                   child: TabBarView(controller: tabController, children: <Widget>[
                     Otp(),
-                    Password(),
                     Email(),
                   ]),
                 ),

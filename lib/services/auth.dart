@@ -2,10 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:gexxx_flutter/database/database.dart';
 import 'package:gexxx_flutter/models/user.dart';
-import 'package:gexxx_flutter/screens/authenticate/AuthenticationHome.dart';
+import 'package:gexxx_flutter/screens/Dashboard.dart';
+import 'package:gexxx_flutter/screens/Home.dart';
+import 'package:gexxx_flutter/screens/authenticate/login2.dart';
 import 'package:gexxx_flutter/screens/wrapper.dart';
 class AuthService{
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  var actualcode;
 
   User _userFromFirebaseUser(FirebaseUser user){
 
@@ -27,7 +30,7 @@ class AuthService{
 
         }
         else{
-          return AuthenticationHome();
+          return LoginPage();
         }
       },
     );
@@ -71,11 +74,6 @@ class AuthService{
     }
   }
 
-  signInWithphone(AuthCredential authCreds)
-  {
-    _auth.signInWithCredential(authCreds);
-  }
-
   
 
   Future signOut() async{
@@ -85,5 +83,18 @@ class AuthService{
       print(e.toString());
       return null;
     }
+  }
+
+  //SignIn
+  signIn(AuthCredential authCreds) {
+    _auth.signInWithCredential(authCreds);
+  }
+
+  Future signInWithOTP(smsCode, verId) async{
+    AuthCredential authCreds = PhoneAuthProvider.getCredential(
+        verificationId: verId, smsCode: smsCode);
+    await _auth.signInWithCredential(authCreds).then((AuthResult result){
+      
+    });
   }
 }

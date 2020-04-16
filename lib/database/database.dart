@@ -16,11 +16,11 @@ class DatabaseService{
   final CollectionReference UserProfileCollection = Firestore.instance.collection('Userprofile');
  
 
-  Future UpdateUsersCollection(String name,String email)async
+  Future UpdateUsersCollection(String name,String phonenumber)async
   {
     return await UsersCollection.document(uid).setData({
       'name':name,
-      'émail':email
+      'phonenumber':phonenumber
     });
   }
 
@@ -41,7 +41,7 @@ class DatabaseService{
     return UserData(
       uid: uid,
       name: snapshot.data['name'],
-      email: snapshot.data['email'],
+      phonenumber: snapshot.data['phonenumber'],
     );
   }
 
@@ -65,12 +65,27 @@ class DatabaseService{
     
       }
     
-      Stream<UserProfile> get userProfile{
+      Stream<UserProfile> get userProfile {
         return UserProfileCollection.document(uid).snapshots().map(_userProfileFromSnapshot);
       }
     
-     
-    
+      Future<String> Checkphonenumber(String phonenumber) async 
+      {
+        String temp;
+        QuerySnapshot querysnapshot =await UsersCollection.getDocuments();
+        querysnapshot.documents.forEach((f)=>{
+          if(f.data['phonenumber']==phonenumber)
+          {
+              temp = f.data['name']
+          }
+          else
+          {
+            temp=''
+          }
+        });
+        print("in database $temp");
+        return temp;
+      }
     
     }
   

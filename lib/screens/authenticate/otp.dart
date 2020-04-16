@@ -1,10 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:gexxx_flutter/screens/Phone_code.dart';
-import 'package:gexxx_flutter/screens/wrapper.dart';
+import 'package:gexxx_flutter/screens/Cropslist.dart';
+import 'package:gexxx_flutter/screens/authenticate/phoneverificationpage.dart';
 import 'package:gexxx_flutter/services/auth.dart';
-import 'package:gexxx_flutter/utilities/MyVerticalDivider.dart';
 import 'package:gexxx_flutter/utilities/constants.dart';
 
 class Otp extends StatefulWidget {
@@ -13,11 +11,16 @@ class Otp extends StatefulWidget {
 }
 
 class _OtpScreenState extends State<Otp> {
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+  final AuthService _auth = AuthService();
   String phonenumber;
+  String verificationId;
   String code = '91';
   String image = 'https://restcountries.eu/data/ind.svg';
   String verificationID;
   String smsCode;
+   bool codeSent = false;
+  bool isvalid = false;
 
   Widget _buildSignInWithText() {
     return Column(
@@ -37,81 +40,35 @@ class _OtpScreenState extends State<Otp> {
       ],
     );
   }
-
-  _phonecode(BuildContext context) async {
-    final dynamic result = await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => Phone_code()));
-    setState(() {
-      code = result.dial_code;
-      image = result.imageval;
-    });
-    print(code);
-  }
-
-  Future<void> verifyPhone() async {
-    final PhoneCodeAutoRetrievalTimeout autoRetrieve = (String verID) {
-      this.verificationID = verID;
+  Future<void> verifyPhone(phoneNo) async {
+    final PhoneVerificationCompleted verified = (AuthCredential authResult) {
+      AuthService().signIn(authResult);
     };
 
-    final PhoneCodeSent smsCodeSent = (String verID, [int forceCodeResend]) {
-      this.verificationID = verID;
+    final PhoneVerificationFailed verificationfailed =
+        (AuthException authException) {
+      print('${authException.message}');
     };
-    final PhoneVerificationCompleted verifiedSuccess = (AuthCredential authResults) {
-      AuthService().signInWithphone(authResults);
-    } as PhoneVerificationCompleted;
 
-    final PhoneVerificationFailed verifiedFailed = (AuthException exception) {
-      print('${exception.message}');
+    final PhoneCodeSent smsSent = (String verId, [int forceResend]) {
+      this.verificationId = verId;
+      setState(() {
+        this.codeSent = true;
+      });
     };
+
+    final PhoneCodeAutoRetrievalTimeout autoTimeout = (String verId) {
+      this.verificationId = verId;
+    };
+
     await FirebaseAuth.instance.verifyPhoneNumber(
-      phoneNumber: this.phonenumber,
-      codeAutoRetrievalTimeout: autoRetrieve,
-      codeSent: smsCodeSent,
-      timeout: const Duration(seconds: 5),
-      verificationCompleted: verifiedSuccess,
-      verificationFailed: verifiedFailed,
-    );
+        phoneNumber: phoneNo,
+        timeout: const Duration(seconds: 5),
+        verificationCompleted: verified,
+        verificationFailed: verificationfailed,
+        codeSent: smsSent,
+        codeAutoRetrievalTimeout: autoTimeout);
   }
-
-  Future<bool> smsCodeDialog(BuildContext context) {
-    return showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return new AlertDialog(
-            title: Text('Enter sms code'),
-            content: TextField(
-              onChanged: (value) {
-                this.smsCode = value;
-              },
-            ),
-            contentPadding: EdgeInsets.all(10),
-            actions: <Widget>[
-              new FlatButton(
-                onPressed: (){
-                  FirebaseAuth.instance.currentUser().then((user){
-                    if(user!=null)
-                    {
-                      Navigator.of(context).pop();
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>Wrapper()));
-
-                    }
-                    else
-                    {
-                      Navigator.of(context).pop();
-                    }
-                  });
-                }, 
-                child: Text('Done'))
-            ],
-          );
-        });
-  }
-
-  sigIn(){
-    
-  }
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -119,73 +76,26 @@ class _OtpScreenState extends State<Otp> {
       backgroundColor: Colors.black12,
       body: SingleChildScrollView(
         child: Center(
-          child: Column(
-            children: <Widget>[
-              SizedBox(height: 30),
-              new Row(
-                children: <Widget>[
-                  RaisedButton(
-                    color: Colors.black,
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.33,
-                      decoration: BoxDecoration(
-                          border:
-                              Border(bottom: BorderSide(color: Colors.blue))),
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.075,
-                            height: MediaQuery.of(context).size.height * 0.03,
-                            child: SvgPicture.network(
-                              '$image',
-                              placeholderBuilder: (context) {
-                                CircularProgressIndicator();
-                              },
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                          /*Image(
-                                width: MediaQuery.of(context).size.width * 0.085,
-                                height: MediaQuery.of(context).size.height * 0.03,
-                                image: new NetworkImage(
-                                    "$image"),
-                                fit: BoxFit.fill),*/
-                          MyVerticalDivider(),
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.12,
-                            height: MediaQuery.of(context).size.height * 0.05,
-                            child: Center(
-                              child: new Text(
-                                "$code",
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ),
-                          Icon(Icons.arrow_drop_down,
-                              size: 30, color: Colors.white),
-                        ],
-                      ),
-                    ),
-                    onPressed: () async {
-                      _phonecode(context);
-                    },
-                  ),
-                  SizedBox(width: 1),
-                  Container(
+          child: Form(
+            key: _formkey,
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: 30),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
                     alignment: Alignment.center,
-                    width: MediaQuery.of(context).size.width * 0.57,
+                    width: MediaQuery.of(context).size.width,
                     child: TextFormField(
                       onChanged: (val) {
                         setState(() {
-                          this.phonenumber = '+' + code + val;
+                          this.phonenumber = val;
+                          isvalid = true;
                         });
                       },
-                      validator: (val) =>
-                          val.isEmpty ? 'Enter Phone Number' : null,
+                      validator: (val) => val.isEmpty && val.length != 10
+                          ? 'Phone Number is Required'
+                          : null,
                       keyboardType: TextInputType.phone,
                       textAlign: TextAlign.left,
                       style: TextStyle(
@@ -204,107 +114,55 @@ class _OtpScreenState extends State<Otp> {
                       ),
                     ),
                   ),
-                ],
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 40.0),
-                width: 300,
-                child: RaisedButton(
-                  elevation: 5.0,
-                  onPressed: () {
-                    verifyPhone();
-                  },
-                  padding: EdgeInsets.all(15.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
-                  color: Colors.white,
+                ),
+                Visibility(
                   child: Text(
-                    'GET OTP',
-                    style: TextStyle(
-                      color: Color(0xFF527DAA),
-                      letterSpacing: 1.5,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'OpenSans',
+                    "Enter a 10 Digit Phone Number",
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  visible: !isvalid,
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 40.0),
+                  width: 300,
+                  child: RaisedButton(
+                    elevation: 5.0,
+                    onPressed: () {
+                      if (_formkey.currentState.validate()) {
+                        if (phonenumber.length != 10) {
+                          setState(() {
+                            isvalid = false;
+                          });
+                        } else {
+                          setState(() {
+                            isvalid = true;
+                          });
+                          
+                            verifyPhone(this.phonenumber);
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>Phoneverificationpage(verificationId: this.verificationID,)));
+                            
+                        }
+                      }
+                    },
+                    padding: EdgeInsets.all(15.0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    color: Colors.white,
+                    child: Text(
+                      'GET OTP',
+                      style: TextStyle(
+                        color: Color(0xFF527DAA),
+                        letterSpacing: 1.5,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'OpenSans',
+                      ),
                     ),
                   ),
                 ),
-              ),
-              _buildSignInWithText(),
-              SizedBox(height: 30),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.8,
-                child: RaisedButton(
-                  elevation: 5.0,
-                  onPressed: () => print('Login Button Pressed'),
-                  padding: EdgeInsets.all(15.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
-                  color: Colors.white,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Image(
-                        image: AssetImage('assets/logos/google.jpg'),
-                        width: 30,
-                        height: 30,
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Text(
-                        'Signin with Google',
-                        style: TextStyle(
-                          color: Colors.black,
-                          letterSpacing: 1.5,
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'OpenSans',
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(height: 30),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.8,
-                child: RaisedButton(
-                  elevation: 5.0,
-                  onPressed: () => print('Login Button Pressed'),
-                  padding: EdgeInsets.all(15.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
-                  color: Colors.white,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Image(
-                        image: AssetImage('assets/logos/facebook.jpg'),
-                        width: 30,
-                        height: 30,
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Text(
-                        'Signin with Facebook',
-                        style: TextStyle(
-                          color: Colors.black,
-                          letterSpacing: 1.5,
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'OpenSans',
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
