@@ -52,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
                         onChanged: (val) async {
                           if(val.length==10)
                           {
-                            dynamic result = await DatabaseService().Checkphonenumber(val);
+                            dynamic result = await DatabaseService().checkphonenumber(val);
                             print("in login $result");
                             if(result.length!=0)
                             {

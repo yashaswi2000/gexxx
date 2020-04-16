@@ -1,3 +1,5 @@
+//import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gexxx_flutter/models/Crop.dart';
 import 'package:gexxx_flutter/models/UserProfile.dart';
@@ -69,22 +71,24 @@ class DatabaseService{
         return UserProfileCollection.document(uid).snapshots().map(_userProfileFromSnapshot);
       }
     
-      Future<String> Checkphonenumber(String phonenumber) async 
+      Future<String> checkphonenumber(String phonenumber) async 
       {
         String temp;
-        QuerySnapshot querysnapshot =await UsersCollection.getDocuments();
-        querysnapshot.documents.forEach((f)=>{
-          if(f.data['phonenumber']==phonenumber)
-          {
-              temp = f.data['name']
-          }
-          else
-          {
-            temp=''
-          }
-        });
-        print("in database $temp");
-        return temp;
+        QuerySnapshot querysnapshot = await UsersCollection.where("phonenumber", isEqualTo: phonenumber).getDocuments();
+        if(querysnapshot.documents!=null)
+        {
+           String a = querysnapshot.documents[0]["name"];
+           print(querysnapshot.documents[0]["phonenumber"]);
+          //print(f);
+          //print("in database $temp");
+          return a;
+        }
+        else
+        {
+          return "";
+        }
+        //print("in database $temp");
+        //return temp;
       }
     
     }
