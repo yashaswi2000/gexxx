@@ -66,31 +66,25 @@ class _addcropScreenState extends State<addcrop> {
 
   Widget _date() {
     return GestureDetector(
-          onTap: () => _selectDate(context),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(
-                "${selectedDate.toLocal()}".split(' ')[0],
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.left,
-              ),
-              // SizedBox(height: 20.0,),
-              // RaisedButton(
-              //   onPressed: () => _selectDate(context),
-              //   child: Text('Select date'),
-              // ),
-            ],
+      onTap: () => _selectDate(context),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Text(
+            "${selectedDate.toLocal()}".split(' ')[0],
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.left,
           ),
+        ],
+      ),
     );
   }
 
   Widget _seed() {
     return TextFormField(
-      validator: (val) =>
-          val.isEmpty ? 'Enter Seed type' : null,
+      validator: (val) => val.isEmpty ? 'Enter Seed type' : null,
       controller: _type_seedcontroller,
-            obscureText: false,
+      obscureText: false,
       autofocus: true,
       autocorrect: true,
       onChanged: (val) {
@@ -141,47 +135,132 @@ class _addcropScreenState extends State<addcrop> {
     );
   }
 
+  List<String> _period = <String>[
+    '2019-2020',
+    '2020-2021',
+    '2021-2022',
+    '2022-2023',
+    '2023-2024',
+    '2024-2025',
+    '2025-2026',
+  ];
 
-
+  String selectedperiod='';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: Colors.grey[800],
+        title: Text('Add Crop'),
+      ),
       body: SingleChildScrollView(
         child: Form(
-                key: _formkey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(height: 60),
-                    Row(
-                      
-                      children: <Widget>[
-                        SizedBox(width: 20),
-                        Text(
-                          'AddCrop',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'OpenSans',
-                            fontSize: 25.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 30.0),
-                    Container(
-                      margin: EdgeInsets.all(20),
-                      child: _crop()),
-                    SizedBox(height: 20.0),
-
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
+          key: _formkey,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 15.0, right: 15),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(height: 30.0),
+                GestureDetector(
+                  
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return Dialog(
+                            backgroundColor: Colors.grey[800],
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Container(
+                              height: MediaQuery.of(context).size.height * 0.5,
+                              width: MediaQuery.of(context).size.width,
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Scrollbar(
+                                  
+                                  child: ListView.builder(
+                                      itemCount: _period.length,
+                                      itemBuilder:
+                                          (BuildContext context,
+                                              int index) {
+                                        return InkWell(
+                                          splashColor: Colors.blue,
+                                          onTap: () {
+                                            setState(() {
+                                              selectedperiod = _period[index];
+                                              Navigator.pop(context);
+                                            });
+                                          },
+                                          child: Container(
+                                            width:
+                                                MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                            height:
+                                                MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.07,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.only(
+                                                      left: 10.0),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  Text(
+                                                    _period[index],
+                                                    style: TextStyle(
+                                                        color: Colors
+                                                            .white,fontFamily: 'OpenSans',fontWeight: FontWeight.bold),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      }),
+                                ),
+                              ),
+                            ),
+                          );
+                        });
+                  },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.06,
+                    decoration: BoxDecoration(
+                        color: Colors.grey[800],
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 15.0, right: 15),
                       child: Row(
-                        
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(
+                            selectedperiod,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'OpenSans',
+                                fontSize: 15),
+                          ),
+                          Icon(
+                            Icons.arrow_drop_down_circle,
+                            color: Colors.white,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
                         'Date of Cultivation',
                         style: TextStyle(
                           color: Colors.white,
@@ -190,34 +269,30 @@ class _addcropScreenState extends State<addcrop> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-
-                          Container(
-                            width: 100,
-                            height: 20,
-                            decoration: BoxDecoration(
-                              border: Border.all(width: 1,color: Colors.blue)
-                              
-                            ),
-                            child: _date()),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 30.0,
-                    ),
-                    _seed(),
-                    SizedBox(
-                      height: 30.0,
-                    ),
-                    _area(),
-                    SizedBox(height: 30),
-                    Container(
-                  width: MediaQuery.of(context).size.width*0.5,
-                  height: MediaQuery.of(context).size.height*0.05,
+                      Container(
+                          width: 100,
+                          height: 20,
+                          decoration: BoxDecoration(
+                              border: Border.all(width: 1, color: Colors.blue)),
+                          child: _date()),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 30.0,
+                ),
+                _seed(),
+                SizedBox(
+                  height: 30.0,
+                ),
+                _area(),
+                SizedBox(height: 30),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  height: MediaQuery.of(context).size.height * 0.05,
                   child: RaisedButton(
                     onPressed: () {
-                      
-                      Navigator.pop(context,true);
+                      Navigator.pop(context, true);
                     },
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0),
@@ -235,24 +310,25 @@ class _addcropScreenState extends State<addcrop> {
                   ),
                 ),
                 SizedBox(height: 15),
-                
-                    Center(
-                      child: Text(
-                        error,
-                        style: TextStyle(
-                          color: Colors.red,
-                          letterSpacing: 1.5,
-                          fontSize: 10.0,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'OpenSans',
-                        ),
-                      ),
+
+                Center(
+                  child: Text(
+                    error,
+                    style: TextStyle(
+                      color: Colors.red,
+                      letterSpacing: 1.5,
+                      fontSize: 10.0,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'OpenSans',
                     ),
-                    //_buildSignupBtn(),
-                  ],
+                  ),
                 ),
-              ),
+                //_buildSignupBtn(),
+              ],
+            ),
+          ),
+        ),
       ),
-      );
+    );
   }
 }

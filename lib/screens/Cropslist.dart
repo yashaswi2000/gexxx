@@ -95,23 +95,20 @@ class _CropslistScreenState extends State<Cropslist> {
         padding: const EdgeInsets.only(top: 60, left: 20, right: 20),
         child: Column(
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(left: 20.0, right: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    'Crops in India',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'OpenSans',
-                      fontSize: 25.0,
-                      fontWeight: FontWeight.bold,
-                    ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  'Crops in India',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'OpenSans',
+                    fontSize: 25.0,
+                    fontWeight: FontWeight.bold,
                   ),
-                  
-                ],
-              ),
+                ),
+                
+              ],
             ),
             Padding(
               padding: const EdgeInsets.only(top: 20.0, bottom: 20),
