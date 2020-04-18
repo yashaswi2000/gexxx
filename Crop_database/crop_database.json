@@ -1,0 +1,76 @@
+[
+    {
+        "name":"Wheat",
+        "introduction":"Wheat occupies the prime position among the food crops in the world. In India, it is the second important food crop being next to rice and contributes to the total foodgrain production of the country to the extent of about 25%. Wheat has played a very vital role in stabilizing the foodgrain production in the country over the past few years.",
+        "climate_and_soil_requirements":"The ideal temperature requirement varies from plant type and stages of growth. Germination: 20° to 25°C mean daily temperature, Tillering: 16° to 20°C mean daily temperature, Accelerated growth: 20° to 23°C mean daily temperature,Proper grain filling: 23° to 25°C mean daily temperature ",
+        "land_preparation":"The wheat crop requires a well-pulverized but compact seed bed for good and uniform germination. Three or four ploughings in the summer, repeated harrowing in the rainy season, followed by three or four cultivations and planking immediately before sowing produce a good, firm seed bed for the dry crop on alluvial soils. For the irrigated crop, the land is given a pre-sowing irrigation (palewa or raund) and the number of ploughings is reduced. Where white ants or other pests are a problem, Aldrin 5% or BHC 10% dust at the rate of 25 kg/ha should be applied to the soil after the last ploughing or before planking.",
+        "sowing":[
+            {
+                "sowingtime":"Based on above temperature requirement it has been found that for indigenous wheat last week of October, for long duration dwarf varieties like Kalyansona, Arjun, etc. first fortnight of November and for short duration dwarf wheats like Sonalika, Raj 821 etc. second fortnight is the best sowing time. Under exceptionally late sown condition it may be delayed to latest by 1st week of December beyond which if area is very small transplanting may be practiced.",
+                "seed_rate":"Generally, a seed rate of 100 kg/ha has been found to be sufficient for most of the varieties like Kalyan Sona, Arjun, Janak, etc.which have moderate tillering and medium sized grains. But a higher seed rate of 125 kg/ha is desirable for late sown wheat and normal sown for varieties like Sonalika, Raj 821 etc. which have bold grains and shy tillering habits.",
+                "spacing":"For irrigated, timely sown wheat, a row spacing of 15 to 22.5 cm is followed, but 22.5 cm between the rows is considered to be the optimum spacing. Under irrigated late-sown conditions, a row spacing of 15-18 cm is the optimum. For dwarf wheats, the planting depth should be between 5 and 6 cm. Planting beyond this depth results in a poor stand. In the case of conventional tall varieties, the depth of sowing may be 8 or 9 cm.",
+                "seed_treatment":"The seed of loose smut-susceptible varieties should be given solar or hot-water treatment. If the wheat seed is used only for sowing, and not for human consumption or for feeding cattle, it can be treated with Vitavax."
+            }
+        ],
+        "irrigation":"The high yielding wheat varieties should be given five to six irrigations at their critical growth stages viz. Crown root initiation, tillering, jointing, flowering, milk and dough which come at 21-25 days after sowing (DAS), 45-60 DAS, 60-70 DAS, 90-95 DAS, 100-105 DAS and 120-125 DAS respectively. Off these irrigation at CRI stage is most important.",
+        "harvesting_and_storage":[
+            {
+                "harvesting":"The rain-fed crop reaches the harvest stage much earlier than the irrigated crop. The crop is harvested when the grains become hard and the straw becomes dry and brittle.The harvesting is mostly done by sickle. The crop is threshed by treading with cattle on the threshing-flour or by power driven thresher.",
+                "yield":"The national average yield of wheat grain is about 12 to 13.8 quintals per hectare.",
+                "Storage":"The grains should be thoroughly dried before storage. The storage life of the grain is closely related to its moisture content. Grains with less than 10 percent moisture store well. The storage pits, bins or godowns should be moisture-proof and should be fumigated to keep down the stored – grain pests including rats. Zinc phosphide is very effective against rats."
+            }
+        ],
+        "images":["assets/images/wheat1.jpg","assets/images/wheat2.jpg","assets/images/wheat3.jpg"]
+        
+
+    },
+    {
+        "name":"Bajra",
+        "introduction":"Bajra popularly known as Pearl millet, cattail millet or bulrush belongs to the family Graminea. The crop is cultivated for grain as well as for fodder in the arid region of Africa and Asia and as a pasture in U.S.A. It is originated in India or Africa. It is grown all over India except Assam and part of northeast India.",
+        "climate_and_soil_requirements":"The crop has a wide adaptability as it may grow under different day lengths, temperature and moisture stress. Most of the varieties developed in India are photosensitive which helps in growing the crop during monsoon, rabi and arid season. It requires low annual rainfall ranging between 40-50 cm and dry weather. The crop may tolerate drought but cannot withstand high rainfall of 90 cm or above. Light soils of low inherent fertility good drainage, mild salinity are best type for this crop. Crop does not tolerate soil acidity",
+        "land_preparation":"The crop needs very fine tilt because the seeds are too small. 2-3 harrowings and a ploughing is followed so that a fine tilth may be obtained to facilitate the sowing and proper distribution of seed at appropriate depth.",
+        "sowing":[
+            {
+                "sowingtime":"Most appropriate time of sowing is middle or last week of July",
+                "seed_rate":"4-5 kg/ha for drilling method,2.5-3 kg/ha for dibbling method,spacing 40 –45 cm between rows, 10 –15 cm within rows.",
+                "spacing":"For irrigated, timely sown wheat, a row spacing of 15 to 22.5 cm is followed, but 22.5 cm between the rows is considered to be the optimum spacing. Under irrigated late-sown conditions, a row spacing of 15-18 cm is the optimum. For dwarf wheats, the planting depth should be between 5 and 6 cm. Planting beyond this depth results in a poor stand. In the case of conventional tall varieties, the depth of sowing may be 8 or 9 cm.",
+                "seed_treatment":"The organo-mercurial compound Ceresan, Agrosan should be used @ 2.5-3 kg/ha to control seed borne diseases"
+            }
+        ],
+        "irrigation":"Bajra is grown rainfed and crop being drought resistant hardly needs any irrigation, however it is observed that the yield may be significantly increased by irrigating the crop at critical growth stages like maximum tillering, flowering and grain filling stage. Therefore light irrigations and efficient drainage is very essential for bajra production.",
+        "harvesting_and_storage":[
+            {
+                "harvesting":"The crop is harvested when grains become hard enough and contain moisture.",
+                "yield":"Irrigated crop yields 30-35 quintals/ha, while unirrigated crop yield 12-15 quintals/ha",
+                "Storage":"The separated grains must be cleaned and dried in sun to bring about 12-14% moisture after which the grains may be bagged and stored in a moisture proof store."
+            }
+        ],
+        "images":["assets/images/bajra1.jpg","assets/images/bajra2.jpg","assets/images/bajra3.jpg"]
+
+    },
+    {
+        "name":"Maize",
+        "introduction":"Maize is one of the most important cereals of the world,Maize in India is an important cereal, and both its area and production have steadily increased during the past two decades",
+        "climate_and_soil_requirements":"Most of the maize varieties grown in India are relatively early in maturity (80-95 days); hence to sustain the rapid rate of growth, an adequate supply of soil moisture is essential. It has been estimated that the maize crop requires about 50 per cent of the total water requirement in a short period of 30-35 days after tasselling. A lack of adequate moisture during the grain filling stage adversely affects yield.",
+        "land_preparation":"A good seedbed for maize should be fine but compact, and free from weeds. It is desirable that the previous crop refuse is buried under with a mouldboard plough. In due course, two or three ploughings with the wooden plough are given. In case the tractor is used, one ploughing followed by a couple of diskings is generally adequate.",
+        "sowing":[
+            {
+                "sowingtime":"There are three distinct seasons for the cultivation of maize: the main season is kharif; whereas its cultivation during Rabi in Peninsular India and Bihar and in spring in northern India is done.",
+                "seed_rate":"Sowing made a week tomten days before the usual break of monsoon, with initial one or two irrigations, provide a better chance for the establishment of plants, and yield increases of 15-20 per cent have also been recorded.",
+                "spacing":"Maize is sown in rows, 60-75 cm apart, whereas the plants in the row are spaced at 20 to 25 cm.",
+                "seed_treatment":"Seventeen to 20 kg of seed for the grain crop and 35-40 kg per hectare for the fodder crop is needed."
+            }
+        ],
+        "irrigation":"In regions with about 60 cm of well distributed rainfall during the growing season, any additional irrigation is not necessary. Inadequate soil moisture during flowering and poet flowering particularly during the grain filling period will markedly reduce the yield. During the grain filling period- the most susceptible stage, additional irrigation if needed, should be applied. The total number of irrigations will depend on the rainfall distribution pattern. The spring and rabi crops are entirely raised under irrigation; the number of irrigations may, however, vary from 5-10 depending type of the soil and the prevailing temperatures.",
+        "harvesting_and_storage":[
+            {
+                "harvesting":"The maize crop sown for grain is harvested when the grains are nearly dry and do not contain more than 20 per cent moisture.",
+                "yield":"The yield levels depend upon the variety, the amount of the fertilizer used, and the rainfall pattern etc. Under irrigated conditions and recommended cultural practices, an average yield of 4 tonnes per hectare in the Indo-Gangetic Plains is not uncommon; in peninsular India and at higher elevations, a mean yield of 5-7 tonnes per hectare has frequently been obtained. Under low fertility and rainfed conditions with poor yielding varieties, a grain yield of about on to two tonnes/ha is obtained.",
+                "Storage":"At least seeds from 500 to 100 ears of the best yielding and normally spaced plants resistant to prevalent diseases and pests should be bulked. Ears should be dried, shelled and treated with an insecticide and the treated seed is necessary, as the untreated seeds on ears are times badly attacked by stored grain pests and the germination is markedly reduced."
+            }
+        ],
+        "images":["assets/images/maize1.jpg","assets/images/maize2.jpg","assets/images/maize3.jpg"]
+
+    }
+   
+]

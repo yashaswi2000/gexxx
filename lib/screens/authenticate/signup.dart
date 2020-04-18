@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gexxx_flutter/screens/Home.dart';
-import 'package:gexxx_flutter/screens/additionaldetails.dart';
+
 import 'package:gexxx_flutter/screens/authenticate/Password.dart';
 import 'package:gexxx_flutter/services/auth.dart';
 import 'package:gexxx_flutter/utilities/constants.dart';
@@ -150,10 +150,8 @@ class _SignupScreenState extends State<Signup> {
                 error = 'Please Suplly valid Email';
               });
             } else {
-             dynamic res = await Navigator.push(context, MaterialPageRoute(builder: (context)=>additionaldetails()));
-             if (res == true) {
-               Navigator.pop(context,true);
-             }
+             //dynamic res = await Navigator.push(context, MaterialPageRoute(builder: (context)=>additionaldetails()));
+            
 
             }
 

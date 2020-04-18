@@ -2,44 +2,56 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gexxx_flutter/models/Crop.dart';
-import 'package:gexxx_flutter/models/UserProfile.dart';
-
 
 import 'package:gexxx_flutter/models/user.dart';
 
-
-class DatabaseService{
+class DatabaseService {
   final String uid;
 
- 
-   DatabaseService({this.uid});
+  DatabaseService({this.uid});
 
-  final CollectionReference UsersCollection =  Firestore.instance.collection('Users');
-  final CollectionReference UserProfileCollection = Firestore.instance.collection('Userprofile');
- 
+  final CollectionReference UsersCollection =
+      Firestore.instance.collection('Users');
+  final CollectionReference CropsCollection =
+      Firestore.instance.collection('Crops');
 
-  Future UpdateUsersCollection(String name,String phonenumber)async
-  {
-    return await UsersCollection.document(uid).setData({
-      'name':name,
-      'phonenumber':phonenumber
-    });
+  Future UpdateUsersCollection(String name, String phonenumber) async {
+    return await UsersCollection.document(uid)
+        .setData({'name': name, 'phonenumber': phonenumber});
   }
 
-  Future UpdateProfileCollection(String location,String soiltype,String landsize,double waterlevel,String language)async
-  {
-    return await UserProfileCollection.document(uid).setData({
-      'location':location,
-      'soiltype':soiltype,
-      'landsize':landsize,
-      'waterlevel':waterlevel,
-      'lannguage':language,
-    });
+  Future<bool> UpdateCropsCollection(
+      String uid,
+      String period,
+      String season,
+      String crop,
+      String area,
+      String areaunit,
+      String productivity,
+      String productivityunit,
+      DateTime transplantingdate,String image) async {
+    try {
+      await CropsCollection.document(uid).setData({
+        'uid': uid,
+        'season': season,
+        'period': period,
+        'crop': crop,
+        'area': area,
+        'areaunit': areaunit,
+        'productivity': productivity,
+        'productivityunit': productivityunit,
+        'transplantingdate': transplantingdate,
+        'image':image,
+
+      });
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
   }
 
-  
-   UserData  _userDataFromSnapShot(DocumentSnapshot snapshot)
-  {
+  UserData _userDataFromSnapShot(DocumentSnapshot snapshot) {
     return UserData(
       uid: uid,
       name: snapshot.data['name'],
@@ -47,49 +59,56 @@ class DatabaseService{
     );
   }
 
- 
+  Crop _userProfileFromSnapshot(DocumentSnapshot snapshot) {
+    return Crop(
+      id:snapshot.data['id'],
+      uid: snapshot.data['uid'],
+      period: snapshot.data['period'],
+      season: snapshot.data['season'],
+      crop: snapshot.data['crop'],
+      area: snapshot.data['area'],
+      areaunit: snapshot.data['areaunit'],
+      productivity: snapshot.data['productivity'],
+      productivityunit: snapshot.data['productivityunit'],
+      transplantingdate: snapshot.data["transplantingdate"],
+      image: snapshot.data['image']
+    );
+  }
 
+  //collection stream
+  Stream<UserData> get userData {
+    return UsersCollection.document(uid).snapshots().map(_userDataFromSnapShot);
+  }
 
-  UserProfile _userProfileFromSnapshot(DocumentSnapshot snapshot){
-      return UserProfile(
-        uid: uid,
-        location: snapshot.data['location'],
-        soiltype: snapshot.data['soiltype'],
-        landsize: snapshot.data['landsize'],
-        waterlevel: snapshot.data['waterlevel'],
-        language:snapshot.data['language'],
-      );
+  Stream<Crop> get userProfile {
+    return CropsCollection.document(uid)
+        .snapshots()
+        .map(_userProfileFromSnapshot);
+  }
+
+  Future<String> checkphonenumber(String phonenumber) async {
+    String temp;
+    QuerySnapshot querysnapshot =
+        await UsersCollection.where("phonenumber", isEqualTo: phonenumber)
+            .getDocuments();
+    if (querysnapshot.documents != null) {
+      String a = querysnapshot.documents[0]["name"];
+      print(querysnapshot.documents[0]["phonenumber"]);
+      //print(f);
+      //print("in database $temp");
+      return a;
+    } else {
+      return "";
     }
-    
-      //collection stream
-      Stream<UserData> get userData{
-        return UsersCollection.document(uid).snapshots().map(_userDataFromSnapShot);
-    
-      }
-    
-      Stream<UserProfile> get userProfile {
-        return UserProfileCollection.document(uid).snapshots().map(_userProfileFromSnapshot);
-      }
-    
-      Future<String> checkphonenumber(String phonenumber) async 
-      {
-        String temp;
-        QuerySnapshot querysnapshot = await UsersCollection.where("phonenumber", isEqualTo: phonenumber).getDocuments();
-        if(querysnapshot.documents!=null)
-        {
-           String a = querysnapshot.documents[0]["name"];
-           print(querysnapshot.documents[0]["phonenumber"]);
-          //print(f);
-          //print("in database $temp");
-          return a;
-        }
-        else
-        {
-          return "";
-        }
-        //print("in database $temp");
-        //return temp;
-      }
-    
-    }
-  
+    //print("in database $temp");
+    //return temp;
+  }
+
+  Future getmycrops(String uid) async {
+    QuerySnapshot snapshot = await CropsCollection.where("uid",isEqualTo:uid).getDocuments();
+    return snapshot.documents;
+  }
+  Future deletecrop(String name) async  {
+    await CropsCollection.document(name).delete();
+  }
+}

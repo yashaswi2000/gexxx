@@ -1,9 +1,11 @@
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:gexxx_flutter/models/user.dart';
 import 'package:gexxx_flutter/screens/Home.dart';
 import 'package:gexxx_flutter/screens/MainDrawer.dart';
+import 'package:gexxx_flutter/screens/UserpProfile.dart';
 import 'package:gexxx_flutter/services/auth.dart';
 import 'package:provider/provider.dart';
 
@@ -29,6 +31,7 @@ class _DashboardPageState extends State<DashboardPage> {
       Container(color: Colors.black,child: Center(child:Text('news',style: TextStyle(color: Colors.white),)),),
       Container(color: Colors.black,child: Center(child:Text('p',style: TextStyle(color: Colors.white),)),),
       Container(color: Colors.black,child: Center(child:Text('s',style: TextStyle(color: Colors.white),)),),
+      UserProfile(),
     ];
     return Scaffold(
       appBar: AppBar(
@@ -40,17 +43,16 @@ class _DashboardPageState extends State<DashboardPage> {
                         await _auth.signOut();
                       },
                       icon: Icon(
-                        Icons.person,
+                        Icons.arrow_back_ios,
                         color: Colors.white,
                       ),
-                      label: Text(
+                      label: AutoSizeText(
                         'Logout',
-                        style: TextStyle(color: Colors.white),
+                        maxLines: 1,
+                        style: TextStyle(color: Colors.white,fontSize: 15),
                       ))
                 ],
-                title: Center(
-                  child: Text('GEXXX'),
-                ),
+                title: Text('GEXXX'),
                 backgroundColor: Colors.grey[800],
               ),
 
@@ -61,9 +63,9 @@ class _DashboardPageState extends State<DashboardPage> {
           index: 0,
           height: 70.0,
           items: <Widget>[
-            Icon(Icons.add, size: 30,color: Colors.white,),
-            Icon(Icons.list, size: 30,color: Colors.white,),
-            Icon(Icons.compare_arrows, size: 30,color: Colors.white,),
+            Icon(Icons.home, size: 30,color: Colors.white,),
+            Icon(Icons.event, size: 30,color: Colors.white,),
+            Icon(Icons.event_note, size: 30,color: Colors.white,),
             Icon(Icons.call_split, size: 30,color: Colors.white,),
             Icon(Icons.perm_identity, size: 30,color: Colors.white,),
           ],

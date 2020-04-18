@@ -443,9 +443,9 @@ class _additionaldetailsScreenState extends State<additionaldetails> {
                               setState(() {
                                 loading=true;
                               });
-                              dynamic result = await DatabaseService(uid:user.uid).UpdateProfileCollection(location, selectedsoil, landsize, waterlevel,selectedlanguage);
+                              //dynamic result = await DatabaseService(uid:user.uid).UpdateProfileCollection(location, selectedsoil, landsize, waterlevel,selectedlanguage);
                               print('ass');
-                              print(result); 
+                              //print(result); 
                               Navigator.pop(context, true);
                                
                                

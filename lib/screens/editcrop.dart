@@ -12,24 +12,31 @@ import 'dart:convert';
 
 import 'package:provider/provider.dart';
 
-class addcrop extends StatefulWidget {
+class editcrop extends StatefulWidget {
+  final String cropname;
+  final String period;
+  final String season;
+  final String area;
+  final String areaunit;
+  final String productivity;
+  final String productivityunit;
+  final DateTime date;
+  final String image;
+
+  const editcrop({Key key, this.period, this.season, this.area, this.areaunit, this.productivity, this.productivityunit, this.date, this.cropname, this.image}) : super(key: key);
+
+ 
+
   @override
-  _addcropScreenState createState() => _addcropScreenState();
+  _editcropScreenState createState() => _editcropScreenState();
 }
 
-class _addcropScreenState extends State<addcrop> {
+class _editcropScreenState extends State<editcrop> {
 
   List<Period> period;
   List<Season> season;
   List<Areaunit> areaunit;
-    @override
-  void initState() {
-    super.initState();
-      period = Period.getperiod();
-      season = Season.getSeason();
-      areaunit = Areaunit.getAreaunit();
-  }
-
+   
 
   final AuthService _auth = AuthService();
 
@@ -57,6 +64,30 @@ class _addcropScreenState extends State<addcrop> {
   bool datevisible = false;
   bool productivityunitvisible = false;
   bool isloading=false;
+
+   @override
+  void initState() {
+    super.initState();
+      period = Period.getperiod();
+      season = Season.getSeason();
+      areaunit = Areaunit.getAreaunit();
+
+      setState(() {
+        selectedperiod = widget.period;
+        selectedseason= widget.season;
+        selectedcrop = widget.cropname;
+        area= widget.area;
+        selectedareaunit =  widget.areaunit;
+        productivity= widget.productivity;
+        selectedProductivityunit = widget.productivityunit;
+        transplantingdate = widget.date;
+      });
+
+
+
+      
+  }
+
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -339,6 +370,7 @@ class _addcropScreenState extends State<addcrop> {
           color: areavisible ? Colors.red : Colors.grey[800],
           borderRadius: BorderRadius.circular(5)),
       child: TextFormField(
+        initialValue: area,
         onChanged: (val) {
           setState(() {
             area = val;
@@ -373,6 +405,7 @@ class _addcropScreenState extends State<addcrop> {
       decoration: BoxDecoration(
           color: Colors.grey[800], borderRadius: BorderRadius.circular(5)),
       child: TextFormField(
+        initialValue: productivity,
         onChanged: (val) {
           setState(() {
             productivity = val;
@@ -612,7 +645,7 @@ class _addcropScreenState extends State<addcrop> {
   }
   void showLongToast() {
     Fluttertoast.showToast(
-      msg: "Crop is added",
+      msg: "Crop is edited",
       toastLength: Toast.LENGTH_LONG,
     );
   }
@@ -620,7 +653,7 @@ class _addcropScreenState extends State<addcrop> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
-    return isloading?Loading():Scaffold(
+    return isloading? Loading():Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.grey[800],
@@ -665,7 +698,7 @@ class _addcropScreenState extends State<addcrop> {
                 ),
                 SizedBox(height: 5),
                 _season(),
-                SizedBox(height: 10),
+                /*SizedBox(height: 10),
                 Row(
                   children: <Widget>[
                     Text(
@@ -681,7 +714,7 @@ class _addcropScreenState extends State<addcrop> {
                 SizedBox(
                   height: 5,
                 ),
-                _crop(),
+                _crop(),*/
                 SizedBox(height: 10),
                 Row(
                   children: <Widget>[
@@ -765,68 +798,68 @@ class _addcropScreenState extends State<addcrop> {
                 FloatingActionButton.extended(
                   backgroundColor: Colors.blue,
                   isExtended: true,
-                  label: Text('Done'),
+                  label: Text('Edit'),
                   elevation: 10,
                   tooltip: 'pressing this button will a add a crop',
                   onPressed: () async {
                     
                     if (selectedperiod == 'Period') {
                       setState(() {
-                        isloading=false;
                         periodvisible = true;
+                        isloading=false;
                       });
                     }
                     if (selectedseason == 'Season') {
                       setState(() {
-                        isloading=false;
                         seasonvisible = true;
+                        isloading=false;
                       });
                     }
-                    if (selectedcrop == 'Crop') {
+                   /* if (selectedcrop == 'Crop') {
                       setState(() {
-                        isloading=false;
                         cropvisible = true;
                       });
-                    }
+                    }*/
                     if (area == '') {
                       setState(() {
-                        isloading=false;
                         areavisible = true;
+                        isloading=false;
                       });
                     }
                     if (selectedareaunit == 'Area unit') {
                       setState(() {
-                        isloading=false;
                         areaunitvisible = true;
+                        isloading=false;
                       });
                     }
                     if(productivity !='' && selectedProductivityunit == 'Productivity unit')
                     {
                       setState(() {
-                        isloading=false;
                         productivityunitvisible = true;
+                        isloading=false;
                       });
                     }
                    if(productivity=='')
                    {
                      setState(() {
-                       isloading=false;
                        selectedProductivityunit='';
                        productivityunitvisible=false;
+                       isloading=false;
                      });
                    }
-                  
+                   
 
                     if (periodvisible == false &&
                         seasonvisible == false &&
                         cropvisible == false &&
                         areavisible == false &&
-                        areaunitvisible == false && productivityunitvisible==false) {
-                           setState(() {
-                      isloading = true;
+                        areaunitvisible == false&& productivityunitvisible==false) {
+
+                          setState(() {
+                      isloading=true;
                     });
                       
-                      String image=await  getimage(selectedcrop);
+                      //String image=await  getimage(selectedcrop);
                       dynamic result = await DatabaseService(uid: user.uid)
                           .UpdateCropsCollection(
                               user.uid,
@@ -837,10 +870,10 @@ class _addcropScreenState extends State<addcrop> {
                               selectedareaunit,
                               productivity,
                               selectedProductivityunit,
-                              transplantingdate,image);
+                              transplantingdate,widget.image);
                       if (result == true) {
                         setState(() {
-                          isloading= false;
+                          isloading=false;
                         });
                         //Scaffold.of(context).showSnackBar(new SnackBar(content: new Text("crop is added"),));
                         showLongToast();

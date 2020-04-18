@@ -59,7 +59,9 @@ class _LoginPageState extends State<LoginPage> {
                               setState(() {
                                 this.phoneNo = val;
                                 visible = false;
+                                this.name = result;
                                 nameController.text = result;
+                                
                                 isUser = true;
                               });
                             }
@@ -112,9 +114,11 @@ class _LoginPageState extends State<LoginPage> {
                         onChanged: (val) async {
                           if(isUser)
                           {
+                            print('is user $nameController.txt');
                             setState(() {
                               this.name = nameController.text;
                             });
+                            print('is name $nameController.txt');
                           }
                           else
                           {

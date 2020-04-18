@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gexxx_flutter/screens/authenticate/signup.dart';
 import 'package:gexxx_flutter/screens/wrapper.dart';
 
-import 'Login.dart';
+
 
 
 class AuthenticationHome extends StatefulWidget {
@@ -80,12 +80,9 @@ class _AuthenticationHomeScreenState extends State<AuthenticationHome> {
                   child: RaisedButton(
                     elevation: 5.0,
                     onPressed: ()async {
-                      final result = await Navigator.push(context, MaterialPageRoute(builder: (context)=>Login(),fullscreenDialog: true));
+                      //final result = await Navigator.push(context, MaterialPageRoute(builder: (context)=>Login(),fullscreenDialog: true));
                     //Navigator.pop(context);
-                    if(result==true)
-                    {
-                      loggedin=true;
-                    }
+                    
       
                       
                     },

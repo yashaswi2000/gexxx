@@ -36,6 +36,7 @@ dependencies:
   location: ^2.4.0
   pin_code_text_field: ^1.5.1
   bottom_navy_bar: ^5.4.0
+  fluttertoast: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -55,11 +56,18 @@ flutter:
   uses-material-design: true
 
   assets:
-   - Phone_code/Phone_code.json
-   - State_names/State_names.json
-   - assets/logos/facebook.jpg
-   - assets/logos/google.jpg
-
+      - Phone_code/Phone_code.json
+      - State_names/State_names.json
+      - Crop_database/crop_database.json
+      - assets/images/wheat1.jpg
+      - assets/images/maize1.jpg
+      - assets/images/bajra1.jpg
+      - assets/images/wheat2.jpg
+      - assets/images/bajra2.jpg
+      - assets/images/maize2.jpg
+      - assets/images/wheat3.jpg
+      - assets/images/bajra2.jpg
+      - assets/images/maize3.jpg
 
   fonts:
     - family: OpenSans

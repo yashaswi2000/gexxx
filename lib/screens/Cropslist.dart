@@ -1,10 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:gexxx_flutter/screens/Home.dart';
-import 'package:gexxx_flutter/screens/authenticate/Password.dart';
-import 'package:gexxx_flutter/services/auth.dart';
-import 'package:gexxx_flutter/utilities/MyhorizantalDivider.dart';
-import 'package:gexxx_flutter/utilities/constants.dart';
+import 'package:gexxx_flutter/screens/CropProfile.dart';
+import 'package:gexxx_flutter/utilities/Loading.dart';
 
 class Cropslist extends StatefulWidget {
   @override
@@ -13,8 +11,11 @@ class Cropslist extends StatefulWidget {
 
 class _CropslistScreenState extends State<Cropslist> {
   Widget _cropbox(String imageval, String crop_name, String description) {
+    print(imageval);
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>CropProfile(crop_name: crop_name)));
+      },
       child: Container(
           margin: EdgeInsets.only(top: 20),
           width: MediaQuery.of(context).size.width,
@@ -29,7 +30,7 @@ class _CropslistScreenState extends State<Cropslist> {
                 decoration: BoxDecoration(
                     color: Colors.blue[800],
                     image: DecorationImage(
-                        image: NetworkImage(imageval), fit: BoxFit.fill)),
+                        image: AssetImage('$imageval'), fit: BoxFit.fill)),
               ),
               SizedBox(width: 10),
               Container(
@@ -38,7 +39,7 @@ class _CropslistScreenState extends State<Cropslist> {
                 child: Column(
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.only(left: 10.0,top:10),
+                      padding: const EdgeInsets.only(left: 10.0, top: 10),
                       child: Row(
                         children: <Widget>[
                           Expanded(
@@ -90,39 +91,43 @@ class _CropslistScreenState extends State<Cropslist> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
+      appBar: AppBar(
+        title: Text('Crops in India'),
+        backgroundColor: Colors.grey[800],
+      ),
+      
       body: SingleChildScrollView(
           child: Padding(
-        padding: const EdgeInsets.only(top: 60, left: 20, right: 20),
-        child: Column(
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  'Crops in India',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'OpenSans',
-                    fontSize: 25.0,
-                    fontWeight: FontWeight.bold,
+              padding: const EdgeInsets.all(10.0),
+              child: Scrollbar(
+                child: Container(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  child: FutureBuilder(
+                    future: DefaultAssetBundle.of(context)
+                        .loadString("Crop_database/crop_database.json"),
+                    builder: (context, snapshot) {
+                      
+                      if (snapshot.hasError) {
+                        return new Text(
+                          '${snapshot.error}',
+                          style: TextStyle(color: Colors.red),
+                        );  
+                      } else if(snapshot.hasData){
+                        dynamic crop_list = json.decode(snapshot.data.toString());
+
+                        return ListView.builder(
+                            itemCount: crop_list?.length??0,
+                            itemBuilder: (BuildContext context, int index) {
+                              return _cropbox(crop_list[index]["images"][0], crop_list[index]["name"],
+                                  crop_list[index]["introduction"]);
+                            });
+                      }
+                      return new Loading();
+                    },
                   ),
                 ),
-                
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20.0, bottom: 20),
-              child: MyhorizontalDivider(),
-            ),
-            _cropbox(
-                'https://images.unsplash.com/photo-1529511582893-2d7e684dd128?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80',
-                'Wheat',
-                'Wheat is a grass widely cultivated for its seed, a cereal grain which is a worldwide staple food. The many species of wheat together make up the genus Triticum; the most widely grown is common wheat.'),
-             _cropbox('https://images.unsplash.com/photo-1507637379087-515718ca7c58?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80', 'Maize', 'Maize, also known as corn, is a cereal grain first domesticated by indigenous peoples in southern Mexico about 10,000 years ago. The leafy stalk of the plant produces pollen inflorescences and separate ovuliferous inflorescences called ears that yield kernels or seeds, which are fruits'),
-             _cropbox('https://images.unsplash.com/photo-1567461007299-4df855e56ed3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80', 'Paddy', 'Oryza sativa, commonly known as Asian rice, is the plant species most commonly referred to in English as rice. Oryza sativa is a grass with a genome consisting of 430Mb across 12 chromosomes. It is renowned for being easy to genetically modify, and is a model organism for cereal biology.'),   
-          ],
-        ),
-      )),
+              ))),
     );
   }
 }
