@@ -91,7 +91,7 @@ class DatabaseService {
     QuerySnapshot querysnapshot =
         await UsersCollection.where("phonenumber", isEqualTo: phonenumber)
             .getDocuments();
-    if (querysnapshot.documents != null) {
+    if (querysnapshot.documents.length!=0) {
       String a = querysnapshot.documents[0]["name"];
       print(querysnapshot.documents[0]["phonenumber"]);
       //print(f);
