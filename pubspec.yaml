@@ -37,6 +37,7 @@ dependencies:
   pin_code_text_field: ^1.5.1
   bottom_navy_bar: ^5.4.0
   fluttertoast: ^3.0.0
+  firebase_mlkit_language: ^1.1.2
 
 dev_dependencies:
   flutter_test:
