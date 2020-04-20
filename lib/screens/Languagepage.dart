@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gexxx_flutter/models/language.dart';
+import 'package:gexxx_flutter/screens/authenticate/login2.dart';
 import 'package:gexxx_flutter/utilities/MyVerticalDivider.dart';
 
 class LanguagePage extends StatefulWidget {
@@ -21,7 +22,8 @@ void initState() {
 }
   bool isSelected= false;
   String LanguageSelected;
-  int _selecteditem=0;
+  int selectedindex;
+  bool visible = false;
   Widget _languagebox(String one ,String two,int index,int selecteditem)
 {
   return Container(
@@ -86,21 +88,26 @@ void initState() {
                     onTap: (){
                       setState(() {
 
-                        _selecteditem = index;
+                        visible = false;
                         languages[index].Selected=true;
                         LanguageSelected = languages[index].Name;
-                        print(LanguageSelected);
+                        selectedindex = index;
+                        
 
                       });
                       
                     },
-                    child: _languagebox(languages[index].Name, languages[index].TranslatedName,index,_selecteditem),
+                    child: _languagebox(languages[index].Name, languages[index].TranslatedName,index,selectedindex),
                   );
                 }),
                           )
             ),
             SizedBox(height: 10),
-            
+            Visibility(
+              child: Center(child: Text('Please select language',style: TextStyle(color: Colors.red),),),
+              visible: visible,
+            ),
+            SizedBox(height: 10,),
             FloatingActionButton.extended(
               
               backgroundColor: Colors.blue,
@@ -108,7 +115,20 @@ void initState() {
               label: Text('Next'),
               elevation: 10,
               tooltip: 'next',
-              onPressed: (){},
+              onPressed: (){
+                print(selectedindex);
+                if(selectedindex!=null)
+                {
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage(language: languages[selectedindex],)));
+                }
+                else{
+                  setState(() {
+                    visible =  true;
+                  });
+                }
+                
+                //Navigator.pop(context);
+              },
               icon:Icon(Icons.arrow_forward),)
 
           ],),

@@ -6,7 +6,7 @@ class MyhorizontalDivider extends StatelessWidget {
       height: 2,
       width: MediaQuery.of(context).size.width*0.8,
       
-      decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10)),
+      decoration: BoxDecoration(color:Theme.of(context).brightness==Brightness.light?Colors.teal:Colors.white,borderRadius: BorderRadius.circular(10)),
       margin: const EdgeInsets.only(left: 10.0, right: 10.0),
     );
   }

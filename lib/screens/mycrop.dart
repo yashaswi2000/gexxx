@@ -368,7 +368,7 @@ class _MyCropScreenState extends State<MyCrop> {
           SingleChildScrollView(
             child: Container(
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.44,
+              height: MediaQuery.of(context).size.height * 0.43,
               child: FutureBuilder(
                 future: DatabaseService().getmycrops(user.uid),
                 builder: (context, snapshot) {
@@ -399,16 +399,22 @@ class _MyCropScreenState extends State<MyCrop> {
           ),
           MyhorizontalDivider(),
           SizedBox(height: 10),
-          FloatingActionButton.extended(
-            backgroundColor: Colors.blue,
-            isExtended: true,
-            label: Text('Add a Crop'),
-            elevation: 10,
-            tooltip: 'Add a Crop',
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>addcrop()));
-            },
-            icon: Icon(Icons.add),
+          Expanded(
+                      child: Container(
+              child: Center(
+                            child: FloatingActionButton.extended(
+                    backgroundColor: Colors.blue,
+                    isExtended: true,
+                    label: Text('Add a Crop'),
+                    elevation: 10,
+                    tooltip: 'Add a Crop',
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>addcrop()));
+                    },
+                    icon: Icon(Icons.add),
+                  ),
+              ),
+            ),
           ),
         ],
       ),

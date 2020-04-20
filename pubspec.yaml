@@ -37,6 +37,8 @@ dependencies:
   pin_code_text_field: ^1.5.1
   bottom_navy_bar: ^5.4.0
   fluttertoast: ^3.0.0
+  dynamic_theme: ^1.0.0
+
 
 dev_dependencies:
   flutter_test:
@@ -70,9 +72,17 @@ flutter:
       - assets/images/maize3.jpg
 
   fonts:
+    - family: Circular
+      fonts:
+        - asset: assets/fonts/CircularStd-Medium.ttf
+        - asset: assets/fonts/CircularAir-Light.ttf
+          weight: 100
+        - asset: assets/fonts/CircularStd-Bold.ttf
+          weight: 500
     - family: OpenSans
       fonts:
         - asset: assets/fonts/OpenSans.ttf
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:

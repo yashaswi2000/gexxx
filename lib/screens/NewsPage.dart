@@ -105,7 +105,7 @@ class _NewsPageScreenState extends State<NewsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+     
       body: SingleChildScrollView(
           child: Padding(
         padding: const EdgeInsets.only(top: 60, left: 20, right: 20),

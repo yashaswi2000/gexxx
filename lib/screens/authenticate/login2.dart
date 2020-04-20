@@ -1,10 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gexxx_flutter/database/database.dart';
+import 'package:gexxx_flutter/models/language.dart';
+import 'package:gexxx_flutter/models/user.dart';
 import 'package:gexxx_flutter/screens/authenticate/phoneverificationpage.dart';
 import 'package:gexxx_flutter/services/auth.dart';
 
 class LoginPage extends StatefulWidget {
+  final Language language;
+
+  const LoginPage({Key key, this.language}) : super(key: key);
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -18,6 +23,7 @@ class _LoginPageState extends State<LoginPage> {
   bool codeSent = false;
   bool isUser = false;
   bool visible = false;
+  UserData userData ;
 
   @override
   Widget build(BuildContext context) {
@@ -50,25 +56,29 @@ class _LoginPageState extends State<LoginPage> {
                       child: TextFormField(
                         keyboardType: TextInputType.phone,
                         onChanged: (val) async {
+                          print(val);
                           if(val.length==10)
                           {
-                            dynamic result = await DatabaseService().checkphonenumber(val);
+                            UserData result = await DatabaseService().checkphonenumber(val);
                             print("in login $result");
-                            if(result.length!=0)
+                            if(result!=null)
                             {
+                              print('result is $result');
                               setState(() {
-                                this.phoneNo = val;
+                                userData = result;
+                                phoneNo = val;
                                 visible = false;
-                                this.name = result;
-                                nameController.text = result;
+                                this.name = userData.name;
+                                nameController.text = userData.name;
                                 
                                 isUser = true;
                               });
                             }
                             else{
+                              print('yesss');
                                 setState(() {
-                                  this.phoneNo= val;
-                                  visible = false;
+                                  phoneNo= val;
+                                  visible = true;
                                   nameController.text= '';
                                   isUser = false;
                                 });
@@ -191,6 +201,7 @@ class _LoginPageState extends State<LoginPage> {
                                     codeSent ? Text('Login') : Text('verify')),
                             onPressed: () async {
                               if (formKey.currentState.validate()) {
+                                print(phoneNo.length);
                                 if (phoneNo.length != 10) {
                                   setState(() {
                                     visible = true;
@@ -211,7 +222,16 @@ class _LoginPageState extends State<LoginPage> {
                                     FirebaseAuth.instance
                                         .signInWithCredential(authCreds)
                                         .then((AuthResult result) async {
-                                          await DatabaseService(uid: result.user.uid).UpdateUsersCollection(name, phoneNo);
+                                          if(isUser)
+                                          {
+                                            await DatabaseService(uid: result.user.uid).UpdateUserDetails(name, phoneNo, userData.gender, userData.age, userData.state, userData.statenumber, userData.district, userData.village, userData.image,widget.language.Name,widget.language.code);
+                                          }
+                                          else{
+                                            await DatabaseService(uid: result.user.uid).UpdateUserDetails(name, phoneNo, '','','', 0, '', '', '',widget.language.Name,widget.language.code);
+                                          }
+
+                                          Navigator.pop(context);
+                                          
                                         });
                                     //DatabaseService(uid: user.uid).UpdateUsersCollection(name, email);
 

@@ -310,10 +310,10 @@ class _CropProfileScreenState extends State<CropProfile> {
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.grey[800],
+        
           title: Text('CropProfile'),
         ),
-        backgroundColor: Colors.black,
+      
         body: SingleChildScrollView(
           child: Scrollbar(
             child: Container(

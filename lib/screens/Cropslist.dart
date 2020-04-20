@@ -90,8 +90,7 @@ class _CropslistScreenState extends State<Cropslist> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
+           appBar: AppBar(
         title: Text('Crops in India'),
         backgroundColor: Colors.grey[800],
       ),
