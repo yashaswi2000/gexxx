@@ -211,7 +211,7 @@ class _LoginPageState extends State<LoginPage> {
                                     visible = false;
                                   });
                                   verifyPhone(phoneNo);
-                                  //Navigator.push(context, MaterialPageRoute(builder: (context)=>Phoneverificationpage(verificationId: verificationId,phonenumber: phoneNo,)));
+                                 
 
                                   if (codeSent) {
                                     //AuthService().signInWithOTP(smsCode, verificationId);

@@ -20,6 +20,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
@@ -38,6 +40,9 @@ dependencies:
   bottom_navy_bar: ^5.4.0
   fluttertoast: ^3.0.0
   dynamic_theme: ^1.0.0
+  geolocator: ^5.1.1
+  weather_icons: ^2.0.1
+
 
 
 dev_dependencies:
@@ -70,6 +75,17 @@ flutter:
       - assets/images/wheat3.jpg
       - assets/images/bajra2.jpg
       - assets/images/maize3.jpg
+      - assets/images/cloudy.png
+      - assets/images/clearsky.png
+      - assets/images/rain.png
+      - assets/images/haze.png
+      - assets/images/drizzle.png
+      - assets/images/dust.png
+      - assets/images/mist.png
+      - assets/images/sand.png
+      - assets/images/smoke.png
+      - assets/images/snow.png
+      - assets/images/tunderstrom.png
 
   fonts:
     - family: Circular
