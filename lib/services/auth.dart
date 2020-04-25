@@ -60,7 +60,7 @@ class AuthService{
     }
   }
 
-  Future registerWithEmailAndPassword(String email,String password,String name) async
+  /*Future registerWithEmailAndPassword(String email,String password,String name) async
   {
     try {
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
@@ -74,7 +74,7 @@ class AuthService{
       print(e.toString());
       return null;
     }
-  }
+  }*/
 
   
 

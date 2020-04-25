@@ -26,9 +26,13 @@ class Home extends StatefulWidget {
   List<DailyWeatherData> dailyweatherlist;
   bool loading;
 
-  Home({Key key, this.user,this.currentWeatherData,this.dailyweatherlist,this.loading}) : super(key: key);
-
- 
+  Home(
+      {Key key,
+      this.user,
+      this.currentWeatherData,
+      this.dailyweatherlist,
+      this.loading})
+      : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -51,8 +55,7 @@ class _HomeScreenState extends State<Home> {
   bool statevisible = false;
   bool districtvisible = false;
   bool locationerror = false;
- 
-  
+
   DateTime temp;
   Position userlocation;
 
@@ -69,7 +72,7 @@ class _HomeScreenState extends State<Home> {
     });
   }
 
- /* loadweather(double latitude, double longitude) async {
+  /* loadweather(double latitude, double longitude) async {
     var weatherResponse = await http.get(
         'https://api.openweathermap.org/data/2.5/onecall?lat=$latitude&lon=$longitude&appid=a1cf1a893751e2ffb04008784ed48b00');
 
@@ -244,32 +247,21 @@ class _HomeScreenState extends State<Home> {
                 ),
               ),
               Center(child: MyVerticalDivider()),
-              Center(
-                child: AutoSizeText(
-                  currentWeatherData.main,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'Circular',
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20),
-                  maxFontSize: 20,
-                  minFontSize: 10,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              Center(
-                child: AutoSizeText(
-                  ', ${currentWeatherData.description}',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'Circular',
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20),
-                  maxFontSize: 20,
-                  minFontSize: 10,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.5,
+                child: Center(
+                  child: AutoSizeText(
+                    '${currentWeatherData.main},${currentWeatherData.description}',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'Circular',
+                        fontWeight: FontWeight.normal,
+                        fontSize: 20),
+                    maxFontSize: 20,
+                    minFontSize: 5,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ),
               Expanded(
@@ -280,6 +272,7 @@ class _HomeScreenState extends State<Home> {
         ));
   }
 
+  String name = '';
   final AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
@@ -290,341 +283,205 @@ class _HomeScreenState extends State<Home> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             UserData userData = snapshot.data;
-
+            name = userData.name.toUpperCase();
             return Scaffold(
+                backgroundColor:
+                    Theme.of(context).brightness == Brightness.light
+                        ? Colors.white
+                        : Colors.black,
                 body: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 15, right: 15),
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(height: 20),
-                    Center(
-                      child: AutoSizeText(
-                        'Welcome ${userData.name},This is Agriculture Based App , we Provide News,Crops Details and we provider a tracker for your cultivation',
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                            fontFamily: 'OpenSans',
-                            fontWeight: FontWeight.normal,
-                            fontSize: 13),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    MyhorizontalDivider(),
-                    InkWell(
-                      onTap: ()
-                      {
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>WeatherPage(
-                          currentWeatherData: widget.currentWeatherData,
-                          dailyWeatherlist: widget.dailyweatherlist,
-                        )));
-                      },
-                      
-                                          child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height * 0.10,
-                          decoration: BoxDecoration(
-                              color: Colors.teal,
-                              borderRadius: BorderRadius.circular(20)),
-                          child:_weather(widget.currentWeatherData),),
-                    ),
-                            
-                    MyhorizontalDivider(),
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 15, right: 15),
+                    child: Column(
                       children: <Widget>[
-                        AutoSizeText(
-                          'To add a crop press this button',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                        SizedBox(height: 20),
+                        Row(
+                          children: <Widget>[
+                            AutoSizeText(
+                              'WELCOME $name',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  fontFamily: 'OpenSans',
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,color: Colors.teal),
+                            ),
+                          ],
                         ),
-                        FloatingActionButton.extended(
-                          backgroundColor: Colors.teal,
-                          isExtended: true,
-                          label: Text('Add a Crop'),
-                          elevation: 10,
-                          tooltip: 'Add a Crop',
-                          onPressed: () {
+                        SizedBox(height: 20),
+                        Container(
+                          child: AutoSizeText(
+                            'This is a agriculture based app ,which provides information about all the crops and you can add your intrested crops to get latest news etc',
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontFamily: 'OpenSans',
+                              fontWeight: FontWeight.normal,
+                            ),
+                            maxFontSize: 15,
+                            minFontSize: 13,
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        MyhorizontalDivider(),
+                        InkWell(
+                          onTap: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => addcrop()));
+                                    builder: (context) => WeatherPage(
+                                          currentWeatherData:
+                                              widget.currentWeatherData,
+                                          dailyWeatherlist:
+                                              widget.dailyweatherlist,
+                                        )));
                           },
-                          icon: Icon(Icons.add),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height * 0.10,
+                            decoration: BoxDecoration(
+                                color: Colors.teal,
+                                borderRadius: BorderRadius.circular(20)),
+                            child: _weather(widget.currentWeatherData),
+                          ),
                         ),
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                    MyhorizontalDivider(),
-                    SizedBox(height: 15),
-                    InkWell(
-                      onTap: () {
-                        print(userData.statenumber);
-                        if (islocation) {
-                          setState(() {
-                            selectedstate = userData.state;
-                            selectedstateindex = userData.statenumber;
-                            village = userData.village;
-                          });
+                        MyhorizontalDivider(),
+                        SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            AutoSizeText(
+                              'To add a crop press this button',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            FloatingActionButton.extended(
+                              backgroundColor: Colors.teal,
+                              isExtended: true,
+                              label: Text('Add a Crop'),
+                              elevation: 10,
+                              tooltip: 'Add a Crop',
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => addcrop()));
+                              },
+                              icon: Icon(Icons.add),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 20),
+                        MyhorizontalDivider(),
+                        SizedBox(height: 15),
+                        InkWell(
+                          onTap: () {
+                            print(userData.statenumber);
+                            if (islocation) {
+                              setState(() {
+                                selectedstate = userData.state;
+                                selectedstateindex = userData.statenumber;
+                                village = userData.village;
+                              });
 
-                          print('stet is $selectedstateindex');
-                        }
+                              print('stet is $selectedstateindex');
+                            }
 
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                backgroundColor: Colors.grey[900],
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10)),
-                                content: StatefulBuilder(
-                                  builder: (BuildContext context,
-                                      StateSetter setState) {
-                                    return Container(
-                                      height:
-                                          MediaQuery.of(context).size.height *
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    backgroundColor: Colors.grey[900],
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    content: StatefulBuilder(
+                                      builder: (BuildContext context,
+                                          StateSetter setState) {
+                                        return Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
                                               0.4,
-                                      width: MediaQuery.of(context).size.width,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(10.0),
-                                        child: Column(
-                                          children: <Widget>[
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 10, bottom: 10.0),
-                                              child: Row(
-                                                children: <Widget>[
-                                                  Text(
-                                                    'Select state',
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontFamily: 'openSans',
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 15),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            InkWell(
-                                              onTap: () {
-                                                setState(() {
-                                                  statevisible = false;
-                                                });
-                                                showDialog(
-                                                    context: context,
-                                                    builder: (context) {
-                                                      return Dialog(
-                                                          backgroundColor:
-                                                              Colors.grey[900],
-                                                          shape: RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10)),
-                                                          child: Container(
-                                                            height:
-                                                                MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .height,
-                                                            width:
-                                                                MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width,
-                                                            child: Scrollbar(
-                                                              child:
-                                                                  FutureBuilder(
-                                                                future: DefaultAssetBundle.of(
-                                                                        context)
-                                                                    .loadString(
-                                                                        "State_names/State_names.json"),
-                                                                builder: (context,
-                                                                    snapshot) {
-                                                                  if (snapshot
-                                                                      .hasData) {
-                                                                    if (snapshot
-                                                                            .data !=
-                                                                        null) {
-                                                                      dynamic
-                                                                          state_list =
-                                                                          json.decode(snapshot
-                                                                              .data
-                                                                              .toString());
-                                                                      return ListView.builder(
-                                                                          itemCount: state_list?.length ?? 0,
-                                                                          itemBuilder: (BuildContext context, int index) {
-                                                                            return InkWell(
-                                                                              splashColor: Colors.blue,
-                                                                              onTap: () {
-                                                                                setState(() {
-                                                                                  selectedstate = state_list[index]["state"];
-                                                                                  selectedstateindex = index;
-                                                                                  Navigator.pop(context, selectedstate);
-                                                                                });
-                                                                              },
-                                                                              child: Container(
-                                                                                width: MediaQuery.of(context).size.width,
-                                                                                height: MediaQuery.of(context).size.height * 0.07,
-                                                                                child: Padding(
-                                                                                  padding: const EdgeInsets.only(left: 10.0),
-                                                                                  child: Row(
-                                                                                    children: <Widget>[
-                                                                                      Text(
-                                                                                        state_list[index]["state"],
-                                                                                        style: TextStyle(color: Colors.white, fontFamily: 'OpenSans', fontWeight: FontWeight.bold),
-                                                                                      )
-                                                                                    ],
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            );
-                                                                          });
-                                                                    } else {
-                                                                      return new CircularProgressIndicator();
-                                                                    }
-                                                                  } else if (snapshot
-                                                                          .connectionState ==
-                                                                      ConnectionState
-                                                                          .waiting) {
-                                                                    return Container(
-                                                                        child: new Padding(
-                                                                            padding:
-                                                                                const EdgeInsets.all(5.0),
-                                                                            child: new Center(child: new CircularProgressIndicator())));
-                                                                  } else if (snapshot
-                                                                      .hasError) {
-                                                                    return new Text(
-                                                                      '${snapshot.error}',
-                                                                      style: TextStyle(
-                                                                          color:
-                                                                              Colors.red),
-                                                                    );
-                                                                  } else {
-                                                                    return Loading();
-                                                                  }
-                                                                },
-                                                              ),
-                                                            ),
-                                                          ));
-                                                    });
-                                              },
-                                              child: Container(
-                                                width: MediaQuery.of(context)
-                                                    .size
-                                                    .width,
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.06,
-                                                decoration: BoxDecoration(
-                                                    color: statevisible
-                                                        ? Colors.red[400]
-                                                        : Colors.grey[200],
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5)),
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(
-                                                      10.0),
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: Column(
+                                              children: <Widget>[
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 10,
+                                                          bottom: 10.0),
                                                   child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
                                                     children: <Widget>[
                                                       Text(
-                                                        selectedstate,
+                                                        'Select state',
                                                         style: TextStyle(
-                                                            color: Colors.black,
+                                                            color: Colors.white,
                                                             fontFamily:
-                                                                'OpenSans',
+                                                                'openSans',
+                                                            fontWeight:
+                                                                FontWeight.bold,
                                                             fontSize: 15),
-                                                      ),
-                                                      Icon(
-                                                        Icons
-                                                            .arrow_drop_down_circle,
-                                                        color: Colors.black,
                                                       ),
                                                     ],
                                                   ),
                                                 ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 10, bottom: 10.0),
-                                              child: Row(
-                                                children: <Widget>[
-                                                  Text(
-                                                    'Select District',
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontFamily: 'openSans',
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 15),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            InkWell(
-                                              onTap: () {
-                                                setState(() {
-                                                  districtvisible = false;
-                                                });
-                                                showDialog(
-                                                    context: context,
-                                                    builder: (context) {
-                                                      return Dialog(
-                                                          backgroundColor:
-                                                              Colors.grey[900],
-                                                          shape: RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10)),
-                                                          child: Container(
-                                                            height:
-                                                                MediaQuery.of(
+                                                InkWell(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      statevisible = false;
+                                                    });
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (context) {
+                                                          return Dialog(
+                                                              backgroundColor:
+                                                                  Colors.grey[
+                                                                      900],
+                                                              shape: RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10)),
+                                                              child: Container(
+                                                                height: MediaQuery.of(
                                                                         context)
                                                                     .size
                                                                     .height,
-                                                            width:
-                                                                MediaQuery.of(
+                                                                width: MediaQuery.of(
                                                                         context)
                                                                     .size
                                                                     .width,
-                                                            child: Scrollbar(
-                                                              child:
-                                                                  FutureBuilder(
-                                                                future: DefaultAssetBundle.of(
-                                                                        context)
-                                                                    .loadString(
-                                                                        "State_names/State_names.json"),
-                                                                builder: (context,
-                                                                    snapshot) {
-                                                                  if (snapshot
-                                                                      .hasData) {
-                                                                    if (snapshot
-                                                                            .data !=
-                                                                        null) {
-                                                                      dynamic
-                                                                          district_list =
-                                                                          json.decode(snapshot
-                                                                              .data
-                                                                              .toString());
-                                                                      return selectedstate !=
-                                                                              'Select state'
-                                                                          ? ListView.builder(
-                                                                              itemCount: district_list[selectedstateindex]["districts"]?.length ?? 0,
+                                                                child:
+                                                                    Scrollbar(
+                                                                  child:
+                                                                      FutureBuilder(
+                                                                    future: DefaultAssetBundle.of(
+                                                                            context)
+                                                                        .loadString(
+                                                                            "State_names/State_names.json"),
+                                                                    builder:
+                                                                        (context,
+                                                                            snapshot) {
+                                                                      if (snapshot
+                                                                          .hasData) {
+                                                                        if (snapshot.data !=
+                                                                            null) {
+                                                                          dynamic
+                                                                              state_list =
+                                                                              json.decode(snapshot.data.toString());
+                                                                          return ListView.builder(
+                                                                              itemCount: state_list?.length ?? 0,
                                                                               itemBuilder: (BuildContext context, int index) {
                                                                                 return InkWell(
                                                                                   splashColor: Colors.blue,
                                                                                   onTap: () {
                                                                                     setState(() {
-                                                                                      selecteddistrict = district_list[selectedstateindex]["districts"][index];
+                                                                                      selectedstate = state_list[index]["state"];
+                                                                                      selectedstateindex = index;
                                                                                       Navigator.pop(context, selectedstate);
                                                                                     });
                                                                                   },
@@ -636,7 +493,7 @@ class _HomeScreenState extends State<Home> {
                                                                                       child: Row(
                                                                                         children: <Widget>[
                                                                                           Text(
-                                                                                            district_list[selectedstateindex]["districts"][index],
+                                                                                            state_list[index]["state"],
                                                                                             style: TextStyle(color: Colors.white, fontFamily: 'OpenSans', fontWeight: FontWeight.bold),
                                                                                           )
                                                                                         ],
@@ -644,231 +501,404 @@ class _HomeScreenState extends State<Home> {
                                                                                     ),
                                                                                   ),
                                                                                 );
-                                                                              })
-                                                                          : Center(
-                                                                              child: Text(
-                                                                                'please select state',
-                                                                                style: TextStyle(color: Colors.red),
-                                                                              ),
-                                                                            );
-                                                                    } else {
-                                                                      return new CircularProgressIndicator();
-                                                                    }
-                                                                  } else if (snapshot
-                                                                          .connectionState ==
-                                                                      ConnectionState
-                                                                          .waiting) {
-                                                                    return Container(
-                                                                        child: new Padding(
-                                                                            padding:
-                                                                                const EdgeInsets.all(5.0),
-                                                                            child: new Center(child: new CircularProgressIndicator())));
-                                                                  } else if (snapshot
-                                                                      .hasError) {
-                                                                    return new Text(
-                                                                      '${snapshot.error}',
-                                                                      style: TextStyle(
-                                                                          color:
-                                                                              Colors.red),
-                                                                    );
-                                                                  } else {
-                                                                    return Loading();
-                                                                  }
-                                                                },
-                                                              ),
-                                                            ),
-                                                          ));
-                                                    });
-                                              },
-                                              child: Container(
-                                                width: MediaQuery.of(context)
-                                                    .size
-                                                    .width,
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.06,
-                                                decoration: BoxDecoration(
-                                                    color: districtvisible
-                                                        ? Colors.red[400]
-                                                        : Colors.grey[200],
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5)),
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(
-                                                      10.0),
+                                                                              });
+                                                                        } else {
+                                                                          return new CircularProgressIndicator();
+                                                                        }
+                                                                      } else if (snapshot
+                                                                              .connectionState ==
+                                                                          ConnectionState
+                                                                              .waiting) {
+                                                                        return Container(
+                                                                            child:
+                                                                                new Padding(padding: const EdgeInsets.all(5.0), child: new Center(child: new CircularProgressIndicator())));
+                                                                      } else if (snapshot
+                                                                          .hasError) {
+                                                                        return new Text(
+                                                                          '${snapshot.error}',
+                                                                          style:
+                                                                              TextStyle(color: Colors.red),
+                                                                        );
+                                                                      } else {
+                                                                        return Loading();
+                                                                      }
+                                                                    },
+                                                                  ),
+                                                                ),
+                                                              ));
+                                                        });
+                                                  },
+                                                  child: Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                            .size
+                                                            .width,
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            0.06,
+                                                    decoration: BoxDecoration(
+                                                        color: statevisible
+                                                            ? Colors.red[400]
+                                                            : Colors.grey[200],
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5)),
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              10.0),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: <Widget>[
+                                                          Text(
+                                                            selectedstate,
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontFamily:
+                                                                    'OpenSans',
+                                                                fontSize: 15),
+                                                          ),
+                                                          Icon(
+                                                            Icons
+                                                                .arrow_drop_down_circle,
+                                                            color: Colors.black,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 10,
+                                                          bottom: 10.0),
                                                   child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
                                                     children: <Widget>[
                                                       Text(
-                                                        selecteddistrict,
+                                                        'Select District',
                                                         style: TextStyle(
-                                                            color: Colors.black,
+                                                            color: Colors.white,
                                                             fontFamily:
-                                                                'OpenSans',
+                                                                'openSans',
+                                                            fontWeight:
+                                                                FontWeight.bold,
                                                             fontSize: 15),
-                                                      ),
-                                                      Icon(
-                                                        Icons
-                                                            .arrow_drop_down_circle,
-                                                        color: Colors.black,
                                                       ),
                                                     ],
                                                   ),
                                                 ),
-                                              ),
-                                            ),
-                                            SizedBox(height: 20),
-                                            _village(),
-                                            SizedBox(height: 20),
-                                            Expanded(
-                                              child: Align(
-                                                alignment:
-                                                    Alignment.bottomRight,
-                                                child: FlatButton(
-                                                  onPressed: () {
-                                                    if (selectedstate ==
-                                                        'Select state') {
-                                                      setState(() {
-                                                        statevisible = true;
-                                                      });
-                                                    }
-                                                    if (selecteddistrict ==
-                                                        'Select District') {
-                                                      setState(() {
-                                                        districtvisible = true;
-                                                      });
-                                                    }
-
-                                                    if (statevisible == false &&
-                                                        districtvisible ==
-                                                            false) {
-                                                      setState(() {
-                                                        isloading = true;
-                                                      });
-
-                                                      dynamic result = DatabaseService(
-                                                              uid: user.uid)
-                                                          .UpdateUserDetails(
-                                                              userData.name,
-                                                              userData
-                                                                  .phonenumber,
-                                                              userData.gender,
-                                                              userData.age,
-                                                              selectedstate,
-                                                              selectedstateindex,
-                                                              selecteddistrict,
-                                                              village,
-                                                              userData.image,
-                                                              userData.language,
-                                                              userData
-                                                                  .languagecode);
-
-                                                      //print(result.toString());
-
-                                                      setState(() {
-                                                        isloading = false;
-                                                      });
-
-                                                      print(isloading);
-                                                      //Scaffold.of(context).showSnackBar(new SnackBar(content: new Text("crop is added"),));
-                                                      showLongToast();
-                                                      Navigator.pop(context);
-                                                    }
+                                                InkWell(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      districtvisible = false;
+                                                    });
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (context) {
+                                                          return Dialog(
+                                                              backgroundColor:
+                                                                  Colors.grey[
+                                                                      900],
+                                                              shape: RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10)),
+                                                              child: Container(
+                                                                height: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .height,
+                                                                width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width,
+                                                                child:
+                                                                    Scrollbar(
+                                                                  child:
+                                                                      FutureBuilder(
+                                                                    future: DefaultAssetBundle.of(
+                                                                            context)
+                                                                        .loadString(
+                                                                            "State_names/State_names.json"),
+                                                                    builder:
+                                                                        (context,
+                                                                            snapshot) {
+                                                                      if (snapshot
+                                                                          .hasData) {
+                                                                        if (snapshot.data !=
+                                                                            null) {
+                                                                          dynamic
+                                                                              district_list =
+                                                                              json.decode(snapshot.data.toString());
+                                                                          return selectedstate != 'Select state'
+                                                                              ? ListView.builder(
+                                                                                  itemCount: district_list[selectedstateindex]["districts"]?.length ?? 0,
+                                                                                  itemBuilder: (BuildContext context, int index) {
+                                                                                    return InkWell(
+                                                                                      splashColor: Colors.blue,
+                                                                                      onTap: () {
+                                                                                        setState(() {
+                                                                                          selecteddistrict = district_list[selectedstateindex]["districts"][index];
+                                                                                          Navigator.pop(context, selectedstate);
+                                                                                        });
+                                                                                      },
+                                                                                      child: Container(
+                                                                                        width: MediaQuery.of(context).size.width,
+                                                                                        height: MediaQuery.of(context).size.height * 0.07,
+                                                                                        child: Padding(
+                                                                                          padding: const EdgeInsets.only(left: 10.0),
+                                                                                          child: Row(
+                                                                                            children: <Widget>[
+                                                                                              Text(
+                                                                                                district_list[selectedstateindex]["districts"][index],
+                                                                                                style: TextStyle(color: Colors.white, fontFamily: 'OpenSans', fontWeight: FontWeight.bold),
+                                                                                              )
+                                                                                            ],
+                                                                                          ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    );
+                                                                                  })
+                                                                              : Center(
+                                                                                  child: Text(
+                                                                                    'please select state',
+                                                                                    style: TextStyle(color: Colors.red),
+                                                                                  ),
+                                                                                );
+                                                                        } else {
+                                                                          return new CircularProgressIndicator();
+                                                                        }
+                                                                      } else if (snapshot
+                                                                              .connectionState ==
+                                                                          ConnectionState
+                                                                              .waiting) {
+                                                                        return Container(
+                                                                            child:
+                                                                                new Padding(padding: const EdgeInsets.all(5.0), child: new Center(child: new CircularProgressIndicator())));
+                                                                      } else if (snapshot
+                                                                          .hasError) {
+                                                                        return new Text(
+                                                                          '${snapshot.error}',
+                                                                          style:
+                                                                              TextStyle(color: Colors.red),
+                                                                        );
+                                                                      } else {
+                                                                        return Loading();
+                                                                      }
+                                                                    },
+                                                                  ),
+                                                                ),
+                                                              ));
+                                                        });
                                                   },
-                                                  child: Text(
-                                                    'okay',
-                                                    style: TextStyle(
-                                                        color: Colors.blue,
-                                                        fontSize: 18),
+                                                  child: Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                            .size
+                                                            .width,
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            0.06,
+                                                    decoration: BoxDecoration(
+                                                        color: districtvisible
+                                                            ? Colors.red[400]
+                                                            : Colors.grey[200],
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5)),
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              10.0),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: <Widget>[
+                                                          Text(
+                                                            selecteddistrict,
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontFamily:
+                                                                    'OpenSans',
+                                                                fontSize: 15),
+                                                          ),
+                                                          Icon(
+                                                            Icons
+                                                                .arrow_drop_down_circle,
+                                                            color: Colors.black,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
+                                                SizedBox(height: 20),
+                                                _village(),
+                                                SizedBox(height: 20),
+                                                Expanded(
+                                                  child: Align(
+                                                    alignment:
+                                                        Alignment.bottomRight,
+                                                    child: FlatButton(
+                                                      onPressed: () {
+                                                        if (selectedstate ==
+                                                            'Select state') {
+                                                          setState(() {
+                                                            statevisible = true;
+                                                          });
+                                                        }
+                                                        if (selecteddistrict ==
+                                                            'Select District') {
+                                                          setState(() {
+                                                            districtvisible =
+                                                                true;
+                                                          });
+                                                        }
+
+                                                        if (statevisible ==
+                                                                false &&
+                                                            districtvisible ==
+                                                                false) {
+                                                          setState(() {
+                                                            isloading = true;
+                                                          });
+
+                                                          dynamic result = DatabaseService(
+                                                                  uid: user.uid)
+                                                              .UpdateUserDetails(
+                                                                  userData.name,
+                                                                  userData
+                                                                      .phonenumber,
+                                                                  userData
+                                                                      .gender,
+                                                                  userData.age,
+                                                                  selectedstate,
+                                                                  selectedstateindex,
+                                                                  selecteddistrict,
+                                                                  village,
+                                                                  userData
+                                                                      .image,
+                                                                  userData
+                                                                      .language,
+                                                                  userData
+                                                                      .languagecode);
+
+                                                          //print(result.toString());
+
+                                                          setState(() {
+                                                            isloading = false;
+                                                          });
+
+                                                          print(isloading);
+                                                          //Scaffold.of(context).showSnackBar(new SnackBar(content: new Text("crop is added"),));
+                                                          showLongToast();
+                                                          Navigator.pop(
+                                                              context);
+                                                        }
+                                                      },
+                                                      child: Text(
+                                                        'okay',
+                                                        style: TextStyle(
+                                                            color: Colors.blue,
+                                                            fontSize: 18),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  );
+                                });
+                          },
+                          child: Container(
+                              width: MediaQuery.of(context).size.width * 0.9,
+                              height: MediaQuery.of(context).size.height * 0.07,
+                              decoration: BoxDecoration(
+                                  color: Colors.teal,
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text(
+                                      'location',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'OpenSans',
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.bold,
                                       ),
-                                    );
-                                  },
+                                    ),
+                                    Icon(
+                                      Icons.location_on,
+                                      color: Colors.white,
+                                      size: 30,
+                                    )
+                                  ],
                                 ),
-                              );
-                            });
-                      },
-                      child: Container(
+                              )),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
                           width: MediaQuery.of(context).size.width * 0.9,
                           height: MediaQuery.of(context).size.height * 0.07,
-                          decoration: BoxDecoration(
-                              color: Colors.teal,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text(
-                                  'location',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: 'OpenSans',
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Icon(
-                                  Icons.location_on,
-                                  color: Colors.white,
-                                  size: 30,
-                                )
-                              ],
-                            ),
-                          )),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      height: MediaQuery.of(context).size.height * 0.07,
-                      child: RaisedButton(
-                          elevation: 5.0,
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Cropslist()));
-                          },
-                          padding: EdgeInsets.all(15.0),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          color: Colors.teal,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                'All Crops in India',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'OpenSans',
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                          child: RaisedButton(
+                              elevation: 5.0,
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Cropslist()));
+                              },
+                              padding: EdgeInsets.all(15.0),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
                               ),
-                              Icon(
-                                Icons.chevron_right,
-                                color: Colors.white,
-                                size: 40,
-                              )
-                            ],
-                          )),
+                              color: Colors.teal,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    'All Crops in India',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'OpenSans',
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Icon(
+                                    Icons.chevron_right,
+                                    color: Colors.white,
+                                    size: 40,
+                                  )
+                                ],
+                              )),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-            ));
+                  ),
+                ));
           } else if (snapshot.hasError) {
             return new Text(
               '${snapshot.error}',

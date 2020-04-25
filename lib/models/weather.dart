@@ -5,9 +5,11 @@ class CurrentWeatherData {
   final String main;
   final String description; 
   final double windspeed;
+  final int humidity;
+  final int pressure;
   
 
-  CurrentWeatherData({this.timezone, this.date, this.temp, this.main, this.description, this.windspeed});
+  CurrentWeatherData({this.timezone, this.date, this.temp, this.main, this.description, this.windspeed,this.humidity,this.pressure});
  
 
   /*factory WeatherData.fromJson(Map<String, dynamic> json) {

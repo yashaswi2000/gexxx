@@ -17,407 +17,508 @@ class MyCrop extends StatefulWidget {
 }
 
 class _MyCropScreenState extends State<MyCrop> {
-   void showLongToast(String name) {
+  void showLongToast(String name) {
     Fluttertoast.showToast(
       msg: "$name Crop is deleted",
       toastLength: Toast.LENGTH_LONG,
     );
   }
-  Widget cropbox(var obj,VoidCallback ondelete  ) {
+
+  Widget cropbox(var obj) {
     DateTime date = obj.data["transplantingdate"].toDate();
-    return Dismissible(
-      key: Key(obj.data["crop"]),
-      onDismissed: (direction){
-        showLongToast(obj.data["crop"]);
-        ondelete();
-        
-      },
-      background: Container(color: Colors.red,padding: EdgeInsets.only(right:10),child: Icon(Icons.delete,color: Colors.white,),),
-          child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height * 0.12,
-          decoration: BoxDecoration(
-              color: Colors.white38, borderRadius: BorderRadius.circular(20)),
-          child: Padding(
-            padding:
-                const EdgeInsets.only(left: 20.0, right: 20, top: 10, bottom: 10),
-            child: Row(
-              children: <Widget>[
-                CircleAvatar(
-                  radius: MediaQuery.of(context).size.width * 0.1,
-                  backgroundImage: AssetImage(obj.data["image"]),
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height * 0.12,
+        decoration: BoxDecoration(
+            color: Colors.teal, borderRadius: BorderRadius.circular(5)),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 10, bottom: 10),
+          child: Row(
+            children: <Widget>[
+              Container(
+                width: MediaQuery.of(context).size.width / 4,
+                decoration: BoxDecoration(
+                    border: Border(
+                        right: BorderSide(width: 1, color: Colors.white))),
+                child: Center(
+                  child: CircleAvatar(
+                    radius: MediaQuery.of(context).size.width * 0.10,
+                    backgroundImage: AssetImage(obj.data["image"]),
+                  ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10.0, right: 10),
-                  child: MyVerticalDivider2(),
-                ),
-                Column(
+              ),
+              Container(
+                decoration: BoxDecoration(
+                    border: Border(
+                        right: BorderSide(width: 1, color: Colors.white))),
+                width: MediaQuery.of(context).size.width / 3,
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 10.0),
-                      child: AutoSizeText(
-                        obj.data["crop"],
-                        style: TextStyle(color: Colors.white, fontSize: 18),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                    Expanded(
+                      child: Container(
+                        child: Center(
+                          child: AutoSizeText(
+                            obj.data["crop"],
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            minFontSize: 18,
+                            maxFontSize: 25,
+                          ),
+                        ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 10.0),
-                      child: AutoSizeText(
-                        "${date.toLocal()}".split(' ')[0],
-                        style: TextStyle(color: Colors.white, fontSize: 18),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                    Expanded(
+                      child: Container(
+                        child: Center(
+                          child: AutoSizeText(
+                            "${date.toLocal()}".split(' ')[0],
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontFamily: 'Circular'),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            minFontSize: 18,
+                            maxFontSize: 25,
+                          ),
+                        ),
                       ),
                     ),
-                    Row(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(right: 25.0),
-                          child: InkWell(
-                            onTap: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return Dialog(
-                                        backgroundColor: Colors.grey[800],
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        child: Container(
-                                          height:
-                                              MediaQuery.of(context).size.height *
-                                                  0.5,
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(10.0),
-                                            child: Column(
+                    Expanded(
+                      child: Container(
+                        child: Center(
+                          child: AutoSizeText(
+                            obj.data["season"],
+                            style: TextStyle(color: Colors.white, fontSize: 18),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            minFontSize: 18,
+                            maxFontSize: 25,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  child: Center(
+                    child: InkWell(
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                  backgroundColor: Colors.grey[800],
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Container(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.5,
+                                    width: MediaQuery.of(context).size.width,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Column(
+                                        children: <Widget>[
+                                          SizedBox(height: 20),
+                                          CircleAvatar(
+                                            radius: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.13,
+                                            backgroundImage:
+                                                AssetImage(obj.data["image"]),
+                                          ),
+                                          SizedBox(height: 20),
+                                          Divider(
+                                            color: Colors.white,
+                                            height: 2,
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 10.0),
+                                            child: Row(
                                               children: <Widget>[
-                                                SizedBox(height: 20),
-                                                CircleAvatar(
-                                                  radius: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.13,
-                                                  backgroundImage: AssetImage(
-                                                      obj.data["image"]),
+                                                AutoSizeText(
+                                                  'Name : ',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18),
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                 ),
-                                                SizedBox(height: 20),
-                                                Divider(
-                                                  color: Colors.white,
-                                                  height: 2,
-                                                ),
-                                                SizedBox(
-                                                  height: 20,
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets.only(bottom:10.0),
-                                                  child: Row(
-                                                    children: <Widget>[
-                                                       AutoSizeText(
-                                                        'Name : ',
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 18),
-                                                        maxLines: 1,
-                                                        overflow:
-                                                            TextOverflow.ellipsis,
-                                                      ),
-                                                      AutoSizeText(
-                                                        obj.data["crop"],
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 18),
-                                                        maxLines: 1,
-                                                        overflow:
-                                                            TextOverflow.ellipsis,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-
-
-                                                Padding(
-                                                  padding: const EdgeInsets.only(bottom:10.0),
-                                                  child: Row(
-                                                    children: <Widget>[
-                                                       AutoSizeText(
-                                                        'Date of cultivation : ',
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 18),
-                                                        maxLines: 1,
-                                                        overflow:
-                                                            TextOverflow.ellipsis,
-                                                      ),
-                                                      AutoSizeText(
-                                                        "${date.toLocal()}"
-                                                            .split(' ')[0],
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 18),
-                                                        maxLines: 1,
-                                                        overflow:
-                                                            TextOverflow.ellipsis,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-
-
-
-                                                     Padding(
-                                                  padding: const EdgeInsets.only(bottom:10.0),
-                                                  child: Row(
-                                                    children: <Widget>[
-                                                       AutoSizeText(
-                                                        'Season : ',
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 18),
-                                                        maxLines: 1,
-                                                        overflow:
-                                                            TextOverflow.ellipsis,
-                                                      ),
-                                                      AutoSizeText(
-                                                        obj.data["season"],
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 18),
-                                                        maxLines: 1,
-                                                        overflow:
-                                                            TextOverflow.ellipsis,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-
-
-
-                                                     Padding(
-                                                  padding: const EdgeInsets.only(bottom:10.0),
-                                                  child: Row(
-                                                    children: <Widget>[
-                                                       AutoSizeText(
-                                                        'Period : ',
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 18),
-                                                        maxLines: 1,
-                                                        overflow:
-                                                            TextOverflow.ellipsis,
-                                                      ),
-                                                      AutoSizeText(
-                                                        obj.data["period"],
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 18),
-                                                        maxLines: 1,
-                                                        overflow:
-                                                            TextOverflow.ellipsis,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-
-
-                                                     Padding(
-                                                  padding: const EdgeInsets.only(bottom:10.0),
-                                                  child: Row(
-                                                    children: <Widget>[
-                                                       AutoSizeText(
-                                                        'Area : ',
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 18),
-                                                        maxLines: 1,
-                                                        overflow:
-                                                            TextOverflow.ellipsis,
-                                                      ),
-                                                      AutoSizeText(
-                                                        obj.data["area"],
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 18),
-                                                        maxLines: 1,
-                                                        overflow:
-                                                            TextOverflow.ellipsis,
-                                                      ),
-                                                      AutoSizeText(
-                                                        obj.data["areaunit"],
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 18),
-                                                        maxLines: 1,
-                                                        overflow:
-                                                            TextOverflow.ellipsis,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-
-
-
-
-                                                Padding(
-                                                  padding: const EdgeInsets.only(bottom:10.0),
-                                                  child: Row(
-                                                    children: <Widget>[
-                                                       AutoSizeText(
-                                                        'Productivity : ',
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 18),
-                                                        maxLines: 1,
-                                                        overflow:
-                                                            TextOverflow.ellipsis,
-                                                      ),
-                                                      AutoSizeText(
-                                                        obj.data["productivity"],
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 18),
-                                                        maxLines: 1,
-                                                        overflow:
-                                                            TextOverflow.ellipsis,
-                                                      ),
-                                                      AutoSizeText(
-                                                        obj.data["productivityunit"],
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 18),
-                                                        maxLines: 1,
-                                                        overflow:
-                                                            TextOverflow.ellipsis,
-                                                      ),
-                                                    ],
-                                                  ),
+                                                AutoSizeText(
+                                                  obj.data["crop"],
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18),
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                 ),
                                               ],
                                             ),
                                           ),
-                                        ));
-                                  });
-                            },
-                            child: Icon(
-                              Icons.remove_red_eye,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 25.0),
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>editcrop(
-                                cropname: obj.data["crop"],
-                                period: obj.data["period"],
-                                season: obj.data["season"],
-                                area: obj.data["area"],
-                                areaunit: obj.data["areaunit"],
-                                productivity: obj.data["productivity"],
-                                productivityunit: obj.data["productivityunit"],
-                                date: obj.data["transplantingdate"].toDate(),
-                                image: obj.data["image"],
-                              )));
-
-
-                            },
-                            child: Icon(
-                              Icons.edit,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 25.0),
-                          child:  AutoSizeText(
-                        'Swipe to delete',
-                        style: TextStyle(color: Colors.white, fontSize: 10),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 10.0),
+                                            child: Row(
+                                              children: <Widget>[
+                                                AutoSizeText(
+                                                  'Date of cultivation : ',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18),
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                                AutoSizeText(
+                                                  "${date.toLocal()}"
+                                                      .split(' ')[0],
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18),
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 10.0),
+                                            child: Row(
+                                              children: <Widget>[
+                                                AutoSizeText(
+                                                  'Season : ',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18),
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                                AutoSizeText(
+                                                  obj.data["season"],
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18),
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 10.0),
+                                            child: Row(
+                                              children: <Widget>[
+                                                AutoSizeText(
+                                                  'Area : ',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18),
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                                AutoSizeText(
+                                                  obj.data["area"],
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18),
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                                AutoSizeText(
+                                                  obj.data["areaunit"],
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18),
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 10.0),
+                                            child: Row(
+                                              children: <Widget>[
+                                                AutoSizeText(
+                                                  'Productivity : ',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18),
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                                AutoSizeText(
+                                                  obj.data["productivity"],
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18),
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                                AutoSizeText(
+                                                  obj.data["productivityunit"],
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18),
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ));
+                            });
+                      },
+                      child: Icon(
+                        Icons.remove_red_eye,
+                        color: Colors.white,
                       ),
-                        ),
-                      ],
-                    )
-                  ],
-                )
-              ],
-            ),
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  child: Center(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => editcrop(
+                                      obj: obj,
+                                    )));
+                      },
+                      child: Icon(
+                        Icons.edit,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  child: Center(
+                    child: InkWell(
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                  backgroundColor: Colors.grey[800],
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Container(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.13,
+                                      width: MediaQuery.of(context).size.width,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Column(
+                                          children: <Widget>[
+                                            Text(
+                                              'Are you sure you want to delete?',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 15),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 20.0),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  Expanded(
+                                                    child: Container(
+                                                      child: Center(
+                                                        child: InkWell(
+                                                          onTap: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: Text(
+                                                            'no',
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.teal,
+                                                                fontSize: 20),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    child: Container(
+                                                      child: Center(
+                                                        child: InkWell(
+                                                          onTap: () async {
+                                                            Navigator.pop(
+                                                                context);
+                                                            setState(() {
+                                                              isloading = true;
+                                                            });
+                                                            await DatabaseService(
+                                                                    uid: obj.data[
+                                                                        "uid"])
+                                                                .deletecrop(obj
+                                                                        .data[
+                                                                    "crop"]);
+
+                                                            showLongToast(obj
+                                                                .data["crop"]);
+                                                            setState(() {
+                                                              isloading = false;
+                                                            });
+                                                            
+                                                          },
+                                                          splashColor:
+                                                              Colors.blue,
+                                                          child: Text(
+                                                            'yes',
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.teal,
+                                                                fontSize: 20),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )));
+                            });
+                      },
+                      child: Icon(
+                        Icons.delete,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ],
           ),
         ),
       ),
     );
   }
 
+  bool isloading = false;
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
     // TODO: implement build
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Column(
-        children: <Widget>[
-          MyhorizontalDivider(),
-          SingleChildScrollView(
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.43,
-              child: FutureBuilder(
-                future: DatabaseService().getmycrops(user.uid),
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return new Text(
-                      '${snapshot.error}',
-                      style: TextStyle(color: Colors.red),
-                    );
-                  } else if (snapshot.hasData) {
-                    return snapshot.data.length==0?Center(child: Text('Your Crop list is Empty',style: TextStyle(color: Colors.white),),):ListView.builder(
-                        itemCount: snapshot.data?.length ?? 0,
-                        itemBuilder: (BuildContext context, int index) {
-                          return cropbox(snapshot.data[index],(){DatabaseService(uid:snapshot.data[index].data["uid"]).deletecrop(snapshot.data[index].data["crop"]);});
-                        });
-                  } else if (snapshot.connectionState ==
-                      ConnectionState.waiting) {
-                    return Container(
-                        child: new Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: new Center(
-                                child: new CircularProgressIndicator())));
-                  } else {
-                    return Loading();
-                  }
-                },
-              ),
-            ),
-          ),
-          MyhorizontalDivider(),
-          SizedBox(height: 10),
-          Expanded(
-                      child: Container(
-              child: Center(
-                            child: FloatingActionButton.extended(
-                    backgroundColor: Colors.blue,
-                    isExtended: true,
-                    label: Text('Add a Crop'),
-                    elevation: 10,
-                    tooltip: 'Add a Crop',
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>addcrop()));
-                    },
-                    icon: Icon(Icons.add),
+    return isloading
+        ? Container(
+                              child: new Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: new Center(
+                                      child: new CircularProgressIndicator())))
+        : Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              children: <Widget>[
+                MyhorizontalDivider(),
+                SingleChildScrollView(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.43,
+                    child: FutureBuilder(
+                      future: DatabaseService().getmycrops(user.uid),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return new Text(
+                            '${snapshot.error}',
+                            style: TextStyle(color: Colors.red),
+                          );
+                        } else if (snapshot.hasData) {
+                          return snapshot.data.length == 0
+                              ? Center(
+                                  child: Text(
+                                    'Your Crop list is Empty',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                )
+                              : ListView.builder(
+                                  itemCount: snapshot.data?.length ?? 0,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return cropbox(snapshot.data[index]);
+                                  });
+                        } else if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Container(
+                              child: new Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: new Center(
+                                      child: new CircularProgressIndicator())));
+                        } else {
+                          return Loading();
+                        }
+                      },
+                    ),
                   ),
-              ),
+                ),
+                MyhorizontalDivider(),
+                SizedBox(height: 10),
+                Expanded(
+                  child: Container(
+                    child: Center(
+                      child: FloatingActionButton.extended(
+                        backgroundColor: Colors.blue,
+                        isExtended: true,
+                        label: Text('Add a Crop'),
+                        elevation: 10,
+                        tooltip: 'Add a Crop',
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => addcrop()));
+                        },
+                        icon: Icon(Icons.add),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
-    );
+          );
   }
 }

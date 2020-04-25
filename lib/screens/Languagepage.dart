@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gexxx_flutter/models/language.dart';
 import 'package:gexxx_flutter/screens/authenticate/login2.dart';
 import 'package:gexxx_flutter/utilities/MyVerticalDivider.dart';
+import 'package:gexxx_flutter/utilities/MyhorizantalDivider.dart';
 
 class LanguagePage extends StatefulWidget {
   @override
@@ -27,18 +28,19 @@ void initState() {
   Widget _languagebox(String one ,String two,int index,int selecteditem)
 {
   return Container(
+    decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.white,width: 1))),
     width: MediaQuery.of(context).size.width,
     height: MediaQuery.of(context).size.height*0.07,
     child: Center(
       child: Padding(
         padding: const EdgeInsets.only(left:20.0,right:20),
         child: Row(children: <Widget>[
-          Text(one,style: TextStyle(color:index==selecteditem? Colors.blue:Colors.white,fontSize: 20),),
+          Text(one,style: TextStyle(color:index==selecteditem? Colors.grey[800]:Colors.white,fontSize: 20),),
           SizedBox(width: 20,),
           MyVerticalDivider(),
           
           SizedBox(width: 20,),
-          Text(two,style: TextStyle(color: index==selecteditem?Colors.blue:Colors.white,fontSize: 20),),
+          Text(two,style: TextStyle(color: index==selecteditem?Colors.grey[800]:Colors.white,fontSize: 20),),
         ],),
       ),
     ),
@@ -48,7 +50,7 @@ void initState() {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black12,
+      backgroundColor: Colors.teal,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(top:70.0,left:10,right:10),
@@ -69,7 +71,7 @@ void initState() {
                 children: <Widget>[
                   Icon(Icons.tag_faces,color: Colors.white,size: 30,),
                   SizedBox(width: 10),
-                  Text('Welcome to Gexxx',style: TextStyle(color: Colors.white,fontSize: 20),),
+                  Text('WELCOME TO GEXXX',style: TextStyle(color: Colors.white,fontSize: 20),),
                 ],
               ),),
             ),
@@ -77,14 +79,14 @@ void initState() {
             Container(
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height*0.6,
+              height: MediaQuery.of(context).size.height*0.59,
                           child: Scrollbar(
                                                       child: ListView.builder(
                               
                 itemCount: languages.length,
                 itemBuilder: (BuildContext context,int index){
                   return InkWell(
-                    splashColor: Colors.blue,
+                    splashColor: Colors.grey[900],
                     onTap: (){
                       setState(() {
 
@@ -103,17 +105,19 @@ void initState() {
                           )
             ),
             SizedBox(height: 10),
+            MyhorizontalDivider(),
+            SizedBox(height: 10),
             Visibility(
-              child: Center(child: Text('Please select language',style: TextStyle(color: Colors.red),),),
+              child: Center(child: Text('Please select language',style: TextStyle(color: Colors.grey[800],fontWeight: FontWeight.bold),),),
               visible: visible,
             ),
             SizedBox(height: 10,),
             FloatingActionButton.extended(
               
-              backgroundColor: Colors.blue,
+              backgroundColor: Colors.grey[800],
               isExtended: true,
               label: Text('Next'),
-              elevation: 10,
+              elevation: 2,
               tooltip: 'next',
               onPressed: (){
                 print(selectedindex);

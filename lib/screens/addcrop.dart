@@ -5,6 +5,7 @@ import 'package:gexxx_flutter/database/database.dart';
 import 'package:gexxx_flutter/models/Areaunit.dart';
 import 'package:gexxx_flutter/models/Period.dart';
 import 'package:gexxx_flutter/models/Season.dart';
+import 'package:gexxx_flutter/models/land.dart';
 import 'package:gexxx_flutter/models/user.dart';
 import 'package:gexxx_flutter/services/auth.dart';
 import 'package:gexxx_flutter/utilities/Loading.dart';
@@ -22,12 +23,18 @@ class _addcropScreenState extends State<addcrop> {
   List<Period> period;
   List<Season> season;
   List<Areaunit> areaunit;
+  List<Landtype> landtype;
+  List<Landtopography> landtopography;
+  List<Soil> soil;
     @override
   void initState() {
     super.initState();
       period = Period.getperiod();
       season = Season.getSeason();
       areaunit = Areaunit.getAreaunit();
+      landtype = Landtype.getLandtype();
+      landtopography=Landtopography.getLandtopography();
+      soil = Soil.getsoil();
   }
 
 
@@ -39,7 +46,7 @@ class _addcropScreenState extends State<addcrop> {
   
   
 
-  String selectedperiod = 'Period';
+
   String selectedseason = 'Season';
   String selectedareaunit = 'Area unit';
   String area = '';
@@ -47,13 +54,19 @@ class _addcropScreenState extends State<addcrop> {
   String selectedcrop = 'Crop';
   String selectedProductivityunit = 'Productivity unit';
   DateTime transplantingdate = DateTime.now();
-  
+  String toastmessage;
+  String selectedlandtype = 'Land Type';
+  String selectedlandtopography = 'Land Topography';
+  String selectedsoil = 'Soil';
+  String landsize = '';
+  String selectedlandsizeunit = 'Land size unit';
 
-  bool periodvisible = false;
+  
   bool seasonvisible = false;
   bool cropvisible = false;
   bool areavisible = false;
   bool areaunitvisible = false;
+  bool landsizeunitvisible = false;
   bool datevisible = false;
   bool productivityunitvisible = false;
   bool isloading=false;
@@ -70,90 +83,7 @@ class _addcropScreenState extends State<addcrop> {
       });
   }
 
-  Widget _period() {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          periodvisible = false;
-        });
-        showDialog(
-            context: context,
-            builder: (context) {
-              return Dialog(
-                backgroundColor: Colors.grey[800],
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.5,
-                  width: MediaQuery.of(context).size.width,
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Scrollbar(
-                      child: ListView.builder(
-                          itemCount: period.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return InkWell(
-                              splashColor: Colors.blue,
-                              onTap: () {
-                                setState(() {
-                                  selectedperiod = period[index].period;
-                                  Navigator.pop(context);
-                                });
-                              },
-                              child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.07,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 10.0),
-                                  child: Row(
-                                    children: <Widget>[
-                                      Text(
-                                        period[index].period,
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontFamily: 'OpenSans',
-                                            fontWeight: FontWeight.bold),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          }),
-                    ),
-                  ),
-                ),
-              );
-            });
-      },
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height * 0.06,
-        decoration: BoxDecoration(
-            color: periodvisible ? Colors.red : Colors.grey[800],
-            borderRadius: BorderRadius.circular(5)),
-        child: Padding(
-          padding: const EdgeInsets.only(left: 15.0, right: 15),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                selectedperiod,
-                style: TextStyle(
-                    color: Colors.white, fontFamily: 'OpenSans', fontSize: 15),
-              ),
-              Icon(
-                Icons.arrow_drop_down_circle,
-                color: Colors.white,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
+  
   Widget _season() {
     return GestureDetector(
       onTap: () {
@@ -365,6 +295,39 @@ class _addcropScreenState extends State<addcrop> {
       ),
     );
   }
+  Widget _landsize() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height * 0.06,
+      decoration: BoxDecoration(
+          color: areavisible ? Colors.red : Colors.grey[800],
+          borderRadius: BorderRadius.circular(5)),
+      child: TextFormField(
+        onChanged: (val) {
+          setState(() {
+            landsize = val;
+          });
+        },
+        
+        keyboardType: TextInputType.phone,
+        textAlign: TextAlign.left,
+        style: TextStyle(
+            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
+        decoration: InputDecoration(
+          fillColor: Colors.white,
+          focusColor: Colors.yellow,
+          prefixIcon: Icon(Icons.landscape, color: Colors.white),
+          border: InputBorder.none,
+          hintText: 'Land size',
+          hintStyle: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.normal,
+              fontSize: 15,
+              fontFamily: 'OpenSans'),
+        ),
+      ),
+    );
+  }
 
   Widget _productivity() {
     return Container(
@@ -483,6 +446,174 @@ class _addcropScreenState extends State<addcrop> {
     );
   }
 
+  Widget _landtype() {
+    return GestureDetector(
+      onTap: () {
+        
+        showDialog(
+            context: context,
+            builder: (context) {
+              return Dialog(
+                backgroundColor: Colors.grey[800],
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.24,
+                  width: MediaQuery.of(context).size.width,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Scrollbar(
+                      child: ListView.builder(
+                          itemCount: landtype.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return InkWell(
+                              splashColor: Colors.blue,
+                              onTap: () {
+                                setState(() {
+                                  selectedlandtype = landtype[index].landtype;
+                                  Navigator.pop(context);
+                                });
+                              },
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.07,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 10.0),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Text(
+                                        landtype[index].landtype,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontFamily: 'OpenSans',
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          }),
+                    ),
+                  ),
+                ),
+              );
+            });
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height * 0.06,
+        decoration: BoxDecoration(
+            color: Colors.grey[800],
+            borderRadius: BorderRadius.circular(5)),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 15.0, right: 15),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                selectedlandtype,
+                style: TextStyle(
+                    color: Colors.white, fontFamily: 'OpenSans', fontSize: 15),
+              ),
+              Icon(
+                Icons.arrow_drop_down_circle,
+                color: Colors.white,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+   Widget _landtopography() {
+    return GestureDetector(
+      onTap: () {
+        
+        showDialog(
+            context: context,
+            builder: (context) {
+              return Dialog(
+                backgroundColor: Colors.grey[800],
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.18,
+                  width: MediaQuery.of(context).size.width,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Scrollbar(
+                      child: ListView.builder(
+                          itemCount: landtopography.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return InkWell(
+                              splashColor: Colors.blue,
+                              onTap: () {
+                                setState(() {
+                                  selectedlandtopography = landtopography[index].landtopography;
+                                  Navigator.pop(context);
+                                });
+                              },
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.07,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 10.0),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Text(
+                                        landtopography[index].landtopography,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontFamily: 'OpenSans',
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          }),
+                    ),
+                  ),
+                ),
+              );
+            });
+      },
+
+      
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height * 0.06,
+        decoration: BoxDecoration(
+            color: Colors.grey[800],
+            borderRadius: BorderRadius.circular(5)),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 15.0, right: 15),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                selectedlandtopography,
+                style: TextStyle(
+                    color: Colors.white, fontFamily: 'OpenSans', fontSize: 15),
+              ),
+              Icon(
+                Icons.arrow_drop_down_circle,
+                color: Colors.white,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  
+
   Widget _productivityunit() {
     return GestureDetector(
       onTap: () {
@@ -566,6 +697,173 @@ class _addcropScreenState extends State<addcrop> {
     );
   }
 
+
+
+
+ Widget _soil() {
+    return GestureDetector(
+      onTap: () {
+        
+        showDialog(
+            context: context,
+            builder: (context) {
+              return Dialog(
+                backgroundColor: Colors.grey[800],
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.4,
+                  width: MediaQuery.of(context).size.width,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Scrollbar(
+                      child: ListView.builder(
+                          itemCount: soil.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return InkWell(
+                              splashColor: Colors.blue,
+                              onTap: () {
+                                setState(() {
+                                  selectedsoil = soil[index].soil;
+                                  Navigator.pop(context);
+                                });
+                              },
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.07,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 10.0),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Text(
+                                       soil[index].soil,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontFamily: 'OpenSans',
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          }),
+                    ),
+                  ),
+                ),
+              );
+            });
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height * 0.06,
+        decoration: BoxDecoration(
+            color:  productivityunitvisible? Colors.red:Colors.grey[800], borderRadius: BorderRadius.circular(5)),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 15.0, right: 15),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                selectedsoil,
+                style: TextStyle(
+                    color: Colors.white, fontFamily: 'OpenSans', fontSize: 15),
+              ),
+              Icon(
+                Icons.arrow_drop_down_circle,
+                color: Colors.white,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+   Widget _landsizeunit() {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          landsizeunitvisible = false;
+        });
+       
+        showDialog(
+            context: context,
+            builder: (context) {
+              return Dialog(
+                backgroundColor: Colors.grey[800],
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.24,
+                  width: MediaQuery.of(context).size.width,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Scrollbar(
+                      child: ListView.builder(
+                          itemCount: areaunit.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return InkWell(
+                              splashColor: Colors.blue,
+                              onTap: () {
+                                setState(() {
+                                  selectedlandsizeunit = areaunit[index].areaunit;
+                                  Navigator.pop(context);
+                                });
+                              },
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.07,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 10.0),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Text(
+                                       areaunit[index].areaunit,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontFamily: 'OpenSans',
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          }),
+                    ),
+                  ),
+                ),
+              );
+            });
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height * 0.06,
+        decoration: BoxDecoration(
+            color:  productivityunitvisible? Colors.red:Colors.grey[800], borderRadius: BorderRadius.circular(5)),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 15.0, right: 15),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                selectedlandsizeunit,
+                style: TextStyle(
+                    color: Colors.white, fontFamily: 'OpenSans', fontSize: 15),
+              ),
+              Icon(
+                Icons.arrow_drop_down_circle,
+                color: Colors.white,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
   Widget _transplantingdate() {
     return GestureDetector(
       onTap: () => _selectDate(context),
@@ -612,7 +910,7 @@ class _addcropScreenState extends State<addcrop> {
   }
   void showLongToast() {
     Fluttertoast.showToast(
-      msg: "Crop is added",
+      msg:toastmessage,
       toastLength: Toast.LENGTH_LONG,
     );
   }
@@ -635,21 +933,7 @@ class _addcropScreenState extends State<addcrop> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 SizedBox(height: 30.0),
-                Row(
-                  children: <Widget>[
-                    Text(
-                      'Select the Period',
-                      style: TextStyle(
-                          color: periodvisible ? Colors.red : Colors.white,
-                          fontFamily: 'openSans',
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 5),
-                _period(),
-                SizedBox(height: 10),
+                
                 Row(
                   children: <Widget>[
                     Text(
@@ -714,6 +998,41 @@ class _addcropScreenState extends State<addcrop> {
                 ),
                 SizedBox(height: 5),
                 _areaunit(),
+                SizedBox(height: 10,),
+                Text(
+                      'Land Details',
+                      style: TextStyle(
+                          color: areaunitvisible ? Colors.red : Colors.white,
+                          fontFamily: 'openSans',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20),
+                    ),
+                SizedBox(height: 10),
+                Container(
+                height: 340,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(color: Colors.teal,
+                borderRadius: BorderRadius.circular(10),
+                
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    children: <Widget>[
+                      _landtype(),
+                      SizedBox(height: 10),
+                      _landtopography(),
+                      SizedBox(height: 10),
+                      _landsize(),
+                      SizedBox(height: 10),
+                      _landsizeunit(),
+                      SizedBox(height: 10),
+                      _soil(),
+                      
+                    ],
+                  ),
+                ),
+                ),
                 SizedBox(height: 10),
                 Row(
                   children: <Widget>[
@@ -770,18 +1089,13 @@ class _addcropScreenState extends State<addcrop> {
                   tooltip: 'pressing this button will a add a crop',
                   onPressed: () async {
                     
-                    if (selectedperiod == 'Period') {
-                      setState(() {
-                        isloading=false;
-                        periodvisible = true;
-                      });
-                    }
                     if (selectedseason == 'Season') {
                       setState(() {
                         isloading=false;
                         seasonvisible = true;
                       });
                     }
+                    
                     if (selectedcrop == 'Crop') {
                       setState(() {
                         isloading=false;
@@ -790,16 +1104,53 @@ class _addcropScreenState extends State<addcrop> {
                     }
                     if (area == '') {
                       setState(() {
-                        isloading=false;
-                        areavisible = true;
+                        selectedareaunit = '';
                       });
                     }
-                    if (selectedareaunit == 'Area unit') {
+                    if(area!='' && selectedareaunit == 'Area unit')
+                    {
                       setState(() {
-                        isloading=false;
+                        isloading = false;
                         areaunitvisible = true;
                       });
                     }
+
+                    if(selectedlandtype=='Land Type')
+                    {
+                      setState(() {
+                        selectedlandtype = '';
+                      });
+                    }
+                    
+                    if(selectedlandtopography=='Land Topography')
+                    {
+                      setState(() {
+                        selectedlandtopography= '';
+                      });
+                    }
+                    if(selectedsoil == 'Soil')
+                    {
+                      setState(() {
+                        selectedsoil = '';
+                      });
+                    }
+
+                     if (landsize == '') {
+                      setState(() {
+                        selectedlandsizeunit = '';
+                      });
+                    }
+                    if(area!='' && selectedareaunit == 'Area unit')
+                    {
+                      setState(() {
+                        isloading = false;
+                        landsizeunitvisible = true;
+                      });
+                    }
+
+                  
+      
+      
                     if(productivity !='' && selectedProductivityunit == 'Productivity unit')
                     {
                       setState(() {
@@ -817,35 +1168,34 @@ class _addcropScreenState extends State<addcrop> {
                    }
                   
 
-                    if (periodvisible == false &&
+                    if (
                         seasonvisible == false &&
                         cropvisible == false &&
-                        areavisible == false &&
-                        areaunitvisible == false && productivityunitvisible==false) {
+                        areaunitvisible == false &&
+                        landsizeunitvisible == false && productivityunitvisible==false) {
                            setState(() {
                       isloading = true;
                     });
                       
                       String image=await  getimage(selectedcrop);
-                      dynamic result = await DatabaseService(uid: user.uid)
-                          .UpdateCropsCollection(
-                              user.uid,
-                              selectedperiod,
-                              selectedseason,
-                              selectedcrop,
-                              area,
-                              selectedareaunit,
-                              productivity,
-                              selectedProductivityunit,
-                              transplantingdate,image);
-                      if (result == true) {
+                      dynamic result = await DatabaseService(uid: user.uid).UpdateCropsCollection(user.uid, selectedseason, selectedcrop, area, selectedareaunit, productivity, selectedProductivityunit, transplantingdate, image,selectedlandtype,selectedlandtopography,landsize,selectedlandsizeunit,selectedsoil);
+                      if(result = true)
+                      {
                         setState(() {
-                          isloading= false;
+                          isloading = false;
+                          toastmessage = 'crop is added';
                         });
-                        //Scaffold.of(context).showSnackBar(new SnackBar(content: new Text("crop is added"),));
-                        showLongToast();
-                        Navigator.pop(context);
+
                       }
+                      else{
+                        setState(() {
+                          isloading = false;
+                          toastmessage = 'Something went wrong,try again after some time'; 
+                        });
+                      }
+                      showLongToast();
+                      Navigator.pop(context);
+                     
                     }
                   },
                   icon: Icon(Icons.done),

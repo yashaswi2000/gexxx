@@ -1,10 +1,13 @@
 import 'dart:convert';
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:gexxx_flutter/database/database.dart';
+import 'package:gexxx_flutter/models/Crop.dart';
 import 'package:gexxx_flutter/models/user.dart';
 import 'package:gexxx_flutter/models/weather.dart';
 import 'package:gexxx_flutter/screens/Home.dart';
@@ -28,6 +31,9 @@ class _DashboardPageState extends State<DashboardPage> {
   String longitude;
   bool buttonpressed = false;
   bool locationerror = false;
+
+  bool ackuserdata = false;
+  bool ackcropdata = false;
   CurrentWeatherData currentWeatherData;
   DailyWeatherData dailyWeatherData;
   List<DailyWeatherData> dailyweatherlist = [];
@@ -37,7 +43,7 @@ class _DashboardPageState extends State<DashboardPage> {
   loadweather(double latitude, double longitude) async {
     var weatherResponse = await http.get(
         'https://api.openweathermap.org/data/2.5/onecall?lat=$latitude&lon=$longitude&appid=a1cf1a893751e2ffb04008784ed48b00');
-
+    print(weatherResponse.statusCode);
     if (weatherResponse.statusCode == 200) {
       weather = json.decode(weatherResponse.body);
       //print(weather);
@@ -52,6 +58,8 @@ class _DashboardPageState extends State<DashboardPage> {
           windspeed: weather["current"]["wind_speed"],
           main: weather["current"]["weather"][0]["main"],
           description: weather["current"]["weather"][0]["description"],
+          humidity: weather["current"]["humidity"],
+          pressure: weather["current"]["pressure"],
         );
       });
       for (var i = 0; i < weather["daily"].length; i++) {
@@ -66,10 +74,8 @@ class _DashboardPageState extends State<DashboardPage> {
           description: weather["daily"][i]["weather"][0]["description"],
         );
         dailyweatherlist.add(dailyWeatherData);
-        //print(dailyWeatherData.main);
-
       }
-      print(dailyweatherlist);
+      //print(currentWeatherData.humidity);
     }
   }
 
@@ -110,16 +116,14 @@ class _DashboardPageState extends State<DashboardPage> {
         });
         return false;
       }
-    }
-    
-    );
-    
+    });
   }
 
   bool islocation = false;
   @override
   void initState() {
     super.initState();
+
 
     _getweather();
   }
@@ -131,17 +135,12 @@ class _DashboardPageState extends State<DashboardPage> {
             : Brightness.dark);
   }
 
-  void changeColor() {
-    DynamicTheme.of(context).setThemeData(ThemeData(
-        primaryColor: Theme.of(context).primaryColor == Colors.indigo
-            ? Colors.red
-            : Colors.indigo));
-  }
+  
 
   int CurrentIndex = 0;
   GlobalKey _bottomNavigationKey = GlobalKey();
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { 
     final user = Provider.of<User>(context);
     final AuthService _auth = AuthService();
 
@@ -190,17 +189,13 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
           IconButton(
             icon: Icon(Icons.refresh),
-            onPressed: ()async {
-             setState(() {
-               currentWeatherData= null;
-               dailyweatherlist.clear();
-             });
-             _getweather();
-            
-            
-            
+            onPressed: () async {
+              setState(() {
+                currentWeatherData = null;
+                dailyweatherlist.clear();
+              });
+              _getweather();
             },
-
           ),
           IconButton(
               icon: Icon(Theme.of(context).brightness == Brightness.light
@@ -215,7 +210,6 @@ class _DashboardPageState extends State<DashboardPage> {
         ],
         title: Text('GEXXX'),
       ),
-      drawer: MainDrawer(),
       bottomNavigationBar: CurvedNavigationBar(
         key: _bottomNavigationKey,
         index: 0,

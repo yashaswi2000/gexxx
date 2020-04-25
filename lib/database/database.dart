@@ -17,21 +17,7 @@ class DatabaseService {
       Firestore.instance.collection('Crops');
 
 
-  Future UpdateUsersCollection(String name, String phonenumber) async {
-
-    try{
-       await UsersCollection.document(uid)
-        .setData({'name': name, 'phonenumber': phonenumber});
-      UsersCollection.document(uid).collection('personaldetails');
-      return true;
-    }
-    catch(e)
-    {
-      print(e.toString());
-      return null;
-    }
-   
-  }
+  
 
   Future<bool> UpdateUserDetails(String name ,String phonenumber,String gender,String age,String state,int statenumber,String district,String village,String image,String language,String languagecode) async
   {
@@ -61,7 +47,6 @@ class DatabaseService {
 
   Future<bool> UpdateCropsCollection(
       String uid,
-      String period,
       String season,
       String crop,
       String area,
@@ -69,17 +54,14 @@ class DatabaseService {
       String productivity,
       String productivityunit,
       DateTime transplantingdate,
-      String image) async {
+      String image,String landtype,String landtopography,String landsize,String landsizeunit,String soil) async {
     try {
       await UsersCollection.document(uid)
-          .collection('land')
-          .document()
-          .collection('crop')
-          .document()
+          .collection('crops')
+          .document(crop)
           .setData({
         'uid': uid,
         'season': season,
-        'period': period,
         'crop': crop,
         'area': area,
         'areaunit': areaunit,
@@ -87,6 +69,11 @@ class DatabaseService {
         'productivityunit': productivityunit,
         'transplantingdate': transplantingdate,
         'image': image,
+        'landtype':landtype,
+        'landtopography':landtopography,
+        'landsize':landsize,
+        'landsizeunit':landsizeunit,
+        'soil':soil,
       });
       return true;
     } catch (e) {
@@ -166,7 +153,9 @@ class DatabaseService {
   Future<UserData> getuserdocument() async{
     DocumentSnapshot snapshot1 = await UsersCollection.document(uid).get();
    
-    return UserData(
+    if(snapshot1.data.isNotEmpty)
+    {
+      return UserData(
       uid: uid,
       name: snapshot1.data["name"],
       phonenumber: snapshot1.data["phonenumber"],
@@ -184,15 +173,23 @@ class DatabaseService {
       
 
     );
+    }
+    else
+    {
+      return null;
+    }
+    
   }
+
+
 
   Future getmycrops(String uid) async {
     QuerySnapshot snapshot =
-        await CropsCollection.where("uid", isEqualTo: uid).getDocuments();
+        await UsersCollection.document(uid).collection('crops').getDocuments();
     return snapshot.documents;
   }
 
   Future deletecrop(String name) async {
-    await CropsCollection.document(name).delete();
+    await UsersCollection.document(uid).collection('crops').document(name).delete();
   }
 }

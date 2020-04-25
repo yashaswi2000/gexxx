@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:gexxx_flutter/screens/Home.dart';
-import 'package:gexxx_flutter/screens/authenticate/Password.dart';
-import 'package:gexxx_flutter/services/auth.dart';
+
 import 'package:gexxx_flutter/utilities/MyhorizantalDivider.dart';
-import 'package:gexxx_flutter/utilities/constants.dart';
 
 class NewsPage extends StatefulWidget {
   @override
