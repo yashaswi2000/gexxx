@@ -26,7 +26,7 @@ class CurrentWeatherData {
 class DailyWeatherData {
 final DateTime date;
 final double temp;
-final double windspeed;
+final int windspeed;
 final String main;
 final String description;
 

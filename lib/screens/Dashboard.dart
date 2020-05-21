@@ -69,7 +69,7 @@ class _DashboardPageState extends State<DashboardPage> {
         dailyWeatherData = new DailyWeatherData(
           date: temp,
           temp: weather["daily"][i]["temp"]["day"],
-          windspeed: weather["daily"][i]["wind_speed"],
+         // windspeed: weather["daily"][i]["wind_speed"],
           main: weather["daily"][i]["weather"][0]["main"],
           description: weather["daily"][i]["weather"][0]["description"],
         );
