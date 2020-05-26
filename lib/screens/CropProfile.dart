@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:gexxx_flutter/utilities/Loading.dart';
 import 'package:gexxx_flutter/utilities/MyhorizantalDivider.dart';
+import 'package:gexxx_flutter/utilities/constants.dart';
 
 class CropProfile extends StatefulWidget {
   final String crop_name;
@@ -111,7 +112,7 @@ class _CropProfileScreenState extends State<CropProfile> {
               AutoSizeText(
                 obj["name"],
                 style: TextStyle(
-                    color: Colors.white,
+                   
                     fontWeight: FontWeight.bold,
                     fontSize: 30),
                 maxLines: 1,
@@ -312,8 +313,14 @@ class _CropProfileScreenState extends State<CropProfile> {
         appBar: AppBar(
           backgroundColor: Colors.grey[800],
           title: Text('CropProfile'),
+          backgroundColor: kThemeColor,
         ),
+<<<<<<< Updated upstream
         backgroundColor: Colors.black,
+=======
+        backgroundColor: Theme.of(context).brightness == Brightness.light?Colors.white:Colors.black,
+      
+>>>>>>> Stashed changes
         body: SingleChildScrollView(
           child: Scrollbar(
             child: Container(

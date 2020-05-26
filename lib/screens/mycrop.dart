@@ -9,6 +9,7 @@ import 'package:gexxx_flutter/utilities/Loading.dart';
 import 'package:gexxx_flutter/utilities/MyVerticalDivider.dart';
 import 'package:gexxx_flutter/utilities/MyhorizantalDivider.dart';
 import 'package:gexxx_flutter/utilities/MyverticalDivider2.dart';
+import 'package:gexxx_flutter/utilities/constants.dart';
 import 'package:provider/provider.dart';
 
 class MyCrop extends StatefulWidget {
@@ -25,6 +26,7 @@ class _MyCropScreenState extends State<MyCrop> {
   }
   Widget cropbox(var obj,VoidCallback ondelete  ) {
     DateTime date = obj.data["transplantingdate"].toDate();
+<<<<<<< Updated upstream
     return Dismissible(
       key: Key(obj.data["crop"]),
       onDismissed: (direction){
@@ -48,6 +50,29 @@ class _MyCropScreenState extends State<MyCrop> {
                 CircleAvatar(
                   radius: MediaQuery.of(context).size.width * 0.1,
                   backgroundImage: AssetImage(obj.data["image"]),
+=======
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height * 0.12,
+        decoration: BoxDecoration(
+            color: kThemeColor, borderRadius: BorderRadius.circular(5)),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 10, bottom: 10),
+          child: Row(
+            children: <Widget>[
+              Container(
+                width: MediaQuery.of(context).size.width / 4,
+                decoration: BoxDecoration(
+                    border: Border(
+                        right: BorderSide(width: 1, color: Colors.white))),
+                child: Center(
+                  child: CircleAvatar(
+                    radius: MediaQuery.of(context).size.width * 0.10,
+                    backgroundImage: AssetImage(obj.data["image"]),
+                  ),
+>>>>>>> Stashed changes
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 10.0, right: 10),
@@ -360,6 +385,7 @@ class _MyCropScreenState extends State<MyCrop> {
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
     // TODO: implement build
+<<<<<<< Updated upstream
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Column(
@@ -413,5 +439,47 @@ class _MyCropScreenState extends State<MyCrop> {
         ],
       ),
     );
+=======
+    return isloading
+        ? Container(
+                              child: new Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: new Center(
+                                      child: new CircularProgressIndicator())))
+        : FutureBuilder(
+          future: DatabaseService().getmycrops(user.uid),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+        return new Text(
+        '${snapshot.error}',
+        style: TextStyle(color: Colors.red),
+        );
+            } else if (snapshot.hasData) {
+        return snapshot.data.length == 0
+          ? Center(
+        child: Text(
+          'Your Crop list is Empty',
+          style: TextStyle(color: Colors.white),
+        ),
+        )
+          : ListView.builder(
+        itemCount: snapshot.data?.length ?? 0,
+        itemBuilder:
+            (BuildContext context, int index) {
+          return cropbox(snapshot.data[index]);
+        });
+            } else if (snapshot.connectionState ==
+        ConnectionState.waiting) {
+        return Container(
+          child: new Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: new Center(
+            child: new CircularProgressIndicator())));
+            } else {
+        return Loading();
+            }
+          },
+        );
+>>>>>>> Stashed changes
   }
 }

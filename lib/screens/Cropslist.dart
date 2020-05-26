@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:gexxx_flutter/screens/CropProfile.dart';
 import 'package:gexxx_flutter/utilities/Loading.dart';
+import 'package:gexxx_flutter/utilities/constants.dart';
 
 class Cropslist extends StatefulWidget {
   @override
@@ -90,12 +91,17 @@ class _CropslistScreenState extends State<Cropslist> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+<<<<<<< Updated upstream
       backgroundColor: Colors.black,
       appBar: AppBar(
+=======
+           appBar: AppBar(
+        
+>>>>>>> Stashed changes
         title: Text('Crops in India'),
-        backgroundColor: Colors.grey[800],
+        backgroundColor:  kThemeColor,
       ),
-      
+      backgroundColor: Theme.of(context).brightness == Brightness.light?Colors.white:Colors.black,
       body: SingleChildScrollView(
           child: Padding(
               padding: const EdgeInsets.all(10.0),
