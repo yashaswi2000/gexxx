@@ -1,39 +1,37 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gexxx_flutter/models/user.dart';
-import 'package:gexxx_flutter/screens/CropProfile.dart';
+import 'package:gexxx_flutter/models/weather.dart';
 import 'package:gexxx_flutter/screens/Cropslist.dart';
-import 'package:gexxx_flutter/screens/MainDrawer.dart';
 import 'package:gexxx_flutter/screens/addcrop.dart';
-import 'package:gexxx_flutter/screens/NewsPage.dart';
-import 'package:gexxx_flutter/screens/authenticate/AuthenticationHome.dart';
+import 'package:gexxx_flutter/screens/weatherpage.dart';
 import 'package:gexxx_flutter/services/auth.dart';
 import 'package:gexxx_flutter/utilities/Loading.dart';
+import 'package:gexxx_flutter/utilities/MyVerticalDivider.dart';
 import 'package:gexxx_flutter/utilities/MyhorizantalDivider.dart';
 import 'package:gexxx_flutter/utilities/constants.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'package:gexxx_flutter/database/database.dart';
+
 import 'package:provider/provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:translator/translator.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:weather_icons/weather_icons.dart';
 
 class Home extends StatefulWidget {
-<<<<<<< Updated upstream
-  final User user;
-
-  const Home({Key key, this.user}) : super(key: key);
-=======
-  final UserData user;
- 
+  final UserData userData;
+  CurrentWeatherData currentWeatherData;
+  List<DailyWeatherData> dailyweatherlist;
+  bool loading;
 
   Home(
       {Key key,
-      this.user,
-     })
+      this.userData,
+      })
       : super(key: key);
->>>>>>> Stashed changes
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -44,6 +42,24 @@ class _HomeScreenState extends State<Home> {
   List CropData;
   String news = 'news';
   final translate = new GoogleTranslator();
+  String selectedstate = 'Select state';
+  String selecteddistrict = 'Select District';
+  String village = '';
+  bool isloading = false;
+  Map weather;
+  int selectedstateindex;
+  bool isloadingweather = false;
+  String latitude;
+  String longitude;
+  bool statevisible = false;
+  bool districtvisible = false;
+  bool locationerror = false;
+
+  DateTime temp;
+  Position userlocation;
+
+  var stateController = new TextEditingController();
+  var districtController = new TextEditingController();
 
   Future getData() async {
     http.Response response = await http.get(
@@ -55,90 +71,111 @@ class _HomeScreenState extends State<Home> {
     });
   }
 
-<<<<<<< Updated upstream
-  Container MyFeed(String crop_name, String state) {
-=======
- Future getlocation(String uid) async {
-    bool temp = await DatabaseService(uid: uid).checklocation();
-    if (mounted) {
+  /* loadweather(double latitude, double longitude) async {
+    var weatherResponse = await http.get(
+        'https://api.openweathermap.org/data/2.5/onecall?lat=$latitude&lon=$longitude&appid=a1cf1a893751e2ffb04008784ed48b00');
+    if (weatherResponse.statusCode == 200) {
+      weather = json.decode(weatherResponse.body);
+      //print(weather);
+      temp = DateTime.fromMillisecondsSinceEpoch(
+          weather["current"]["dt"] * 1000,
+          isUtc: false);
       setState(() {
-        islocation = temp;
+        currentWeatherData = new CurrentWeatherData(
+          date: temp,
+          timezone: weather["timezone"],
+          temp: weather["current"]["temp"],
+          windspeed: weather["current"]["wind_speed"],
+          main: weather["current"]["weather"][0]["main"],
+          description: weather["current"]["weather"][0]["description"],
+        );
       });
+      for (var i = 0; i < weather["daily"].length; i++) {
+        temp = DateTime.fromMillisecondsSinceEpoch(
+            weather["daily"][i]["dt"] * 1000,
+            isUtc: false);
+        dailyWeatherData = new DailyWeatherData(
+          date: temp,
+          temp: weather["daily"][i]["temp"]["day"],
+          windspeed: weather["daily"][i]["wind_speed"],
+          main: weather["daily"][i]["weather"][0]["main"],
+          description: weather["daily"][i]["weather"][0]["description"],
+        );
+        dailyweatherlist.add(dailyWeatherData);
+        //print(dailyWeatherData.main);
+      }
+      print(dailyweatherlist);
     }
   }
+  Future<Placemark> getPlacemark(double latitude, double longitude) async {
+    List<Placemark> placemark =
+        await Geolocator().placemarkFromCoordinates(latitude, longitude);
+    return placemark[0];
+  }
+  Future<Position> _getCurrentLocation() async {
+    var currentlocation;
+    try {
+      currentlocation = await Geolocator()
+          .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    } catch (e) {
+      currentlocation = null;
+    }
+    return currentlocation;
+  }*/
 
   Widget _village() {
->>>>>>> Stashed changes
     return Container(
-      margin: EdgeInsets.all(15),
       width: MediaQuery.of(context).size.width,
-      height: 300,
+      height: MediaQuery.of(context).size.height * 0.06,
       decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        children: <Widget>[
-          AutoSizeText(
-            crop_name,
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: 'OpenSans',
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-            ),
-            minFontSize: 15,
-            overflow: TextOverflow.ellipsis,
-          ),
-          SizedBox(height: 10),
-          AutoSizeText(
-            state,
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: 'OpenSans',
+          color: Colors.grey[200], borderRadius: BorderRadius.circular(5)),
+      child: TextFormField(
+        onChanged: (val) {
+          setState(() {
+            village = val;
+          });
+        },
+        validator: (val) => val.isEmpty ? 'Enter the village' : null,
+        keyboardType: TextInputType.text,
+        textAlign: TextAlign.left,
+        style: TextStyle(
+            color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
+        decoration: InputDecoration(
+          fillColor: Colors.white,
+          focusColor: Colors.yellow,
+          prefixIcon: Icon(Icons.landscape, color: Colors.black),
+          border: InputBorder.none,
+          hintText: 'village',
+          hintStyle: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.normal,
               fontSize: 15,
-              fontWeight: FontWeight.bold,
-            ),
-            minFontSize: 10,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
+              fontFamily: 'OpenSans'),
+        ),
       ),
     );
   }
 
-<<<<<<< Updated upstream
-  GestureDetector cropcircle(String imageval, String crop_name) {
-    return GestureDetector(
-      onTap: () {},
-      child: Padding(
-        padding: const EdgeInsets.all(3.0),
-        child: Column(
-          children: <Widget>[
-            Container(
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                      image: NetworkImage(imageval), fit: BoxFit.fill)),
-            ),
-            SizedBox(height: 8),
-            Text(
-              crop_name,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 10,
-                  fontWeight: FontWeight.w700),
-            )
-          ],
-        ),
-      ),
-=======
-  
-
- 
+  /*void _getweather() async {
+    _getCurrentLocation().then((position) {
+      if (position != null) {
+        setState(() {
+          latitude = position.latitude.toString();
+          longitude = position.longitude.toString();
+          locationerror = false;
+          getPlacemark(position.latitude, position.longitude).then((data) {
+            loadweather(position.latitude, position.longitude);
+            //print(weatherData);
+          });
+        });
+      } else {
+        setState(() {
+          locationerror = true;
+        });
+      }
+    });
+  }
+*/
   bool islocation = false;
   @override
   void initState() {
@@ -151,71 +188,31 @@ class _HomeScreenState extends State<Home> {
       isloadingweather = false;
     });
 
-    DatabaseService(uid: widget.user.uid).UsersCollection;
+    DatabaseService(uid: widget.userData.uid).UsersCollection;
 
-    dynamic result = getlocation(widget.user.uid);
+    dynamic result = getlocation(widget.userData.uid);
   }
 
-  
+  Future getlocation(String uid) async {
+    bool temp = await DatabaseService(uid: uid).checklocation();
+    if (mounted) {
+      setState(() {
+        islocation = temp;
+      });
+    }
+  }
 
   void showLongToast() {
     Fluttertoast.showToast(
       msg: "Crop is added",
       toastLength: Toast.LENGTH_LONG,
->>>>>>> Stashed changes
     );
   }
 
-  GestureDetector MyCrop(String imageval, String crop_name, String price) {
-    var cropt = translate.translate(crop_name, to: 'kn');
-
-    return GestureDetector(
-        onTap: () {},
-        child: Row(
-          children: <Widget>[
-            Container(
-                width: MediaQuery.of(context).size.width * 0.3,
-                decoration: BoxDecoration(color: Colors.grey[800]),
-                child: Center(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(height: 10),
-                      Container(
-                        width: 30,
-                        height: 30,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                                image: NetworkImage(imageval),
-                                fit: BoxFit.fill)),
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                        crop_name,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700),
-                      )
-                    ],
-                  ),
-                )),
-            //MyVerticalDivider2(),
-          ],
-        ));
-  }
   
-  @override
-  void initState() {
-    super.initState();
-    
-  }
+  
 
-  final AuthService _auth = AuthService();
- 
-  Widget ActionCard(
+                      Widget ActionCard(
       String title, IconData icon, Color color, Function onPressed) {
     return InkWell(
       borderRadius: BorderRadius.circular(8),
@@ -253,132 +250,14 @@ class _HomeScreenState extends State<Home> {
       ),
     );
   }
- 
- 
+
+  String name = '';
+  final AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
-<<<<<<< Updated upstream
-
-=======
-   
->>>>>>> Stashed changes
-    return StreamBuilder<UserData>(
-        stream: DatabaseService(uid: user.uid).userData,
-        builder: (context, snapshot) {
-          
-          if(snapshot.hasData)
-          {
-            UserData userData = snapshot.data;
-<<<<<<< Updated upstream
-             return Scaffold(
-              backgroundColor: Colors.black,
-              body: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 15, right: 15),
-                  child: Column(
-                    children: <Widget>[
-                      SizedBox(height: 20),
-                      Center(
-                        child: AutoSizeText(
-                          'Welcome ${userData.name},This is Agriculture Based App , we Provide News,Crops Details and we provider a tracker for your cultivation',
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: 'OpenSans',
-                              fontWeight: FontWeight.normal,
-                              fontSize: 13),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      MyhorizontalDivider(),
-                      Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height * 0.12,
-                          decoration: BoxDecoration(
-                              color: Colors.grey[800],
-                              borderRadius: BorderRadius.circular(20)),
-                          /*child: Center(
-                            child: Text('Welcome ${userData.name}',
-                                style: TextStyle(color: Colors.white))),*/
-                          child: Center(
-                            child: Text(
-                              'Empty',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          )),
-                      MyhorizontalDivider(),
-                      SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          AutoSizeText(
-                            'To add a crop press this button',
-                            style: TextStyle(color: Colors.white),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          FloatingActionButton.extended(
-                            backgroundColor: Colors.blue,
-                            isExtended: true,
-                            label: Text('Add a Crop'),
-                            elevation: 10,
-                            tooltip: 'Add a Crop',
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => addcrop()));
-                            },
-                            icon: Icon(Icons.add),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 20),
-                      MyhorizontalDivider(),
-                      SizedBox(height: 15),
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        height: MediaQuery.of(context).size.height * 0.07,
-                        child: RaisedButton(
-                            elevation: 5.0,
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Cropslist()));
-                            },
-                            padding: EdgeInsets.all(15.0),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            color: Colors.blue[800],
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text(
-                                  'All Crops in India',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: 'OpenSans',
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Icon(
-                                  Icons.chevron_right,
-                                  color: Colors.white,
-                                  size: 40,
-                                )
-                              ],
-                            )),
-                      ),
-                      
-                    ],
-=======
-            name = userData.name.toUpperCase();
-            return Scaffold(
+    
+    return Scaffold(
                 backgroundColor:
                     Theme.of(context).brightness == Brightness.light
                         ? Colors.white
@@ -391,6 +270,7 @@ class _HomeScreenState extends State<Home> {
                         SizedBox(height: 20),
                        
                         SizedBox(height: 20),
+                        
                         Center(
                         child: Wrap(
                           alignment: WrapAlignment.center,
@@ -419,41 +299,17 @@ class _HomeScreenState extends State<Home> {
                                 }),
                           ],
                         ),
-                      ),
-                        //MyhorizontalDivider(),
-                        /*InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => WeatherPage(
-                                          currentWeatherData:
-                                              widget.currentWeatherData,
-                                          dailyWeatherlist:
-                                              widget.dailyweatherlist,
-                                        )));
-                          },
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height * 0.10,
-                            decoration: BoxDecoration(
-                                color: Colors.teal,
-                                borderRadius: BorderRadius.circular(20)),
-                            child: _weather(widget.currentWeatherData),
-                          ),
-                        ),*/
-                        //MyhorizontalDivider(),
-                        SizedBox(height: 20),
-                        
-              
+                      ),SizedBox(
+                          height: 20,
+                        ),
                         InkWell(
                           onTap: () {
-                            print(userData.statenumber);
+                            print(widget.userData.statenumber);
                             if (islocation) {
                               setState(() {
-                                selectedstate = userData.state;
-                                selectedstateindex = userData.statenumber;
-                                village = userData.village;
+                                selectedstate = widget.userData.state;
+                                selectedstateindex = widget.userData.statenumber;
+                                village = widget.userData.village;
                               });
 
                               print('stet is $selectedstateindex');
@@ -849,21 +705,21 @@ class _HomeScreenState extends State<Home> {
                                                           dynamic result = DatabaseService(
                                                                   uid: user.uid)
                                                               .UpdateUserDetails(
-                                                                  userData.name,
-                                                                  userData
+                                                                  widget.userData.name,
+                                                                  widget.userData
                                                                       .phonenumber,
-                                                                  userData
+                                                                  widget.userData
                                                                       .gender,
-                                                                  userData.age,
+                                                                  widget.userData.age,
                                                                   selectedstate,
                                                                   selectedstateindex,
                                                                   selecteddistrict,
                                                                   village,
-                                                                  userData
+                                                                  widget.userData
                                                                       .image,
-                                                                  userData
+                                                                  widget.userData
                                                                       .language,
-                                                                  userData
+                                                                  widget.userData
                                                                       .languagecode);
 
                                                           //print(result.toString());
@@ -897,11 +753,12 @@ class _HomeScreenState extends State<Home> {
                                   );
                                 });
                           },
+                          
                           child: Container(
                               width: MediaQuery.of(context).size.width * 0.9,
                               height: MediaQuery.of(context).size.height * 0.07,
                               decoration: BoxDecoration(
-                                  color:kThemeColor,
+                                  color: kThemeColor,
                                   borderRadius: BorderRadius.circular(10)),
                               child: Padding(
                                 padding: const EdgeInsets.all(15.0),
@@ -930,24 +787,10 @@ class _HomeScreenState extends State<Home> {
                         SizedBox(
                           height: 20,
                         ),
-                        
+                       
                       ],
                     ),
->>>>>>> Stashed changes
                   ),
-                ),
-              ));
-
-          }
-          else if(snapshot.hasError)
-          {
-            return new Text(
-                      '${snapshot.error}',
-                      style: TextStyle(color: Colors.red),
-                    );
-          }
-          return Loading();
-         
-        });
+                ));
   }
 }

@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:gexxx_flutter/models/weather.dart';
+
 import 'package:gexxx_flutter/utilities/MyhorizantalDivider.dart';
 import 'package:gexxx_flutter/utilities/constants.dart';
 import 'package:weather_icons/weather_icons.dart';

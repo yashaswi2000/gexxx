@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:gexxx_flutter/database/database.dart';
+import 'package:gexxx_flutter/models/language.dart';
 import 'package:gexxx_flutter/models/user.dart';
 import 'package:gexxx_flutter/screens/Dashboard.dart';
 import 'package:gexxx_flutter/screens/Home.dart';
+import 'package:gexxx_flutter/screens/Languagepage.dart';
 import 'package:gexxx_flutter/screens/authenticate/login2.dart';
 import 'package:gexxx_flutter/screens/wrapper.dart';
 class AuthService{
@@ -30,7 +32,7 @@ class AuthService{
 
         }
         else{
-          return LoginPage();
+          return LanguagePage();
         }
       },
     );
@@ -58,21 +60,19 @@ class AuthService{
     }
   }
 
-  Future registerWithEmailAndPassword(String email,String password,String name) async
+  /*Future registerWithEmailAndPassword(String email,String password,String name) async
   {
     try {
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       FirebaseUser user = result.user;
-
       //create a document for userdata
-
       await DatabaseService(uid: user.uid).UpdateUsersCollection(name, email);
       return _userFromFirebaseUser(user);
     } catch (e) {
       print(e.toString());
       return null;
     }
-  }
+  }*/
 
   
 

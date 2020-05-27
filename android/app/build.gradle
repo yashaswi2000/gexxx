@@ -68,8 +68,6 @@ dependencies {
     // google analytics SDK
     implementation 'com.google.firebase:firebase-analytics:17.2.0'
     implementation 'com.android.support:multidex:1.0.3'
-    implementation 'com.google.firebase:firebase-ml-natural-language:22.0.0'
-    implementation 'com.google.firebase:firebase-ml-natural-language-translate-model:20.0.8'
 
     
 }

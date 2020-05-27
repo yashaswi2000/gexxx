@@ -311,16 +311,12 @@ class _CropProfileScreenState extends State<CropProfile> {
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.grey[800],
+          
           title: Text('CropProfile'),
           backgroundColor: kThemeColor,
         ),
-<<<<<<< Updated upstream
-        backgroundColor: Colors.black,
-=======
         backgroundColor: Theme.of(context).brightness == Brightness.light?Colors.white:Colors.black,
       
->>>>>>> Stashed changes
         body: SingleChildScrollView(
           child: Scrollbar(
             child: Container(

@@ -20,6 +20,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
@@ -37,7 +39,11 @@ dependencies:
   pin_code_text_field: ^1.5.1
   bottom_navy_bar: ^5.4.0
   fluttertoast: ^3.0.0
-  firebase_mlkit_language: ^1.1.2
+  dynamic_theme: ^1.0.0
+  geolocator: ^5.1.1
+  weather_icons: ^2.0.1
+
+
 
 dev_dependencies:
   flutter_test:
@@ -69,11 +75,30 @@ flutter:
       - assets/images/wheat3.jpg
       - assets/images/bajra2.jpg
       - assets/images/maize3.jpg
+      - assets/images/cloudy.png
+      - assets/images/clearsky.png
+      - assets/images/rain.png
+      - assets/images/haze.png
+      - assets/images/drizzle.png
+      - assets/images/dust.png
+      - assets/images/mist.png
+      - assets/images/sand.png
+      - assets/images/smoke.png
+      - assets/images/snow.png
+      - assets/images/tunderstrom.png
 
   fonts:
+    - family: Circular
+      fonts:
+        - asset: assets/fonts/CircularStd-Medium.ttf
+        - asset: assets/fonts/CircularAir-Light.ttf
+          weight: 100
+        - asset: assets/fonts/CircularStd-Bold.ttf
+          weight: 500
     - family: OpenSans
       fonts:
         - asset: assets/fonts/OpenSans.ttf
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:
