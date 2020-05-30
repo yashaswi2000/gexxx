@@ -1,10 +1,12 @@
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:gexxx_flutter/screens/Languagepage.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:gexxx_flutter/screens/wrapper.dart';
 import 'package:gexxx_flutter/services/auth.dart';
 
 import 'package:provider/provider.dart';
+import 'app_localizations.dart';
 
 import 'models/user.dart';
 
@@ -24,6 +26,7 @@ class MyApp extends StatelessWidget {
         return StreamProvider<User>.value(
             value: AuthService().user,
             child: MaterialApp(
+              
               debugShowCheckedModeBanner: false,
               home: Wrapper(),
               theme: theme,
