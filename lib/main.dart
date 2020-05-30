@@ -26,7 +26,20 @@ class MyApp extends StatelessWidget {
         return StreamProvider<User>.value(
             value: AuthService().user,
             child: MaterialApp(
-              
+              supportedLocales: [
+          Locale('en','US'),
+          Locale('es','ES'),
+          Locale('hi','IN')
+        ],
+        localizationsDelegates: [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        localeListResolutionCallback: (locale, supportedLocales){
+          
+           return supportedLocales.elementAt(1);
+        },
               debugShowCheckedModeBanner: false,
               home: Wrapper(),
               theme: theme,
