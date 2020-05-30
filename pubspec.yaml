@@ -19,6 +19,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
 
 
 
@@ -86,6 +88,8 @@ flutter:
       - assets/images/smoke.png
       - assets/images/snow.png
       - assets/images/tunderstrom.png
+      - languages/en.JSON
+      - languages/hi.JSON
 
   fonts:
     - family: Circular

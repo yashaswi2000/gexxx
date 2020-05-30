@@ -192,7 +192,7 @@ class _WeatherPageScreenState extends State<WeatherPage> {
       return 'October';
     }
     if (value == 11) {
-      return 'Novembeer';
+      return 'November';
     }
     if (value == 12) {
       return 'December';
