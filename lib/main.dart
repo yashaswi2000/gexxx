@@ -28,7 +28,6 @@ class MyApp extends StatelessWidget {
             child: MaterialApp(
               supportedLocales: [
           Locale('en','US'),
-          Locale('es','ES'),
           Locale('hi','IN')
         ],
         localizationsDelegates: [

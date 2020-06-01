@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gexxx_flutter/app_localizations.dart';
 import 'package:gexxx_flutter/models/user.dart';
 import 'package:gexxx_flutter/models/weather.dart';
 import 'package:gexxx_flutter/screens/Cropslist.dart';
@@ -294,7 +295,7 @@ class _HomeScreenState extends State<Home> {
                             ActionCard(
                                 'About us', Icons.priority_high, Colors.red, () {}),
                             ActionCard(
-                                'Log out', Icons.people, kThemeColor, () {
+                                AppLocalizations.of(context).translate('Logout'), Icons.people, kThemeColor, () {
                                  
                                 }),
                           ],

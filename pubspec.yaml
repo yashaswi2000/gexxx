@@ -88,8 +88,8 @@ flutter:
       - assets/images/smoke.png
       - assets/images/snow.png
       - assets/images/tunderstrom.png
-      - languages/en.JSON
-      - languages/hi.JSON
+      - lib/languages/en.JSON
+      - lib/languages/hi.JSON
 
   fonts:
     - family: Circular
