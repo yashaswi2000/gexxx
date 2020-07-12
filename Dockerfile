@@ -24,8 +24,6 @@ RUN mkdir ~/.android \
     && flutter doctor -v \
     && chown -R root:root /opt
 
-WORKDIR /home/dev/gexxx
-
-COPY . .
-
+WORKDIR /home/dev/
+RUN git clone https://github.com/yashaswi2000/gexxx.git
 RUN flutter doctor
