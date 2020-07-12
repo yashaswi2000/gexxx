@@ -24,7 +24,7 @@ RUN mkdir ~/.android \
     && flutter doctor -v \
     && chown -R root:root /opt
 
-WORKDIR /home/dev/project
+WORKDIR /home/dev/gexxx
 
 COPY . .
 
