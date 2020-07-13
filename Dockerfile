@@ -24,6 +24,12 @@ RUN mkdir ~/.android \
     && flutter doctor -v \
     && chown -R root:root /opt
 
+
+RUN flutter channel beta
+RUN flutter upgrade
+RUN flutter config --enable-web
+
 WORKDIR /home/dev/
-RUN git clone https://github.com/yashaswi2000/gexxx.git
-RUN flutter doctor
+RUN git clone -b docker --single-branch https://github.com/yashaswi2000/gexxx.git
+WORKDIR /home/dev/gexxx
+CMD ["flutter","run","-d web-server --verbose"]
