@@ -25,5 +25,6 @@ RUN mkdir ~/.android \
     && chown -R root:root /opt
 
 WORKDIR /home/dev/
+RUN apt install vscode-server
 RUN git clone https://github.com/yashaswi2000/gexxx.git
 RUN flutter doctor
