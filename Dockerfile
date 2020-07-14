@@ -1,29 +1,17 @@
-FROM ubuntu:18.04
+#Stage 1 - Install dependencies and build the app
+FROM debian:latest AS build-env
 
-ENV ANDROID_HOME="/opt/android-sdk" \
-    PATH="/opt/android-sdk/tools/bin:/opt/flutter/bin:/opt/flutter/bin/cache/dart-sdk/bin:$PATH"
+# Install flutter dependencies
+RUN apt-get update 
+RUN apt-get install -y curl git wget zip unzip libgconf-2-4 gdb libstdc++6 libglu1-mesa fonts-droid-fallback lib32stdc++6 python3
+RUN apt-get clean
 
-RUN apt-get update > /dev/null \
-    && apt-get -y install --no-install-recommends curl git lib32stdc++6 openjdk-8-jdk-headless unzip > /dev/null \
-    && apt-get --purge autoremove > /dev/null \
-    && apt-get autoclean > /dev/null \
-    && rm -rf /var/lib/apt/lists/*
+# Clone the flutter repo
+RUN git clone https://github.com/flutter/flutter.git /usr/local/flutter
 
-RUN git clone -b master https://github.com/flutter/flutter.git /opt/flutter
-
-RUN curl -s -O https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip \
-    && mkdir /opt/android-sdk \
-    && unzip sdk-tools-linux-4333796.zip -d /opt/android-sdk > /dev/null \
-    && rm sdk-tools-linux-4333796.zip
-
-RUN mkdir ~/.android \
-    && echo 'count=0' > ~/.android/repositories.cfg \
-    && yes | sdkmanager --licenses > /dev/null \
-    && sdkmanager "tools" "build-tools;29.0.0" "platforms;android-29" "platform-tools" > /dev/null \
-    && yes | sdkmanager --licenses > /dev/null \
-    && flutter doctor -v \
-    && chown -R root:root /opt
-
+# Run flutter doctor and set path
+RUN /usr/local/flutter/bin/flutter doctor -v
+ENV PATH="/usr/local/flutter/bin:/usr/local/flutter/bin/cache/dart-sdk/bin:${PATH}"
 
 RUN flutter channel beta
 RUN flutter upgrade
