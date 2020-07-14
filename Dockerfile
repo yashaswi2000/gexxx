@@ -20,4 +20,4 @@ RUN flutter config --enable-web
 WORKDIR /home/dev/
 RUN git clone -b docker --single-branch https://github.com/yashaswi2000/gexxx.git
 WORKDIR /home/dev/gexxx
-CMD ["flutter","run","-d", "web-server","--verbose"]
+CMD ["flutter","run","-d", "web-server","--web-port","8000","--verbose"]
