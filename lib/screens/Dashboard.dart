@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:auto_size_text/auto_size_text.dart';
@@ -123,8 +122,7 @@ class _DashboardPageState extends State<DashboardPage> {
   void initState() {
     super.initState();
 
-
-   // _getweather();
+    // _getweather();
   }
 
   void changeBrightness() {
@@ -133,7 +131,6 @@ class _DashboardPageState extends State<DashboardPage> {
             ? Brightness.light
             : Brightness.dark);
   }
-
 
   tabs(UserData userdata, int index) {
     if (index == 0) {
@@ -153,103 +150,32 @@ class _DashboardPageState extends State<DashboardPage> {
     if (index == 4) {
       return UserProfile(
         userData: userdata,
-        
       );
     }
   }
-  
 
   int CurrentIndex = 0;
   GlobalKey _bottomNavigationKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
-
     final user = Provider.of<User>(context);
     final AuthService _auth = AuthService();
 
-    
     return StreamBuilder<Object>(
-      stream: DatabaseService(uid: user.uid).userData,
-      builder: (context, snapshot) {
-        if(snapshot.hasData)
-        {
-          UserData userData =  snapshot.data;
-          return Scaffold(
-          appBar: AppBar(
-            backgroundColor: kThemeColor,
-            actions: <Widget>[
-              IconButton(
-                icon: Icon(Icons.highlight_off),
-                onPressed: () async {
-                  await _auth.signOut();
-                },
+        stream: DatabaseService(uid: user.uid).userData,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            UserData userData = snapshot.data;
+            return Home(
+              userData: userData,
+            );
+          } else {
+            return Container(
+              child: Center(
+                child: CircularProgressIndicator(),
               ),
-             
-              
-              IconButton(
-                  icon: Icon(Theme.of(context).brightness == Brightness.light
-                      ? Icons.lightbulb_outline
-                      : Icons.highlight),
-                  onPressed: () {
-                    DynamicTheme.of(context).setBrightness(
-                        Theme.of(context).brightness == Brightness.light
-                            ? Brightness.dark
-                            : Brightness.light);
-                  })
-            ],
-            title: Text('GEXXX'),
-          ),
-          bottomNavigationBar: CurvedNavigationBar(
-            key: _bottomNavigationKey,
-            index: 0,
-            height: 70.0,
-            items: <Widget>[
-              Icon(
-                Icons.home,
-                size: 30,
-                color: Colors.white,
-              ),
-              Icon(
-                Icons.event,
-                size: 30,
-                color: Colors.white,
-              ),
-              Icon(
-                Icons.event_note,
-                size: 30,
-                color: Colors.white,
-              ),
-              Icon(
-                Icons.call_split,
-                size: 30,
-                color: Colors.white,
-              ),
-              Icon(
-                Icons.perm_identity,
-                size: 30,
-                color: Colors.white,
-              ),
-            ],
-            color: Colors.grey[800],
-            buttonBackgroundColor: Colors.grey[800],
-            backgroundColor: Colors.black,
-            animationCurve: Curves.easeInOut,
-            animationDuration: Duration(milliseconds: 600),
-            onTap: (index) {
-              setState(() {
-                CurrentIndex = index;
-              });
-            },
-          ),
-          body: tabs(userData,CurrentIndex),
-        );
-        }
-        else
-        {
-            return Container(child: Center(child: CircularProgressIndicator(),),);
-        }
-        
-      }
-    );
+            );
+          }
+        });
   }
 }

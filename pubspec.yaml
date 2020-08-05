@@ -40,11 +40,13 @@ dependencies:
   location: ^2.4.0
   pin_code_text_field: ^1.5.1
   bottom_navy_bar: ^5.4.0
+  google_sign_in:
   fluttertoast: ^3.0.0
   dynamic_theme: ^1.0.0
   geolocator: ^5.1.1
   weather_icons: ^2.0.1
-
+  url_launcher: ^5.5.0
+  
 
 
 dev_dependencies:

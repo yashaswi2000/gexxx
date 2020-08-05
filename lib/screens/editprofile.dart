@@ -23,8 +23,6 @@ class Editprofile extends StatefulWidget {
 }
 
 class _EditprofileScreenState extends State<Editprofile> {
-  
-
   List<String> genderlist = ["Male", "Female"];
   @override
   void initState() {
@@ -38,17 +36,14 @@ class _EditprofileScreenState extends State<Editprofile> {
     image = widget.userData.image;
     statenumber = widget.userData.statenumber;
     uid = widget.userData.uid;
-    languagecode=widget.userData.languagecode;
+    languagecode = widget.userData.languagecode;
     language = widget.userData.language;
-    
   }
-
 
   final AuthService _auth = AuthService();
 
   final _formkey = GlobalKey<FormState>();
 
-  
   String selectedstate;
   String selecteddistrict;
   String name;
@@ -65,19 +60,17 @@ class _EditprofileScreenState extends State<Editprofile> {
   bool disctrictvisible = false;
   bool isloading = false;
 
-  
-
   Widget _district() {
     return GestureDetector(
       onTap: () {
         setState(() {
-          disctrictvisible=false;
+          disctrictvisible = false;
         });
         showDialog(
             context: context,
             builder: (context) {
               return Dialog(
-                backgroundColor:Colors.grey[800],
+                backgroundColor: Colors.grey[800],
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
                 child: Container(
@@ -178,7 +171,7 @@ class _EditprofileScreenState extends State<Editprofile> {
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height * 0.06,
         decoration: BoxDecoration(
-            color: disctrictvisible?Colors.red:Colors.grey[800],
+            color: disctrictvisible ? Colors.red : Colors.grey[800],
             borderRadius: BorderRadius.circular(5)),
         child: Padding(
           padding: const EdgeInsets.only(left: 15.0, right: 15),
@@ -296,8 +289,7 @@ class _EditprofileScreenState extends State<Editprofile> {
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height * 0.06,
         decoration: BoxDecoration(
-            color: Colors.grey[800],
-            borderRadius: BorderRadius.circular(5)),
+            color: Colors.grey[800], borderRadius: BorderRadius.circular(5)),
         child: Padding(
           padding: const EdgeInsets.only(left: 15.0, right: 15),
           child: Row(
@@ -360,8 +352,7 @@ class _EditprofileScreenState extends State<Editprofile> {
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height * 0.06,
       decoration: BoxDecoration(
-          color: Colors.grey[800],
-          borderRadius: BorderRadius.circular(5)),
+          color: Colors.grey[800], borderRadius: BorderRadius.circular(5)),
       child: TextFormField(
         onChanged: (val) {
           setState(() {
@@ -424,8 +415,6 @@ class _EditprofileScreenState extends State<Editprofile> {
     );
   }
 
-  
-
   Widget _gender() {
     return GestureDetector(
       onTap: () {
@@ -484,8 +473,7 @@ class _EditprofileScreenState extends State<Editprofile> {
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height * 0.06,
         decoration: BoxDecoration(
-            color: Colors.grey[800],
-            borderRadius: BorderRadius.circular(5)),
+            color: Colors.grey[800], borderRadius: BorderRadius.circular(5)),
         child: Padding(
           padding: const EdgeInsets.only(left: 15.0, right: 15),
           child: Row(
@@ -506,10 +494,6 @@ class _EditprofileScreenState extends State<Editprofile> {
       ),
     );
   }
-
- 
-
-  
 
   void showLongToast() {
     Fluttertoast.showToast(
@@ -573,7 +557,8 @@ class _EditprofileScreenState extends State<Editprofile> {
                           Text(
                             'Select district',
                             style: TextStyle(
-                              color:disctrictvisible?Colors.red: Colors.white,
+                              color:
+                                  disctrictvisible ? Colors.red : Colors.white,
                               fontFamily: 'openSans',
                               fontWeight: FontWeight.bold,
                               fontSize: 15,
@@ -640,34 +625,43 @@ class _EditprofileScreenState extends State<Editprofile> {
                         elevation: 10,
                         tooltip: 'pressing this button will a add a crop',
                         onPressed: () async {
-                          if(name.isEmpty)
-                          {
+                          if (name.isEmpty) {
                             setState(() {
-                              namevisible=true;
+                              namevisible = true;
                             });
                           }
-                          if(selecteddistrict.isEmpty)
-                          {
+                          if (selecteddistrict.isEmpty) {
                             setState(() {
                               disctrictvisible = true;
                             });
                           }
 
-                          if(namevisible==false && disctrictvisible == false)
-                          {
+                          if (namevisible == false &&
+                              disctrictvisible == false) {
                             setState(() {
                               isloading = true;
                             });
-                            dynamic result = await DatabaseService(uid: uid).UpdateUserDetails(name, widget.userData.phonenumber, gender, age, selectedstate, statenumber, selecteddistrict, village, image,language,languagecode);
-                              if (result == true) {
-                        setState(() {
-                          isloading=false;
-                        });
-                        //Scaffold.of(context).showSnackBar(new SnackBar(content: new Text("crop is added"),));
-                        showLongToast();
-                        Navigator.pop(context);
-                      }
-
+                            dynamic result = await DatabaseService(uid: uid)
+                                .UpdateUserDetails(
+                                    name,
+                                    widget.userData.phonenumber,
+                                    gender,
+                                    age,
+                                    selectedstate,
+                                    statenumber,
+                                    selecteddistrict,
+                                    village,
+                                    image,
+                                    language,
+                                    languagecode, []);
+                            if (result == true) {
+                              setState(() {
+                                isloading = false;
+                              });
+                              //Scaffold.of(context).showSnackBar(new SnackBar(content: new Text("crop is added"),));
+                              showLongToast();
+                              Navigator.pop(context);
+                            }
                           }
                         },
                         icon: Icon(Icons.done),

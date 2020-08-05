@@ -1,15 +1,13 @@
-class User{
+class User {
   final String uid;
-
-  User({this.uid});
-  
-  
-
+  final String email;
+  User({this.uid, this.email});
 }
 
-class UserData{
+class UserData {
   final String uid;
   final String name;
+  String email;
   final String phonenumber;
   String state;
   int statenumber;
@@ -20,7 +18,20 @@ class UserData{
   String image;
   String language;
   String languagecode;
-  
-
-  UserData({this.uid,this.name, this.statenumber,this.phonenumber,this.age,this.state,this.district,this.village,this.gender,this.image,this.language,this.languagecode});
+  List<String> favouritecrops;
+  UserData(
+      {this.uid,
+      this.name,
+      this.email,
+      this.statenumber,
+      this.phonenumber,
+      this.age,
+      this.state,
+      this.district,
+      this.village,
+      this.gender,
+      this.image,
+      this.language,
+      this.languagecode,
+      this.favouritecrops});
 }

@@ -8,35 +8,38 @@ import 'package:gexxx_flutter/screens/Home.dart';
 import 'package:gexxx_flutter/screens/Languagepage.dart';
 import 'package:gexxx_flutter/screens/authenticate/login2.dart';
 import 'package:gexxx_flutter/screens/wrapper.dart';
-class AuthService{
+import 'package:google_sign_in/google_sign_in.dart';
+
+class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   var actualcode;
 
-  User _userFromFirebaseUser(FirebaseUser user){
+  User _userFromFirebaseUser(FirebaseUser user) {
+    return user != null ? User(uid: user.uid) : null;
+  }
 
-    return user!=null? User(uid:user.uid):null;
-    
+  User _googleuserFromFirebaseUser(FirebaseUser user) {
+    return user != null ? User(uid: user.uid, email: user.email) : null;
   }
   //auth change user stream
 
-  Stream<User> get user{
+  Stream<User> get user {
     return _auth.onAuthStateChanged.map(_userFromFirebaseUser);
-
   }
-  handleAuth(){
-    return StreamBuilder(
-      stream:_auth.onAuthStateChanged,
-      builder: (BuildContext context,snapshot){
-        if(snapshot.hasData){
-          return Wrapper();
 
-        }
-        else{
+  handleAuth() {
+    return StreamBuilder(
+      stream: _auth.onAuthStateChanged,
+      builder: (BuildContext context, snapshot) {
+        if (snapshot.hasData) {
+          return Wrapper();
+        } else {
           return LanguagePage();
         }
       },
     );
   }
+
   // Sign in anon
   Future signInAnon() async {
     try {
@@ -46,12 +49,13 @@ class AuthService{
     } catch (e) {
       print(e.toString());
       return null;
-    }   
+    }
   }
-  Future signInWithEmailAndPassword(String email,String password) async
-  {
+
+  Future signInWithEmailAndPassword(String email, String password) async {
     try {
-      AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      AuthResult result = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
       FirebaseUser user = result.user;
       return _userFromFirebaseUser(user);
     } catch (e) {
@@ -73,10 +77,30 @@ class AuthService{
       return null;
     }
   }*/
+  final GoogleSignIn googleSignIn = GoogleSignIn();
 
-  
+  Future<User> signinwithGoogle() async {
+    GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+    GoogleSignInAuthentication googleSignInAuthentication =
+        await googleSignInAccount.authentication;
 
-  Future signOut() async{
+    AuthCredential credential = GoogleAuthProvider.getCredential(
+        idToken: googleSignInAuthentication.idToken,
+        accessToken: googleSignInAuthentication.accessToken);
+
+    AuthResult result = await _auth.signInWithCredential(credential);
+    FirebaseUser user = result.user;
+    return _googleuserFromFirebaseUser(user);
+  }
+
+  Future<bool> signoutwithGoogle() async {
+    await _auth.signOut().then((value) {
+      googleSignIn.signOut();
+      return true;
+    });
+  }
+
+  Future signOut() async {
     try {
       return await _auth.signOut();
     } catch (e) {
@@ -90,11 +114,9 @@ class AuthService{
     _auth.signInWithCredential(authCreds);
   }
 
-  Future signInWithOTP(smsCode, verId) async{
+  Future signInWithOTP(smsCode, verId) async {
     AuthCredential authCreds = PhoneAuthProvider.getCredential(
         verificationId: verId, smsCode: smsCode);
-    await _auth.signInWithCredential(authCreds).then((AuthResult result){
-      
-    });
+    await _auth.signInWithCredential(authCreds).then((AuthResult result) {});
   }
 }
