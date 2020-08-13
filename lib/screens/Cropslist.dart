@@ -15,72 +15,67 @@ class _CropslistScreenState extends State<Cropslist> {
     print(imageval);
     return InkWell(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>CropProfile(crop_name: crop_name)));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => CropProfile(crop_name: crop_name)));
       },
       child: Container(
           margin: EdgeInsets.only(top: 20),
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height * 0.12,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10), color: Colors.grey[800]),
+              borderRadius: BorderRadius.circular(5),
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.grey[200], spreadRadius: 1, blurRadius: 5)
+              ]),
           child: Row(
             children: <Widget>[
-              Container(
-                width: MediaQuery.of(context).size.width * 0.3,
-                height: MediaQuery.of(context).size.height * 0.12,
-                decoration: BoxDecoration(
-                    color: Colors.blue[800],
-                    image: DecorationImage(
-                        image: AssetImage('$imageval'), fit: BoxFit.fill)),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(5),
+                child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.12,
+                    width: MediaQuery.of(context).size.width * 0.3,
+                    child: Image.asset(
+                      '$imageval',
+                      fit: BoxFit.cover,
+                    )),
               ),
               SizedBox(width: 10),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.55,
-                height: MediaQuery.of(context).size.height * 0.12,
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10.0, top: 10),
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: Text(
-                              crop_name,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'OpenSans',
-                                fontSize: 25.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        crop_name,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'OpenSans',
+                          fontSize: MediaQuery.of(context).size.width * 0.04,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: Text(
-                              description,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'OpenSans',
-                                fontSize: 12.0,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                          ),
-                        ],
+                      SizedBox(height: 10),
+                      Text(
+                        description,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'OpenSans',
+                          fontSize: MediaQuery.of(context).size.width * 0.03,
+                          fontWeight: FontWeight.normal,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               )
             ],
@@ -91,44 +86,61 @@ class _CropslistScreenState extends State<Cropslist> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-           appBar: AppBar(
-        
-        title: Text('Crops in India'),
-        backgroundColor:  kThemeColor,
-      ),
-      backgroundColor: Theme.of(context).brightness == Brightness.light?Colors.white:Colors.black,
-      body: SingleChildScrollView(
-          child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Scrollbar(
-                child: Container(
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  child: FutureBuilder(
-                    future: DefaultAssetBundle.of(context)
-                        .loadString("Crop_database/crop_database.json"),
-                    builder: (context, snapshot) {
-                      
-                      if (snapshot.hasError) {
-                        return new Text(
-                          '${snapshot.error}',
-                          style: TextStyle(color: Colors.red),
-                        );  
-                      } else if(snapshot.hasData){
-                        dynamic crop_list = json.decode(snapshot.data.toString());
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: SingleChildScrollView(
+            child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        IconButton(
+                          icon: Icon(
+                            Icons.arrow_back,
+                            color: Colors.black,
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        Text(
+                          'All Crops in India',
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.w500),
+                        )
+                      ],
+                    ),
+                    FutureBuilder(
+                      future: DefaultAssetBundle.of(context)
+                          .loadString("Crop_database/crop_database.json"),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return new Text(
+                            '${snapshot.error}',
+                            style: TextStyle(color: Colors.red),
+                          );
+                        } else if (snapshot.hasData) {
+                          dynamic crop_list =
+                              json.decode(snapshot.data.toString());
 
-                        return ListView.builder(
-                            itemCount: crop_list?.length??0,
-                            itemBuilder: (BuildContext context, int index) {
-                              return _cropbox(crop_list[index]["images"][0], crop_list[index]["name"],
-                                  crop_list[index]["introduction"]);
-                            });
-                      }
-                      return new Loading();
-                    },
-                  ),
-                ),
-              ))),
+                          return ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: crop_list?.length ?? 0,
+                              itemBuilder: (BuildContext context, int index) {
+                                return _cropbox(
+                                    crop_list[index]["images"][0],
+                                    crop_list[index]["name"],
+                                    crop_list[index]["introduction"]);
+                              });
+                        }
+                        return new Loading();
+                      },
+                    ),
+                  ],
+                ))),
+      ),
     );
   }
 }

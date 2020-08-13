@@ -27,73 +27,92 @@ class _CropProfileScreenState extends State<CropProfile> {
     );
   }
 
-  Container format1(String subheading) {
-    return Container(
-        color: Colors.grey[800],
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: AutoSizeText(
-                subheading,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'OpenSans',
-                  fontSize: 14.0,
-                  fontWeight: FontWeight.normal,
+  Widget format1(String subheading) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(5)),
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: AutoSizeText(
+                  subheading,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'OpenSans',
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.normal,
+                  ),
+                  maxLines: 10,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                maxLines: 10,
-                overflow: TextOverflow.ellipsis,
               ),
-            ),
-          ],
-        ));
+            ],
+          )),
+    );
   }
 
-  Container steps(String heading, String subheading) {
-    return Container(
-        color: Colors.grey[800],
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top:20,left:20,right:20),
-              child: Row(
-                children: <Widget>[
-                  AutoSizeText(
-                    heading,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'OpenSans',
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
+  Widget steps(String heading, String subheading) {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Container(
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(5)),
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+                child: Row(
+                  children: <Widget>[
+                    AutoSizeText(
+                      heading,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'OpenSans',
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      maxLines: 1,
                     ),
-                    maxLines: 1,
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: AutoSizeText(
-                subheading,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'OpenSans',
-                  fontSize: 14.0,
-                  fontWeight: FontWeight.normal,
+                  ],
                 ),
-                maxLines: 10,
-                overflow: TextOverflow.ellipsis,
               ),
-            ),
-          ],
-        ));
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: AutoSizeText(
+                  subheading,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'OpenSans',
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.normal,
+                  ),
+                  maxLines: 10,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          )),
+    );
   }
 
   Widget _profile(var obj) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
+        Row(
+          children: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: Colors.black,
+              ),
+              onPressed: () {},
+            )
+          ],
+        ),
         Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height * 0.3,
@@ -112,7 +131,7 @@ class _CropProfileScreenState extends State<CropProfile> {
               AutoSizeText(
                 obj["name"],
                 style: TextStyle(
-                   
+                    color: Colors.black,
                     fontWeight: FontWeight.bold,
                     fontSize: 30),
                 maxLines: 1,
@@ -123,7 +142,13 @@ class _CropProfileScreenState extends State<CropProfile> {
         ),
         SizedBox(height: 20),
 
-        MyhorizontalDivider(),
+        Padding(
+          padding: const EdgeInsets.only(left: 25.0, right: 25),
+          child: Divider(
+            color: Colors.black,
+            height: 20,
+          ),
+        ),
         Container(
           width: MediaQuery.of(context).size.width * 0.9,
           height: MediaQuery.of(context).size.height * 0.07,
@@ -134,7 +159,7 @@ class _CropProfileScreenState extends State<CropProfile> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
               ),
-              color: Colors.blue[800],
+              color: Colors.black,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -155,7 +180,13 @@ class _CropProfileScreenState extends State<CropProfile> {
                 ],
               )),
         ),
-        MyhorizontalDivider(),
+        Padding(
+          padding: const EdgeInsets.only(left: 25.0, right: 25),
+          child: Divider(
+            color: Colors.black,
+            height: 20,
+          ),
+        ),
         //SizedBox(height: 20),
         Padding(
           padding: const EdgeInsets.all(20),
@@ -164,7 +195,7 @@ class _CropProfileScreenState extends State<CropProfile> {
               AutoSizeText(
                 '1. Introduction',
                 style: TextStyle(
-                  color: Colors.blue,
+                  color: Colors.black,
                   fontFamily: 'OpenSans',
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
@@ -174,10 +205,21 @@ class _CropProfileScreenState extends State<CropProfile> {
             ],
           ),
         ),
-        MyhorizontalDivider(),
+        Padding(
+          padding: const EdgeInsets.only(left: 25.0, right: 25),
+          child: Divider(
+            color: Colors.black,
+            height: 20,
+          ),
+        ),
         format1(obj["introduction"]),
-        MyhorizontalDivider(),
-
+        Padding(
+          padding: const EdgeInsets.only(left: 25.0, right: 25),
+          child: Divider(
+            color: Colors.black,
+            height: 20,
+          ),
+        ),
         //SizedBox(height: 20),
         Padding(
           padding: const EdgeInsets.all(20),
@@ -186,7 +228,7 @@ class _CropProfileScreenState extends State<CropProfile> {
               AutoSizeText(
                 '2. Climate and Soil Requirements',
                 style: TextStyle(
-                  color: Colors.blue,
+                  color: Colors.black,
                   fontFamily: 'OpenSans',
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
@@ -196,9 +238,21 @@ class _CropProfileScreenState extends State<CropProfile> {
             ],
           ),
         ),
-        MyhorizontalDivider(),
+        Padding(
+          padding: const EdgeInsets.only(left: 25.0, right: 25),
+          child: Divider(
+            color: Colors.black,
+            height: 20,
+          ),
+        ),
         format1(obj["climate_and_soil_requirements"]),
-        MyhorizontalDivider(),
+        Padding(
+          padding: const EdgeInsets.only(left: 25.0, right: 25),
+          child: Divider(
+            color: Colors.black,
+            height: 20,
+          ),
+        ),
 
         Padding(
           padding: const EdgeInsets.all(20),
@@ -207,7 +261,7 @@ class _CropProfileScreenState extends State<CropProfile> {
               AutoSizeText(
                 '3. Land Preparation',
                 style: TextStyle(
-                  color: Colors.blue,
+                  color: Colors.black,
                   fontFamily: 'OpenSans',
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
@@ -220,14 +274,14 @@ class _CropProfileScreenState extends State<CropProfile> {
         MyhorizontalDivider(),
         format1(obj["land_preparation"]),
         MyhorizontalDivider(),
-         Padding(
+        Padding(
           padding: const EdgeInsets.all(20),
           child: Row(
             children: <Widget>[
               AutoSizeText(
                 '4. Sowing',
                 style: TextStyle(
-                  color: Colors.blue,
+                  color: Colors.black,
                   fontFamily: 'OpenSans',
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
@@ -237,12 +291,24 @@ class _CropProfileScreenState extends State<CropProfile> {
             ],
           ),
         ),
-        MyhorizontalDivider(),
+        Padding(
+          padding: const EdgeInsets.only(left: 25.0, right: 25),
+          child: Divider(
+            color: Colors.black,
+            height: 20,
+          ),
+        ),
         steps('Sowing time', obj["sowing"][0]["sowingtime"]),
         steps('Seed rate', obj["sowing"][0]["seed_rate"]),
         steps('Spacing', obj["sowing"][0]["spacing"]),
         steps('Seed treatment', obj["sowing"][0]["seed_treatment"]),
-        MyhorizontalDivider(),
+        Padding(
+          padding: const EdgeInsets.only(left: 25.0, right: 25),
+          child: Divider(
+            color: Colors.black,
+            height: 20,
+          ),
+        ),
         Padding(
           padding: const EdgeInsets.all(20),
           child: Row(
@@ -250,7 +316,7 @@ class _CropProfileScreenState extends State<CropProfile> {
               AutoSizeText(
                 '5.irrigation',
                 style: TextStyle(
-                  color: Colors.blue,
+                  color: Colors.black,
                   fontFamily: 'OpenSans',
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
@@ -260,9 +326,21 @@ class _CropProfileScreenState extends State<CropProfile> {
             ],
           ),
         ),
-        MyhorizontalDivider(),
+        Padding(
+          padding: const EdgeInsets.only(left: 25.0, right: 25),
+          child: Divider(
+            color: Colors.black,
+            height: 20,
+          ),
+        ),
         format1(obj["irrigation"]),
-        MyhorizontalDivider(),
+        Padding(
+          padding: const EdgeInsets.only(left: 25.0, right: 25),
+          child: Divider(
+            color: Colors.black,
+            height: 20,
+          ),
+        ),
         Padding(
           padding: const EdgeInsets.all(20),
           child: Row(
@@ -270,7 +348,7 @@ class _CropProfileScreenState extends State<CropProfile> {
               AutoSizeText(
                 '6. Harvesting and Storage',
                 style: TextStyle(
-                  color: Colors.blue,
+                  color: Colors.black,
                   fontFamily: 'OpenSans',
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
@@ -280,14 +358,28 @@ class _CropProfileScreenState extends State<CropProfile> {
             ],
           ),
         ),
-        MyhorizontalDivider(),
+        Padding(
+          padding: const EdgeInsets.only(left: 25.0, right: 25),
+          child: Divider(
+            color: Colors.black,
+            height: 20,
+          ),
+        ),
         steps('Harvesting', obj["harvesting_and_storage"][0]["harvesting"]),
         steps('Yield', obj["harvesting_and_storage"][0]["yield"]),
         steps('Storage', obj["harvesting_and_storage"][0]["Storage"]),
-        
-        MyhorizontalDivider(),
 
-        SizedBox(height: 20,),
+        Padding(
+          padding: const EdgeInsets.only(left: 25.0, right: 25),
+          child: Divider(
+            color: Colors.black,
+            height: 20,
+          ),
+        ),
+
+        SizedBox(
+          height: 20,
+        ),
         Padding(
           padding: const EdgeInsets.all(20),
           child: AutoSizeText(
@@ -301,7 +393,6 @@ class _CropProfileScreenState extends State<CropProfile> {
             maxLines: 1,
           ),
         ),
-
       ],
     );
   }
@@ -310,44 +401,40 @@ class _CropProfileScreenState extends State<CropProfile> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-        appBar: AppBar(
-          
-          title: Text('CropProfile'),
-          backgroundColor: kThemeColor,
-        ),
-        backgroundColor: Theme.of(context).brightness == Brightness.light?Colors.white:Colors.black,
-      
-        body: SingleChildScrollView(
-          child: Scrollbar(
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              child: FutureBuilder(
-                future: DefaultAssetBundle.of(context)
-                    .loadString("Crop_database/crop_database.json"),
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return new Text(
-                      '${snapshot.error}',
-                      style: TextStyle(color: Colors.red),
-                    );
-                  } else if (snapshot.hasData) {
-                    dynamic crop_list = json.decode(snapshot.data.toString());
-                    for (var i = 0; i < crop_list?.length ?? 0; i++) {
-                      if (crop_list[i]["name"] == widget.crop_name) {
-                        flag = true;
-                        return _profile(crop_list[i]);
+        backgroundColor: Colors.grey[200],
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Scrollbar(
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                child: FutureBuilder(
+                  future: DefaultAssetBundle.of(context)
+                      .loadString("Crop_database/crop_database.json"),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return new Text(
+                        '${snapshot.error}',
+                        style: TextStyle(color: Colors.red),
+                      );
+                    } else if (snapshot.hasData) {
+                      dynamic crop_list = json.decode(snapshot.data.toString());
+                      for (var i = 0; i < crop_list?.length ?? 0; i++) {
+                        if (crop_list[i]["name"] == widget.crop_name) {
+                          flag = true;
+                          return _profile(crop_list[i]);
+                        }
+                      }
+                      if (flag == false) {
+                        return Center(
+                            child: Text(
+                          'Something went wrong ,Please try again later',
+                          style: TextStyle(color: Colors.black),
+                        ));
                       }
                     }
-                    if (flag == false) {
-                      return Center(
-                          child: Text(
-                        'Something went wrong ,Please try again later',
-                        style: TextStyle(color: Colors.white),
-                      ));
-                    }
-                  }
-                  return new Loading();
-                },
+                    return new Loading();
+                  },
+                ),
               ),
             ),
           ),
