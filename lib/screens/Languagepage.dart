@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:gexxx_flutter/main.dart';
 import 'package:gexxx_flutter/models/language.dart';
 import 'package:gexxx_flutter/screens/authenticate/login2.dart';
 import 'package:gexxx_flutter/utilities/MyVerticalDivider.dart';
 import 'package:gexxx_flutter/utilities/MyhorizantalDivider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LanguagePage extends StatefulWidget {
   @override
@@ -119,11 +121,16 @@ void initState() {
               label: Text('Next'),
               elevation: 2,
               tooltip: 'next',
-              onPressed: (){
+              onPressed: () async {
                 print(selectedindex);
                 if(selectedindex!=null)
                 {
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage(language: languages[selectedindex],)));
+                  Locale newLocale = Locale(languages[selectedindex].code, 'IN');
+                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                  prefs.setString('language_code', languages[selectedindex].code);
+                  prefs.setString('country_code', "IN");
+                  MyApp.setLocale(context, newLocale);
+                  Navigator.pop(context);
                 }
                 else{
                   setState(() {

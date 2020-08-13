@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gexxx_flutter/app_localizations.dart';
+import 'package:gexxx_flutter/main.dart';
 import 'package:gexxx_flutter/models/user.dart';
 import 'package:gexxx_flutter/models/weather.dart';
 import 'package:gexxx_flutter/screens/Cropslist.dart';
+import 'package:gexxx_flutter/screens/Languagepage.dart';
 import 'package:gexxx_flutter/screens/MainDrawer.dart';
 import 'package:gexxx_flutter/screens/News.dart';
 import 'package:gexxx_flutter/screens/addcrop.dart';
@@ -15,6 +17,7 @@ import 'package:gexxx_flutter/utilities/Loading.dart';
 import 'package:gexxx_flutter/utilities/MyVerticalDivider.dart';
 import 'package:gexxx_flutter/utilities/MyhorizantalDivider.dart';
 import 'package:gexxx_flutter/utilities/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
@@ -601,7 +604,7 @@ class _HomeScreenState extends State<Home> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  'Welcome',
+                                  AppLocalizations.of(context).translate('Dashboard'),
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold,
@@ -706,7 +709,9 @@ class _HomeScreenState extends State<Home> {
                                           )));
                             }),
                             ActionCard('About us', Icons.priority_high,
-                                Colors.red, () {}),
+                                Colors.red, () async {
+                                  
+                                }),
                             ActionCard(
                                 'logout', Icons.power_settings_new, kThemeColor,
                                 () {
@@ -762,8 +767,8 @@ class _HomeScreenState extends State<Home> {
                       height: 10,
                     ),
                     Container(
-                      height: MediaQuery.of(context).size.height * 0.2,
-                      width: MediaQuery.of(context).size.width,
+                      //height: MediaQuery.of(context).size.height * 0.2,
+                      //width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(5),
@@ -795,27 +800,14 @@ class _HomeScreenState extends State<Home> {
                             ),
                           ),
                           _customtextbox('Your Whishlist', () {}),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.2,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(5),
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.grey[200],
-                                spreadRadius: 1,
-                                blurRadius: 5)
-                          ]),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(left: 20.0, right: 20),
+                            child: Divider(
+                              color: Colors.grey[700],
+                              height: 5,
+                            ),
+                          ),
                           _customtextbox('Change Phone number', () {}),
                           Padding(
                             padding:
@@ -835,6 +827,17 @@ class _HomeScreenState extends State<Home> {
                             ),
                           ),
                           _customtextbox('settings', () {}),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(left: 20.0, right: 20),
+                            child: Divider(
+                              color: Colors.grey[700],
+                              height: 5,
+                            ),
+                          ),
+                          _customtextbox('languages', () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>LanguagePage()));
+                          })
                         ],
                       ),
                     ),
