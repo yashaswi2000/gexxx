@@ -2,7 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as prefix0;
 import 'package:gexxx_flutter/models/Crop.dart';
 import 'package:gexxx_flutter/models/article.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:translator/translator.dart';
 import 'package:gexxx_flutter/models/user.dart';
 
 class DatabaseService {
@@ -14,6 +15,8 @@ class DatabaseService {
       Firestore.instance.collection('Users');
   final CollectionReference CropsCollection =
       Firestore.instance.collection('Crops');
+
+  
 
   Future<bool> updatefavorites(String crop) async {
     try {
@@ -131,8 +134,19 @@ class DatabaseService {
       Firestore.instance.collection('news');
   List<Article> _newsDataFromSnapShot(QuerySnapshot querySnapshot) {
     return querySnapshot.documents.map((snapshot) {
+      final translator = new GoogleTranslator();
+      var trans = snapshot.data['title'];
+      var translation = null;
+      SharedPreferences.getInstance().then((prefs) async => {
+        print(prefs.getString('language_code') + "temp"),
+        translator.translateAndPrint("I would buy a car, if I had money.",to: 'hi'),
+        //translator.translate(snapshot.data['title'], from: 'en', to: prefs.getString('language_code')).then((value) => {
+        //  print(value)
+       // })
+      });
+      //var translation = await translator.translate(snapshot.data['title'], from: 'en', to: pref.getString('language_code'));
       return Article(
-          title: snapshot.data['title'],
+          title: trans,
           summary: snapshot.data['summary'],
           articlelink: snapshot.data['articlelink'],
           image: snapshot.data['img'],

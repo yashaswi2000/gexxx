@@ -544,7 +544,7 @@ class _HomeScreenState extends State<Home> {
                   height: 10,
                 ),
                 Text(
-                  'Add',
+                  AppLocalizations.of(context).translate('Add'),
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w500,
@@ -681,15 +681,15 @@ class _HomeScreenState extends State<Home> {
                           spacing: 20,
                           runSpacing: 20,
                           children: <Widget>[
-                            ActionCard('All Crops', Icons.tab, Colors.blue, () {
+                            ActionCard(AppLocalizations.of(context).translate('All Crops'), Icons.tab, Colors.blue, () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => Cropslist()));
                             }),
-                            ActionCard('Policies', Icons.panorama_wide_angle,
+                            ActionCard(AppLocalizations.of(context).translate('Policies'), Icons.panorama_wide_angle,
                                 Colors.red, () {}),
-                            ActionCard('News', Icons.public, kThemeColor, () {
+                            ActionCard(AppLocalizations.of(context).translate('News'), Icons.public, kThemeColor, () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -697,7 +697,7 @@ class _HomeScreenState extends State<Home> {
                                   ));
                             }),
                             ActionCard(
-                                'Weather', WeatherIcons.day_sunny, kThemeColor,
+                                AppLocalizations.of(context).translate('Weather'), WeatherIcons.day_sunny, kThemeColor,
                                 () {
                               Navigator.push(
                                   context,
@@ -708,12 +708,12 @@ class _HomeScreenState extends State<Home> {
                                             dailyweather: dailyweatherlist,
                                           )));
                             }),
-                            ActionCard('About us', Icons.priority_high,
+                            ActionCard(AppLocalizations.of(context).translate('About us'), Icons.priority_high,
                                 Colors.red, () async {
                                   
                                 }),
                             ActionCard(
-                                'logout', Icons.power_settings_new, kThemeColor,
+                                AppLocalizations.of(context).translate('Logout'), Icons.power_settings_new, kThemeColor,
                                 () {
                               AuthService().signoutwithGoogle();
                             }),
@@ -743,7 +743,7 @@ class _HomeScreenState extends State<Home> {
                     SizedBox(
                       height: 20,
                     ),
-                    Text('Your Favourites',
+                    Text(AppLocalizations.of(context).translate('Your Favourites'),
                         style: TextStyle(
                             color: Colors.black, fontWeight: FontWeight.w500)),
                     SizedBox(
@@ -781,7 +781,7 @@ class _HomeScreenState extends State<Home> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
-                          _customtextbox('Your Orders', () {}),
+                          _customtextbox(AppLocalizations.of(context).translate('Your orders'), () {}),
                           Padding(
                             padding:
                                 const EdgeInsets.only(left: 20.0, right: 20),
@@ -790,7 +790,7 @@ class _HomeScreenState extends State<Home> {
                               height: 5,
                             ),
                           ),
-                          _customtextbox('Your Account', () {}),
+                          _customtextbox(AppLocalizations.of(context).translate('Your Account'), () {}),
                           Padding(
                             padding:
                                 const EdgeInsets.only(left: 20.0, right: 20),
@@ -799,7 +799,7 @@ class _HomeScreenState extends State<Home> {
                               height: 5,
                             ),
                           ),
-                          _customtextbox('Your Whishlist', () {}),
+                          _customtextbox(AppLocalizations.of(context).translate('Your Whishlist'), () {}),
                           Padding(
                             padding:
                                 const EdgeInsets.only(left: 20.0, right: 20),
@@ -808,7 +808,7 @@ class _HomeScreenState extends State<Home> {
                               height: 5,
                             ),
                           ),
-                          _customtextbox('Change Phone number', () {}),
+                          _customtextbox(AppLocalizations.of(context).translate('Change Phone number'), () {}),
                           Padding(
                             padding:
                                 const EdgeInsets.only(left: 20.0, right: 20),
@@ -817,7 +817,7 @@ class _HomeScreenState extends State<Home> {
                               height: 5,
                             ),
                           ),
-                          _customtextbox('Address Book', () {}),
+                          _customtextbox(AppLocalizations.of(context).translate('Address Book'), () {}),
                           Padding(
                             padding:
                                 const EdgeInsets.only(left: 20.0, right: 20),
@@ -826,7 +826,7 @@ class _HomeScreenState extends State<Home> {
                               height: 5,
                             ),
                           ),
-                          _customtextbox('settings', () {}),
+                          _customtextbox(AppLocalizations.of(context).translate('settings'), () {}),
                           Padding(
                             padding:
                                 const EdgeInsets.only(left: 20.0, right: 20),
@@ -835,7 +835,7 @@ class _HomeScreenState extends State<Home> {
                               height: 5,
                             ),
                           ),
-                          _customtextbox('languages', () {
+                          _customtextbox(AppLocalizations.of(context).translate('languages'), () {
                             Navigator.push(context, MaterialPageRoute(builder: (context)=>LanguagePage()));
                           })
                         ],

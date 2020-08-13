@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:gexxx_flutter/app_localizations.dart';
 import 'package:gexxx_flutter/database/database.dart';
 import 'package:gexxx_flutter/models/article.dart';
 import 'package:gexxx_flutter/screens/articlepage.dart';
+import 'package:translator/translator.dart';
+
 
 class News extends StatefulWidget {
   @override
@@ -9,6 +12,8 @@ class News extends StatefulWidget {
 }
 
 class _NewsState extends State<News> {
+
+   final translator = GoogleTranslator();
   Widget newbox(Article article) {
     return InkWell(
       onTap: () {
@@ -96,7 +101,7 @@ class _NewsState extends State<News> {
                               onPressed: () {},
                             ),
                             Text(
-                              'News',
+                              AppLocalizations.of(context).translate('News'),
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold),
