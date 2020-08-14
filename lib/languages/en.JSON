@@ -1,4 +1,13 @@
 {
+    "Add":"Add",
+    "languages":"languages",
+    "settings":"settings",
+    "Address Book":"Address Book",
+    "Change Phone number":"Change Phone number",
+    "Your Whishlist":"Your Whishlist",    
+    "Your Account":"Your Account",
+    "Your orders":"Your Orders",    
+    "Your Favourites": "Your Favourites",
     "Dashboard": "Dashboard",
     "You are now logged in as": "You are now logged in as",
     "Logout": "Logout",
