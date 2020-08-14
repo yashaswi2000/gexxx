@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -61,7 +63,7 @@ class _HomeScreenState extends State<Home> {
 
   var stateController = new TextEditingController();
   var districtController = new TextEditingController();
-
+  File image;
   Future getData() async {
     http.Response response = await http.get(
         "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001cdd3946e44ce4aad7209ff7b23ac571b&format=json&offset=0&limit=30");
@@ -545,11 +547,15 @@ class _HomeScreenState extends State<Home> {
   }
 
   Future _pickimage() async {
-    var image = await ImagePicker.pickImage(
+    var i = await ImagePicker.pickImage(
         source: ImageSource.gallery,
         imageQuality: 100,
         maxHeight: 150,
         maxWidth: 150);
+    setState(() {
+      image = i;
+    });
+    print(image);
   }
 
   @override
@@ -824,15 +830,26 @@ class _HomeScreenState extends State<Home> {
                           runSpacing: 20,
                           spacing: 20,
                           children: <Widget>[
-                            ActionCard(AppLocalizations.of(context).translate('All Crops'), Icons.tab, Colors.blue, () {
+                            ActionCard(
+                                AppLocalizations.of(context)
+                                    .translate('All Crops'),
+                                Icons.tab,
+                                Colors.blue, () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => Cropslist()));
                             }),
-                            ActionCard(AppLocalizations.of(context).translate('Policies'), Icons.panorama_wide_angle,
-                                Colors.red, () {}),
-                            ActionCard(AppLocalizations.of(context).translate('News'), Icons.public, kThemeColor, () {
+                            ActionCard(
+                                AppLocalizations.of(context)
+                                    .translate('Policies'),
+                                Icons.panorama_wide_angle,
+                                Colors.red,
+                                () {}),
+                            ActionCard(
+                                AppLocalizations.of(context).translate('News'),
+                                Icons.public,
+                                kThemeColor, () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -840,8 +857,10 @@ class _HomeScreenState extends State<Home> {
                                   ));
                             }),
                             ActionCard(
-                                AppLocalizations.of(context).translate('Weather'), WeatherIcons.day_sunny, kThemeColor,
-                                () {
+                                AppLocalizations.of(context)
+                                    .translate('Weather'),
+                                WeatherIcons.day_sunny,
+                                kThemeColor, () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -851,18 +870,17 @@ class _HomeScreenState extends State<Home> {
                                             dailyweather: dailyweatherlist,
                                           )));
                             }),
-<<<<<<< HEAD
-                            ActionCard('About us', Icons.priority_high,
-                                Colors.red, () async {}),
-=======
-                            ActionCard(AppLocalizations.of(context).translate('About us'), Icons.priority_high,
-                                Colors.red, () async {
-                                  
-                                }),
->>>>>>> e6446fc9159da2cfb4316033048088e6dc57113a
                             ActionCard(
-                                AppLocalizations.of(context).translate('Logout'), Icons.power_settings_new, kThemeColor,
-                                () {
+                                AppLocalizations.of(context)
+                                    .translate('About us'),
+                                Icons.priority_high,
+                                Colors.red,
+                                () async {}),
+                            ActionCard(
+                                AppLocalizations.of(context)
+                                    .translate('Logout'),
+                                Icons.power_settings_new,
+                                kThemeColor, () {
                               AuthService().signoutwithGoogle();
                             }),
                           ],
@@ -958,6 +976,9 @@ class _HomeScreenState extends State<Home> {
                           ),
                         ),
                       ),
+                      image == null
+                          ? Container()
+                          : Center(child: Image.file(image)),
                       SizedBox(
                         height: 10,
                       ),
@@ -982,7 +1003,9 @@ class _HomeScreenState extends State<Home> {
                     SizedBox(
                       height: 20,
                     ),
-                    Text(AppLocalizations.of(context).translate('Your Favourites'),
+                    Text(
+                        AppLocalizations.of(context)
+                            .translate('Your Favourites'),
                         style: TextStyle(
                             color: Colors.black, fontWeight: FontWeight.w500)),
                     SizedBox(
@@ -1020,7 +1043,10 @@ class _HomeScreenState extends State<Home> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
-                          _customtextbox(AppLocalizations.of(context).translate('Your orders'), () {}),
+                          _customtextbox(
+                              AppLocalizations.of(context)
+                                  .translate('Your orders'),
+                              () {}),
                           Padding(
                             padding:
                                 const EdgeInsets.only(left: 20.0, right: 20),
@@ -1029,7 +1055,10 @@ class _HomeScreenState extends State<Home> {
                               height: 5,
                             ),
                           ),
-                          _customtextbox(AppLocalizations.of(context).translate('Your Account'), () {}),
+                          _customtextbox(
+                              AppLocalizations.of(context)
+                                  .translate('Your Account'),
+                              () {}),
                           Padding(
                             padding:
                                 const EdgeInsets.only(left: 20.0, right: 20),
@@ -1038,7 +1067,10 @@ class _HomeScreenState extends State<Home> {
                               height: 5,
                             ),
                           ),
-                          _customtextbox(AppLocalizations.of(context).translate('Your Whishlist'), () {}),
+                          _customtextbox(
+                              AppLocalizations.of(context)
+                                  .translate('Your Whishlist'),
+                              () {}),
                           Padding(
                             padding:
                                 const EdgeInsets.only(left: 20.0, right: 20),
@@ -1047,7 +1079,10 @@ class _HomeScreenState extends State<Home> {
                               height: 5,
                             ),
                           ),
-                          _customtextbox(AppLocalizations.of(context).translate('Change Phone number'), () {}),
+                          _customtextbox(
+                              AppLocalizations.of(context)
+                                  .translate('Change Phone number'),
+                              () {}),
                           Padding(
                             padding:
                                 const EdgeInsets.only(left: 20.0, right: 20),
@@ -1056,7 +1091,10 @@ class _HomeScreenState extends State<Home> {
                               height: 5,
                             ),
                           ),
-                          _customtextbox(AppLocalizations.of(context).translate('Address Book'), () {}),
+                          _customtextbox(
+                              AppLocalizations.of(context)
+                                  .translate('Address Book'),
+                              () {}),
                           Padding(
                             padding:
                                 const EdgeInsets.only(left: 20.0, right: 20),
@@ -1065,7 +1103,10 @@ class _HomeScreenState extends State<Home> {
                               height: 5,
                             ),
                           ),
-                          _customtextbox(AppLocalizations.of(context).translate('settings'), () {}),
+                          _customtextbox(
+                              AppLocalizations.of(context)
+                                  .translate('settings'),
+                              () {}),
                           Padding(
                             padding:
                                 const EdgeInsets.only(left: 20.0, right: 20),
@@ -1074,16 +1115,13 @@ class _HomeScreenState extends State<Home> {
                               height: 5,
                             ),
                           ),
-<<<<<<< HEAD
-                          _customtextbox('languages', () {
+                          _customtextbox(
+                              AppLocalizations.of(context)
+                                  .translate('languages'), () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => LanguagePage()));
-=======
-                          _customtextbox(AppLocalizations.of(context).translate('languages'), () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>LanguagePage()));
->>>>>>> e6446fc9159da2cfb4316033048088e6dc57113a
                           })
                         ],
                       ),

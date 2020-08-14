@@ -36,12 +36,8 @@ dependencies:
   flutter_spinkit: "^4.1.2"
   curved_navigation_bar: ^0.3.2
   cloud_firestore: ^0.12.10
-<<<<<<< HEAD
   translator: ^0.1.1
   image_picker: ^0.6.5+3
-=======
-  translator: ^0.1.5
->>>>>>> e6446fc9159da2cfb4316033048088e6dc57113a
   location: ^2.4.0
   pin_code_text_field: ^1.5.1
   bottom_navy_bar: ^5.4.0
