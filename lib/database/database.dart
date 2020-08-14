@@ -139,7 +139,7 @@ class DatabaseService {
       var translation = null;
       SharedPreferences.getInstance().then((prefs) async => {
         print(prefs.getString('language_code') + "temp"),
-        translator.translateAndPrint("I would buy a car, if I had money.",to: 'hi'),
+        //translator.translateAndPrint("I would buy a car, if I had money.",to: 'hi'),
         //translator.translate(snapshot.data['title'], from: 'en', to: prefs.getString('language_code')).then((value) => {
         //  print(value)
        // })

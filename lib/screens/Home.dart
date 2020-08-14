@@ -31,6 +31,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:translator/translator.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:weather_icons/weather_icons.dart';
+import 'dart:ui' as ui;
 
 class Home extends StatefulWidget {
   final UserData userData;
@@ -556,6 +557,14 @@ class _HomeScreenState extends State<Home> {
       image = i;
     });
     print(image);
+    var decodeimage = await decodeImageFromList(image.readAsBytesSync());
+    List RGBAList;
+    decodeimage
+        .toByteData(format: ui.ImageByteFormat.rawRgba)
+        .then((ByteData data) {
+     RGBAList = data.buffer.asUint8List().toList();
+    });
+    print(RGBAList);
   }
 
   @override
