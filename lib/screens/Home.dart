@@ -547,6 +547,8 @@ class _HomeScreenState extends State<Home> {
     );
   }
 
+  List RGBAList;
+
   Future _pickimage() async {
     var i = await ImagePicker.pickImage(
         source: ImageSource.gallery,
@@ -556,15 +558,16 @@ class _HomeScreenState extends State<Home> {
     setState(() {
       image = i;
     });
-    print(image);
-    var decodeimage = await decodeImageFromList(image.readAsBytesSync());
-    List RGBAList;
+    ui.Image decodeimage = await decodeImageFromList(image.readAsBytesSync());
     decodeimage
         .toByteData(format: ui.ImageByteFormat.rawRgba)
         .then((ByteData data) {
-     RGBAList = data.buffer.asUint8List().toList();
+      setState(() {
+        RGBAList = data.buffer.asUint8List().toList();
+      });
     });
     print(RGBAList);
+    //print(image);
   }
 
   @override
