@@ -11,138 +11,156 @@ class LanguagePage extends StatefulWidget {
   _LanguagePageScreenState createState() => _LanguagePageScreenState();
 }
 
-
 class _LanguagePageScreenState extends State<LanguagePage> {
-  
-
-
   List<Language> languages;
 
   @override
-void initState() {
-  super.initState();
-  languages = Language.getLanguages();
-}
-  bool isSelected= false;
+  void initState() {
+    super.initState();
+    languages = Language.getLanguages();
+  }
+
+  bool isSelected = false;
   String LanguageSelected;
   int selectedindex;
   bool visible = false;
-  Widget _languagebox(String one ,String two,int index,int selecteditem)
-{
-  return Container(
-    decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.white,width: 1))),
-    width: MediaQuery.of(context).size.width,
-    height: MediaQuery.of(context).size.height*0.07,
-    child: Center(
-      child: Padding(
-        padding: const EdgeInsets.only(left:20.0,right:20),
-        child: Row(children: <Widget>[
-          Text(one,style: TextStyle(color:index==selecteditem? Colors.grey[800]:Colors.white,fontSize: 20),),
-          SizedBox(width: 20,),
-          MyVerticalDivider(),
-          
-          SizedBox(width: 20,),
-          Text(two,style: TextStyle(color: index==selecteditem?Colors.grey[800]:Colors.white,fontSize: 20),),
-        ],),
+  Widget _languagebox(String one, String two, int index, int selecteditem) {
+    return Container(
+      decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(color: Colors.white, width: 1))),
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height * 0.07,
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 20.0, right: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                one,
+                style: TextStyle(
+                  color: index == selecteditem ? Colors.blue : Colors.black,
+                ),
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              Text(
+                '-',
+                style: TextStyle(color: Colors.black),
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              Text(
+                two,
+                style: TextStyle(
+                    color: index == selecteditem ? Colors.blue : Colors.black,
+                    fontSize: 20),
+              ),
+            ],
+          ),
+        ),
       ),
-    ),
-    
-  );
-}
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.teal,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(top:70.0,left:10,right:10),
-          child: Column(children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 30.0, left: 10, right: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Text('Choose Language',style: TextStyle(color: Colors.white,fontFamily: 'OpenSans',fontWeight: FontWeight.bold,fontSize: 25),),
+                Text(
+                  'Please Select your Language',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'OpenSans',
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(
+                  height: 50,
+                ),
+                ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: languages.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return InkWell(
+                        onTap: () {
+                          setState(() {
+                            visible = false;
+                            languages[index].Selected = true;
+                            LanguageSelected = languages[index].Name;
+                            selectedindex = index;
+                          });
+                        },
+                        child: _languagebox(
+                            languages[index].Name,
+                            languages[index].TranslatedName,
+                            index,
+                            selectedindex),
+                      );
+                    }),
+                SizedBox(height: 20),
+                Visibility(
+                  child: Center(
+                    child: Text(
+                      'Please select language',
+                      style: TextStyle(
+                          color: Colors.red, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  visible: visible,
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                FloatingActionButton.extended(
+                  backgroundColor: Colors.grey[800],
+                  isExtended: true,
+                  label: Text(
+                    'Next',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  elevation: 2,
+                  tooltip: 'next',
+                  onPressed: () async {
+                    print(selectedindex);
+                    if (selectedindex != null) {
+                      Locale newLocale =
+                          Locale(languages[selectedindex].code, 'IN');
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      prefs.setString(
+                          'language_code', languages[selectedindex].code);
+                      prefs.setString('country_code', "IN");
+                      MyApp.setLocale(context, newLocale);
+                      Navigator.pop(context);
+                    } else {
+                      setState(() {
+                        visible = true;
+                      });
+                    }
+
+                    //Navigator.pop(context);
+                  },
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5)),
+                  icon: Icon(
+                    Icons.arrow_forward,
+                    color: Colors.white,
+                  ),
+                )
               ],
             ),
-            SizedBox(height: 20),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height*0.07,
-              decoration: BoxDecoration(color: Colors.grey[800],borderRadius: BorderRadius.circular(10)),
-              child: Center(child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Icon(Icons.tag_faces,color: Colors.white,size: 30,),
-                  SizedBox(width: 10),
-                  Text('WELCOME TO GEXXX',style: TextStyle(color: Colors.white,fontSize: 20),),
-                ],
-              ),),
-            ),
-            SizedBox(height: 30),
-            Container(
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height*0.59,
-                          child: Scrollbar(
-                                                      child: ListView.builder(
-                              
-                itemCount: languages.length,
-                itemBuilder: (BuildContext context,int index){
-                  return InkWell(
-                    splashColor: Colors.grey[900],
-                    onTap: (){
-                      setState(() {
-
-                        visible = false;
-                        languages[index].Selected=true;
-                        LanguageSelected = languages[index].Name;
-                        selectedindex = index;
-                        
-
-                      });
-                      
-                    },
-                    child: _languagebox(languages[index].Name, languages[index].TranslatedName,index,selectedindex),
-                  );
-                }),
-                          )
-            ),
-            SizedBox(height: 10),
-            MyhorizontalDivider(),
-            SizedBox(height: 10),
-            Visibility(
-              child: Center(child: Text('Please select language',style: TextStyle(color: Colors.grey[800],fontWeight: FontWeight.bold),),),
-              visible: visible,
-            ),
-            SizedBox(height: 10,),
-            FloatingActionButton.extended(
-              
-              backgroundColor: Colors.grey[800],
-              isExtended: true,
-              label: Text('Next'),
-              elevation: 2,
-              tooltip: 'next',
-              onPressed: () async {
-                print(selectedindex);
-                if(selectedindex!=null)
-                {
-                  Locale newLocale = Locale(languages[selectedindex].code, 'IN');
-                  SharedPreferences prefs = await SharedPreferences.getInstance();
-                  prefs.setString('language_code', languages[selectedindex].code);
-                  prefs.setString('country_code', "IN");
-                  MyApp.setLocale(context, newLocale);
-                  Navigator.pop(context);
-                }
-                else{
-                  setState(() {
-                    visible =  true;
-                  });
-                }
-                
-                //Navigator.pop(context);
-              },
-              icon:Icon(Icons.arrow_forward),)
-
-          ],),
+          ),
         ),
       ),
     );

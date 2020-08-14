@@ -17,13 +17,15 @@ import 'package:gexxx_flutter/utilities/Loading.dart';
 import 'package:gexxx_flutter/utilities/MyVerticalDivider.dart';
 import 'package:gexxx_flutter/utilities/MyhorizantalDivider.dart';
 import 'package:gexxx_flutter/utilities/constants.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'package:gexxx_flutter/database/database.dart';
-
+import 'package:image/image.dart' as ImD;
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:translator/translator.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:weather_icons/weather_icons.dart';
@@ -353,8 +355,8 @@ class _HomeScreenState extends State<Home> {
             boxShadow: [
               BoxShadow(
                 color: Colors.grey[200],
-                blurRadius: 4,
-                spreadRadius: 2,
+                blurRadius: 5,
+                spreadRadius: 1,
               ),
             ]),
         child: Column(
@@ -416,6 +418,138 @@ class _HomeScreenState extends State<Home> {
         ),
       ),
     );
+  }
+
+  Widget _pricebox() {
+    return InkWell(
+      child: Container(
+        color: Colors.grey[100],
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "Tomato Desi",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: MediaQuery.of(context).size.height * 0.02),
+                  ),
+                  Text(
+                    "1,600 / Q",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: MediaQuery.of(context).size.height * 0.02),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        "Bowenpally",
+                        style: TextStyle(
+                            color: Colors.grey[800],
+                            fontWeight: FontWeight.w400),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "13-Aug-2020",
+                        style: TextStyle(
+                            color: Colors.grey[800],
+                            fontWeight: FontWeight.w400),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 20.0, right: 20, top: 10, bottom: 10),
+                      child: Text(
+                        "^ 11.12 %",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize:
+                                MediaQuery.of(context).size.height * 0.017),
+                      ),
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _marketview() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(5),
+          boxShadow: [
+            BoxShadow(color: Colors.grey[200], spreadRadius: 1, blurRadius: 5)
+          ]),
+      child: Column(
+        children: <Widget>[
+          Container(
+            height: MediaQuery.of(context).size.height * 0.05,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+              color: Colors.blue,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(5), topRight: Radius.circular(5)),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 15.0, right: 15),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    'Market view',
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.w500),
+                  ),
+                  Icon(
+                    Icons.navigate_next,
+                    color: Colors.white,
+                  )
+                ],
+              ),
+            ),
+          ),
+          _pricebox(),
+          _pricebox(),
+        ],
+      ),
+    );
+  }
+
+  Future _pickimage() async {
+    var image = await ImagePicker.pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 100,
+        maxHeight: 150,
+        maxWidth: 150);
   }
 
   @override
@@ -604,7 +738,8 @@ class _HomeScreenState extends State<Home> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  AppLocalizations.of(context).translate('Dashboard'),
+                                  AppLocalizations.of(context)
+                                      .translate('Dashboard'),
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold,
@@ -626,9 +761,17 @@ class _HomeScreenState extends State<Home> {
                             currentWeatherData == null ||
                                     locality == null ||
                                     country == null
-                                ? Container(
-                                    child: CircularProgressIndicator(),
-                                  )
+                                ? Shimmer.fromColors(
+                                    child: Container(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.05,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.2,
+                                      color: Colors.grey[200],
+                                    ),
+                                    baseColor: Colors.grey[300],
+                                    highlightColor: Colors.white)
                                 : Container(
                                     child: Column(
                                       crossAxisAlignment:
@@ -677,9 +820,9 @@ class _HomeScreenState extends State<Home> {
                       ),
                       Center(
                         child: Wrap(
-                          alignment: WrapAlignment.center,
-                          spacing: 20,
+                          alignment: WrapAlignment.spaceBetween,
                           runSpacing: 20,
+                          spacing: 20,
                           children: <Widget>[
                             ActionCard('All Crops', Icons.tab, Colors.blue, () {
                               Navigator.push(
@@ -709,9 +852,7 @@ class _HomeScreenState extends State<Home> {
                                           )));
                             }),
                             ActionCard('About us', Icons.priority_high,
-                                Colors.red, () async {
-                                  
-                                }),
+                                Colors.red, () async {}),
                             ActionCard(
                                 'logout', Icons.power_settings_new, kThemeColor,
                                 () {
@@ -723,6 +864,97 @@ class _HomeScreenState extends State<Home> {
                       SizedBox(
                         height: 20,
                       ),
+                      InkWell(
+                        onTap: () {},
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius: BorderRadius.circular(5)),
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 10.0, right: 10, top: 10, bottom: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Row(
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.playlist_add_check,
+                                      color: Colors.white,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      'Crop Plan',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Icon(
+                                  Icons.navigate_next,
+                                  color: Colors.white,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          _pickimage();
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius: BorderRadius.circular(5)),
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 10.0, right: 10, top: 10, bottom: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Row(
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.playlist_add_check,
+                                      color: Colors.white,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      'pick image',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Icon(
+                                  Icons.navigate_next,
+                                  color: Colors.white,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      _marketview(),
                       SizedBox(
                         height: 20,
                       ),
@@ -836,7 +1068,10 @@ class _HomeScreenState extends State<Home> {
                             ),
                           ),
                           _customtextbox('languages', () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>LanguagePage()));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LanguagePage()));
                           })
                         ],
                       ),

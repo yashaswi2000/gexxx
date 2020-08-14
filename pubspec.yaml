@@ -37,10 +37,12 @@ dependencies:
   curved_navigation_bar: ^0.3.2
   cloud_firestore: ^0.12.10
   translator: ^0.1.1
+  image_picker: ^0.6.5+3
   location: ^2.4.0
   pin_code_text_field: ^1.5.1
   bottom_navy_bar: ^5.4.0
   google_sign_in:
+  shimmer: ^1.1.1
   fluttertoast: ^3.0.0
   dynamic_theme: ^1.0.0
   geolocator: ^5.1.1
