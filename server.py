@@ -1,4 +1,5 @@
 # using flask_restful
+import numpy as np
 import firebase_admin
 from firebase_admin import credentials, firestore
 from flask import Flask, jsonify, request
@@ -46,7 +47,128 @@ def getschema(articles):
                 doc_ref = db.collection('policies').document(downloadlink.replace("/", "")).create(j)
             except:
                 print("exception\n")
-            
+
+
+def getprice():
+    url = "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001cdd3946e44ce4aad7209ff7b23ac571b&format=json&offset=0&limit=100"
+    page_request = requests.get(url)
+    data = json.loads(page_request.text)
+    print(data)
+    print("\n")
+    #print(data["records"])
+    pricing = {}
+    pricing["updated_date"] = data["updated_date"]
+    pricing["list"] = []
+    records = data["records"]
+    track = np.zeros(len(records))
+    for i in range(0,len(records)):
+        print(track[i])
+        comodity = {}
+        comodity["commodity"] = records[i]["commodity"]
+        comodity["pricelist"] = []
+        for j in range(0,len(records)):
+            if records[j]["commodity"] == records[i]["commodity"] and track[j] == 0:
+                priceobj = {}
+                priceobj["state"] = records[j]["state"]
+                priceobj["district"] = records[j]["district"]
+                priceobj["market"] = records[j]["market"]
+                priceobj["market_list"] = []
+                priceobj1 = {}
+                priceobj1["min_price"] = records[j]["min_price"]
+                priceobj1["max_price"] = records[j]["max_price"]
+                priceobj1["modal_price"] = records[j]["modal_price"]
+                priceobj1["timestamp"] = records[i]["timestamp"]
+                priceobj["market_list"].append(priceobj1)
+                comodity["pricelist"].append(priceobj)
+                track[j] = 1
+        
+        
+        if(len(comodity["pricelist"]) != 0):
+            print(comodity)
+            doc_ref = db.collection('pricelist').document(comodity["commodity"]).create(comodity)
+    # try:
+    #     doc_ref = db.collection('pricelist').document(pricing["timestamp"]).create(pricing)
+    # except:
+    #     print("exception\n")
+
+def on_snapshot(docs, changes, read_time):
+    for doc in docs:
+        print(u'{} => {}'.format(doc.id, doc.to_dict()))
+
+# Watch this query
+
+
+def gettrend():
+    url = "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001cdd3946e44ce4aad7209ff7b23ac571b&format=json&offset=0&limit=100"
+    page_request = requests.get(url)
+    data = json.loads(page_request.text)
+    print(data)
+    print("\n")
+    #print(data["records"])
+    records = data["records"]
+    track = np.zeros(len(records))
+    for i in range(0,len(records)):
+        comodity = {}
+        comodity["commodity"] = records[i]["commodity"]
+        comodity["pricelist"] = []
+        data_base = db.collection('pricelist').document(comodity["commodity"]).get().to_dict()
+        print(data_base)
+        if data_base!=None:
+            count = 0
+            for j in range(0,len(data_base["pricelist"])):
+                if data_base["pricelist"][j]["market"] == records[i]["market"]:
+                    priceobj1 = {}
+                    priceobj1["min_price"] = records[i]["min_price"]
+                    priceobj1["max_price"] = records[i]["max_price"]
+                    priceobj1["modal_price"] = records[i]["modal_price"]
+                    priceobj1["timestamp"] = records[i]["timestamp"]
+                    if priceobj1 in data_base["pricelist"][j]["market_list"]:
+                        print("present\n")
+                    else:
+                        data_base["pricelist"][j]["market_list"].append(priceobj1)
+                    count = 1
+            if count == 0:
+                priceobj = {}
+                priceobj["state"] = records[i]["state"]
+                priceobj["district"] = records[i]["district"]
+                priceobj["market"] = records[i]["market"]
+                priceobj["market_list"] = []
+                priceobj1 = {}
+                priceobj1["min_price"] = records[i]["min_price"]
+                priceobj1["max_price"] = records[i]["max_price"]
+                priceobj1["modal_price"] = records[i]["modal_price"]
+                priceobj1["timestamp"] = records[i]["timestamp"]
+                priceobj["market_list"].append(priceobj1)
+                data_base["pricelist"].append(priceobj)
+                    
+            doc_ref = db.collection('pricelist').document(comodity["commodity"]).update(data_base)
+
+        else:
+            for j in range(0,len(records)):
+                if records[j]["commodity"] == records[i]["commodity"] and track[j] == 0:
+                    priceobj = {}
+                    priceobj["state"] = records[j]["state"]
+                    priceobj["district"] = records[j]["district"]
+                    priceobj["market"] = records[j]["market"]
+                    priceobj["market_list"] = []
+                    priceobj1 = {}
+                    priceobj1["min_price"] = records[j]["min_price"]
+                    priceobj1["max_price"] = records[j]["max_price"]
+                    priceobj1["modal_price"] = records[j]["modal_price"]
+                    priceobj1["timestamp"] = records[i]["timestamp"]
+                    priceobj["market_list"].append(priceobj1)
+                    comodity["pricelist"].append(priceobj)
+                    track[j] = 1
+        
+        
+            if(len(comodity["pricelist"]) != 0):
+                print(comodity)
+                doc_ref = db.collection('pricelist').document(comodity["commodity"]).create(comodity) 
+
+        
+    #query_watch = doc_ref.on_snapshot(on_snapshot)
+
+
       
 
 def getpestssolution():
@@ -147,10 +269,12 @@ class Hello(Resource):
 
       articles = []
       #getschema(articles)
-      gettimesofindia(articles)
-      gethindu(articles)
-      getschema(articles)
-      print(articles)
+      #gettimesofindia(articles)
+      #gethindu(articles)
+      #getschema(articles)
+      #print(articles)
+      #getprice()
+      gettrend()
       return jsonify(articles)
 
     # Corresponds to POST request
