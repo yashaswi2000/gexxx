@@ -25,7 +25,12 @@ class _AddcropplanState extends State<Addcropplan> {
         initialDate: DateTime.now(),
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
-    return picked;
+
+    if (picked == null) {
+      return DateTime.now();
+    } else {
+      return picked;
+    }
   }
 
   SharedPref sharedPref = SharedPref();
@@ -260,14 +265,15 @@ class _AddcropplanState extends State<Addcropplan> {
                                                                     crop:
                                                                         selected_crop,
                                                                     cultivationdate:
-                                                                        cdate));
+                                                                        cdate,
+                                                                    id: selected_crop +
+                                                                        cdate
+                                                                            .toString()));
                                                             Navigator.pop(
                                                                 context);
                                                             Navigator.pop(
                                                                 context);
 
-                                                            Navigator.pop(
-                                                                context);
                                                             showToast(
                                                                 'crop plan is added');
                                                           },

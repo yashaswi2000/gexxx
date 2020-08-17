@@ -78,6 +78,17 @@ class DatabaseService {
     }
   }
 
+  Future<bool> removefav(Pcrop pcrop) async {
+    try {
+      await UsersCollection.document(uid).updateData({
+        'favouritecrops': FieldValue.arrayRemove([pcrop.toJson()]),
+      });
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future<bool> cropexists(String crop) async {
     try {
       await UsersCollection.document(uid).snapshots().map((event) {
@@ -155,6 +166,16 @@ class DatabaseService {
   //collection stream
   Stream<UserData> get userData {
     return UsersCollection.document(uid).snapshots().map(_userDataFromSnapShot);
+  }
+
+  List<Pcrop> _favDataFromSnapShot(DocumentSnapshot snapshot) {
+    return snapshot.data['favouritecrops'].map<Pcrop>((e) {
+      return Pcrop.fromJson(e);
+    }).toList();
+  }
+
+  Stream<List<Pcrop>> get favcrop {
+    return UsersCollection.document(uid).snapshots().map(_favDataFromSnapShot);
   }
 
   _marketDataFromSnapshot(QuerySnapshot querysnapshot) {

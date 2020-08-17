@@ -473,7 +473,7 @@ class _HomeScreenState extends State<Home> {
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
                               fontSize:
-                                  MediaQuery.of(context).size.height * 0.02),
+                                  MediaQuery.of(context).size.height * 0.018),
                         ),
                         Text(
                           '₹ ${snapshot['pricelist'][0]['market_list'][0]['modal_price']}/-',
@@ -481,7 +481,7 @@ class _HomeScreenState extends State<Home> {
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
                               fontSize:
-                                  MediaQuery.of(context).size.height * 0.02),
+                                  MediaQuery.of(context).size.height * 0.018),
                         ),
                       ],
                     ),
@@ -539,26 +539,26 @@ class _HomeScreenState extends State<Home> {
   }
 
   Widget _marketview(List<DocumentSnapshot> snapshots) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(5),
-          boxShadow: [
-            BoxShadow(color: Colors.grey[200], spreadRadius: 1, blurRadius: 5)
-          ]),
-      child: Column(
-        children: <Widget>[
-          InkWell(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => marketview(
-                            snapshots: snapshots,
-                          )));
-            },
-            child: Container(
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => marketview(
+                      snapshots: snapshots,
+                    )));
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(5),
+            boxShadow: [
+              BoxShadow(color: Colors.grey[200], spreadRadius: 1, blurRadius: 5)
+            ]),
+        child: Column(
+          children: <Widget>[
+            Container(
               height: MediaQuery.of(context).size.height * 0.05,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
@@ -585,16 +585,16 @@ class _HomeScreenState extends State<Home> {
                 ),
               ),
             ),
-          ),
-          ListView(
-            shrinkWrap: true,
-            children: <Widget>[
-              _pricebox(snapshots[0]),
-              _pricebox(snapshots[1]),
-              _pricebox(snapshots[2]),
-            ],
-          )
-        ],
+            ListView(
+              shrinkWrap: true,
+              children: <Widget>[
+                _pricebox(snapshots[0]),
+                _pricebox(snapshots[1]),
+                _pricebox(snapshots[2]),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -896,7 +896,7 @@ class _HomeScreenState extends State<Home> {
                             SizedBox(
                               height: 10,
                             ),
-                            InkWell(
+                            /*InkWell(
                               onTap: () {
                                 _pickimage();
                               },
@@ -946,7 +946,7 @@ class _HomeScreenState extends State<Home> {
                             ),
                             image == null
                                 ? Container()
-                                : Center(child: Image.file(image)),
+                                : Center(child: Image.file(image)),*/
                             SizedBox(
                               height: 10,
                             ),
