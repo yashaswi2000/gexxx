@@ -30,7 +30,7 @@ dependencies:
   http: ^0.12.0+4
   shared_preferences: ^0.5.8
   auto_size_text: ^2.1.0  
-  flutter_svg: ^0.18.0
+  flutter_svg:
   firebase_auth: ^0.15.0+1
   provider: ^3.1.0
   flutter_spinkit: "^4.1.2"
@@ -48,7 +48,7 @@ dependencies:
   geolocator: ^5.1.1
   weather_icons: ^2.0.1
   url_launcher: ^5.5.0
-  image: ^2.1.14
+  image:
   
 
 
@@ -73,6 +73,7 @@ flutter:
       - Phone_code/Phone_code.json
       - State_names/State_names.json
       - Crop_database/crop_database.json
+      - Crop_database/crop_plan.json
       - assets/images/wheat1.jpg
       - assets/images/maize1.jpg
       - assets/images/bajra1.jpg

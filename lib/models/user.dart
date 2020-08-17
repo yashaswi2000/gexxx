@@ -1,3 +1,5 @@
+import 'package:gexxx_flutter/models/pcrop.dart';
+
 class User {
   final String uid;
   final String email;
@@ -18,7 +20,7 @@ class UserData {
   String image;
   String language;
   String languagecode;
-  List<String> favouritecrops;
+  List<Pcrop> favouritecrops;
   UserData(
       {this.uid,
       this.name,

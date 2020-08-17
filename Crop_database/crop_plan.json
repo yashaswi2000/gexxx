@@ -1,0 +1,61 @@
+
+    {
+        "croplist":["wheat","Bajra","Maize"],
+        "wheat":[
+            {
+                "name":"Wheat",
+                "tasks":["Introduction","Soil Testing" ,"Field Preperation","Pre Irrigation","Seed Preperation","Sowing ,Spacing","Pre-Emergency Herbicide"],
+                "content":["Wheat occupies the prime position among the food crops in the world. In India, it is the second important food crop being next to rice and contributes to the total foodgrain production of the country to the extent of about 25%. Wheat has played a very vital role in stabilizing the foodgrain production in the country over the past few years.",
+                    "After harvesting of crop remove any crop residue at the sampling spot,dig the soil in V shaped hole with a depth of 15 cm . Take samples from all corners and middle of field and mix well .Take 500gm of soil sample and get it tested in a soil testing laboratory",
+                    "Pulvirized soil is required for uniform growth of paddy. Zero tillage technology is preferred , to cut down the cost of wheat production without yield loss. In this method, seed and fertilizers are directly placed at proper depth by specially designed machines which creates narrow slits .Harrow cultivation is not done",
+                    "For irrigation land, do a pre sowing irrigation for better germination and uniform growth of wheat crop. At the germination stage adequate soil moisture is required for healthy crop.",
+                    "One acre area requires 45 kg of seed for sowing,select a suitable variety for your area and conditions . Don't grow varieties from other regions ,as they can be disease prone.Use floatation test to check quality of seed.Soak the seed in 2% salt solution for 15 min .Poor quality seeds will float while good qualty seeds will sink to the bottom Discard the seds floating . Wash the remaining seeds to remove the salt solution before sowing .",
+                    "Do sowing with seed drill along with fertilzer application. Seeds should be placed 5-6 cm deep . Follow the sowing direction from North to South , so that every plant gets equal sunshine . If there is loose straw in the field , use rotary disc drill or Happy seeder. Use both machines , if there is enough moisture in soil after paddy harvesting.",
+                    "Apply pendimethalin 30% EC 1.3 litres in 200 litres of water per acre. Care must be taken to have fine tilth for better performance of Herbicide. It controls both grasses and weeds."],
+                "startdates":[-50,-40,-15,-10,-5,0,2],
+                "enddates":[-41,-16,-11,-6,-1,1,5],
+                "images":["assets/images/wheat1.jpg","assets/images/wheat2.jpg","assets/images/wheat3.jpg"]
+                
+        
+            }
+        ],
+        "Bajra":[
+            {
+                "name":"Bajra",
+                "tasks":["Introduction","Soil Testing" ,"Field Preperation","Pre Irrigation","Seed Preperation","Sowing ,Spacing","Pre-Emergency Herbicide"],
+                "content":["Wheat the prime position among the food crops in the world. In India, it is the second important food crop being next to rice and contributes to the total foodgrain production of the country to the extent of about 25%. Wheat has played a very vital role in stabilizing the foodgrain production in the country over the past few years.",
+                    "After harvesting of crop remove any crop residue at the sampling spot,dig the soil in V shaped hole with a depth of 15 cm . Take samples from all corners and middle of field and mix well .Take 500gm of soil sample and get it tested in a soil testing laboratory",
+                    "Pulvirized soil is required for uniform growth of paddy. Zero tillage technology is preferred , to cut down the cost of wheat production without yield loss. In this method, seed and fertilizers are directly placed at proper depth by specially designed machines which creates narrow slits .Harrow cultivation is not done",
+                    "For irrigation land, do a pre sowing irrigation for better germination and uniform growth of wheat crop. At the germination stage adequate soil moisture is required for healthy crop.",
+                    "One acre area requires 45 kg of seed for sowing,select a suitable variety for your area and conditions . Don't grow varieties from other regions ,as they can be disease prone.Use floatation test to check quality of seed.Soak the seed in 2% salt solution for 15 min .Poor quality seeds will float while good qualty seeds will sink to the bottom Discard the seds floating . Wash the remaining seeds to remove the salt solution before sowing .",
+                    "Do sowing with seed drill along with fertilzer application. Seeds should be placed 5-6 cm deep . Follow the sowing direction from North to South , so that every plant gets equal sunshine . If there is loose straw in the field , use rotary disc drill or Happy seeder. Use both machines , if there is enough moisture in soil after paddy harvesting.",
+                    "Apply pendimethalin 30% EC 1.3 litres in 200 litres of water per acre. Care must be taken to have fine tilth for better performance of Herbicide. It controls both grasses and weeds."],
+                "startdates":[-50,-40,-15,-10,-5,0,2],
+                "enddates":[-41,-16,-11,-6,-1,1,5],
+                "images":["assets/images/bajra1.jpg","assets/images/bajra2.jpg","assets/images/bajra3.jpg"]
+        
+            }
+        ],
+        "Maize":[
+            {
+                "name":"Maize",
+                "tasks":["Introduction","Soil Testing" ,"Field Preperation","Pre Irrigation","Seed Preperation","Sowing ,Spacing","Pre-Emergency Herbicide"],
+                "content":["Wheat occupies the prime position among the food crops in the world. In India, it is the second important food crop being next to rice and contributes to the total foodgrain production of the country to the extent of about 25%. Wheat has played a very vital role in stabilizing the foodgrain production in the country over the past few years.",
+                    "After harvesting of crop remove any crop residue at the sampling spot,dig the soil in V shaped hole with a depth of 15 cm . Take samples from all corners and middle of field and mix well .Take 500gm of soil sample and get it tested in a soil testing laboratory",
+                    "Pulvirized soil is required for uniform growth of paddy. Zero tillage technology is preferred , to cut down the cost of wheat production without yield loss. In this method, seed and fertilizers are directly placed at proper depth by specially designed machines which creates narrow slits .Harrow cultivation is not done",
+                    "For irrigation land, do a pre sowing irrigation for better germination and uniform growth of wheat crop. At the germination stage adequate soil moisture is required for healthy crop.",
+                    "One acre area requires 45 kg of seed for sowing,select a suitable variety for your area and conditions . Don't grow varieties from other regions ,as they can be disease prone.Use floatation test to check quality of seed.Soak the seed in 2% salt solution for 15 min .Poor quality seeds will float while good qualty seeds will sink to the bottom Discard the seds floating . Wash the remaining seeds to remove the salt solution before sowing .",
+                    "Do sowing with seed drill along with fertilzer application. Seeds should be placed 5-6 cm deep . Follow the sowing direction from North to South , so that every plant gets equal sunshine . If there is loose straw in the field , use rotary disc drill or Happy seeder. Use both machines , if there is enough moisture in soil after paddy harvesting.",
+                    "Apply pendimethalin 30% EC 1.3 litres in 200 litres of water per acre. Care must be taken to have fine tilth for better performance of Herbicide. It controls both grasses and weeds."],
+                "startdates":[-50,-40,-15,-10,-5,0,2],
+                "enddates":[-41,-16,-11,-6,-1,1,5],
+                "images":["assets/images/maize1.jpg","assets/images/maize2.jpg","assets/images/maize3.jpg"]
+        
+            }
+          
+        ]
+
+    }
+    
+    
+     

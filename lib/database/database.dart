@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_firestore/cloud_firestore.dart' as prefix0;
-import 'package:gexxx_flutter/models/Crop.dart';
 import 'package:gexxx_flutter/models/article.dart';
+import 'package:gexxx_flutter/models/pcrop.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:translator/translator.dart';
 import 'package:gexxx_flutter/models/user.dart';
@@ -16,7 +15,8 @@ class DatabaseService {
   final CollectionReference CropsCollection =
       Firestore.instance.collection('Crops');
 
-  
+  final CollectionReference MarketCollection =
+      Firestore.instance.collection('pricelist');
 
   Future<bool> updatefavorites(String crop) async {
     try {
@@ -42,7 +42,7 @@ class DatabaseService {
       String image,
       String language,
       String languagecode,
-      List<String> favouritecrops) async {
+      List<Pcrop> favouritecrops) async {
     try {
       await UsersCollection.document(uid).setData({
         'uid': uid,
@@ -57,13 +57,38 @@ class DatabaseService {
         'statenumber': statenumber,
         'language': language,
         'languagecode': languagecode,
-        'favouritecrops': favouritecrops
+        'favouritecrops': favouritecrops.map((e) => e.toJson()).toList()
       });
       return true;
     } catch (e) {
       print(e.toString());
       return false;
     }
+  }
+
+  Future<bool> addfavcrop(Pcrop pcrop) async {
+    try {
+      await UsersCollection.document(uid).updateData({
+        'favouritecrops': FieldValue.arrayUnion([pcrop.toJson()]),
+      });
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> cropexists(String crop) async {
+    try {
+      await UsersCollection.document(uid).snapshots().map((event) {
+        event.data['favoritecrops'].map((crops) {
+          if (crops['crop'] == crop) {
+            return true;
+          }
+        });
+      });
+      return false;
+    } catch (e) {}
   }
 
   Future<bool> UpdateCropsCollection(
@@ -121,13 +146,26 @@ class DatabaseService {
         age: snapshot.data["age"],
         statenumber: snapshot.data["statenumber"],
         language: snapshot.data["language"],
-        favouritecrops: List.from(snapshot.data['favouritecrops']),
+        favouritecrops: snapshot.data['favouritecrops'].map<Pcrop>((e) {
+          return Pcrop.fromJson(e);
+        }).toList(),
         languagecode: snapshot.data["languagecode"]);
   }
 
   //collection stream
   Stream<UserData> get userData {
     return UsersCollection.document(uid).snapshots().map(_userDataFromSnapShot);
+  }
+
+  _marketDataFromSnapshot(QuerySnapshot querysnapshot) {
+    return querysnapshot.documents.map((snapshot) {
+      print(snapshot);
+      return snapshot;
+    }).toList();
+  }
+
+  Stream get market {
+    return MarketCollection.snapshots().map(_marketDataFromSnapshot);
   }
 
   final CollectionReference NewsCollection =
@@ -138,12 +176,12 @@ class DatabaseService {
       var trans = snapshot.data['title'];
       var translation = null;
       SharedPreferences.getInstance().then((prefs) async => {
-        print(prefs.getString('language_code') + "temp"),
-        //translator.translateAndPrint("I would buy a car, if I had money.",to: 'hi'),
-        //translator.translate(snapshot.data['title'], from: 'en', to: prefs.getString('language_code')).then((value) => {
-        //  print(value)
-       // })
-      });
+            print(prefs.getString('language_code') + "temp"),
+            //translator.translateAndPrint("I would buy a car, if I had money.",to: 'hi'),
+            //translator.translate(snapshot.data['title'], from: 'en', to: prefs.getString('language_code')).then((value) => {
+            //  print(value)
+            // })
+          });
       //var translation = await translator.translate(snapshot.data['title'], from: 'en', to: pref.getString('language_code'));
       return Article(
           title: trans,

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -13,6 +14,8 @@ import 'package:gexxx_flutter/screens/Languagepage.dart';
 import 'package:gexxx_flutter/screens/MainDrawer.dart';
 import 'package:gexxx_flutter/screens/News.dart';
 import 'package:gexxx_flutter/screens/addcrop.dart';
+import 'package:gexxx_flutter/screens/cropplan.dart';
+import 'package:gexxx_flutter/screens/marketiew.dart';
 import 'package:gexxx_flutter/screens/weatherpage.dart';
 import 'package:gexxx_flutter/services/auth.dart';
 import 'package:gexxx_flutter/utilities/Loading.dart';
@@ -423,7 +426,18 @@ class _HomeScreenState extends State<Home> {
     );
   }
 
-  Widget _pricebox() {
+  Widget _pricebox(List obj, int index) {
+    print(obj[index]['commodity']);
+    print(int.parse(obj[index]['timestamp']));
+    int day = DateTime.fromMillisecondsSinceEpoch(
+            (int.parse(obj[index]['timestamp'])) * 1000)
+        .day;
+    int year = DateTime.fromMillisecondsSinceEpoch(
+            (int.parse(obj[index]['timestamp'])) * 1000)
+        .year;
+    int month = DateTime.fromMillisecondsSinceEpoch(
+            (int.parse(obj[index]['timestamp'])) * 1000)
+        .month;
     return InkWell(
       child: Container(
         color: Colors.grey[100],
@@ -435,14 +449,14 @@ class _HomeScreenState extends State<Home> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    "Tomato Desi",
+                    obj[index]['commodity'],
                     style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                         fontSize: MediaQuery.of(context).size.height * 0.02),
                   ),
                   Text(
-                    "1,600 / Q",
+                    '₹ ${obj[index]['pricelist'][0]['modal_price']}/-',
                     style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -460,7 +474,7 @@ class _HomeScreenState extends State<Home> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        "Bowenpally",
+                        obj[index]['pricelist'][0]['market'],
                         style: TextStyle(
                             color: Colors.grey[800],
                             fontWeight: FontWeight.w400),
@@ -469,7 +483,7 @@ class _HomeScreenState extends State<Home> {
                         height: 5,
                       ),
                       Text(
-                        "13-Aug-2020",
+                        '${day}-${month}-${year}',
                         style: TextStyle(
                             color: Colors.grey[800],
                             fontWeight: FontWeight.w400),
@@ -502,7 +516,7 @@ class _HomeScreenState extends State<Home> {
     );
   }
 
-  Widget _marketview() {
+  Widget _marketview(DocumentSnapshot snapshot) {
     return Container(
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
@@ -513,35 +527,49 @@ class _HomeScreenState extends State<Home> {
           ]),
       child: Column(
         children: <Widget>[
-          Container(
-            height: MediaQuery.of(context).size.height * 0.05,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              color: Colors.blue,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(5), topRight: Radius.circular(5)),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 15.0, right: 15),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    'Market view',
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.w500),
-                  ),
-                  Icon(
-                    Icons.navigate_next,
-                    color: Colors.white,
-                  )
-                ],
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => marketview(
+                            snapshot: snapshot,
+                          )));
+            },
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.05,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(5), topRight: Radius.circular(5)),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 15.0, right: 15),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      'Market view',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.w500),
+                    ),
+                    Icon(
+                      Icons.navigate_next,
+                      color: Colors.white,
+                    )
+                  ],
+                ),
               ),
             ),
           ),
-          _pricebox(),
-          _pricebox(),
+          ListView.builder(
+              shrinkWrap: true,
+              itemCount: 3,
+              itemBuilder: (c, i) {
+                return _pricebox(snapshot.data['list'], i);
+              })
         ],
       ),
     );
@@ -558,7 +586,11 @@ class _HomeScreenState extends State<Home> {
     setState(() {
       image = i;
     });
+
+    String bas64 = base64Encode(i.readAsBytesSync());
+    print(bas64);
     ui.Image decodeimage = await decodeImageFromList(image.readAsBytesSync());
+
     decodeimage
         .toByteData(format: ui.ImageByteFormat.rawRgba)
         .then((ByteData data) {
@@ -566,7 +598,7 @@ class _HomeScreenState extends State<Home> {
         RGBAList = data.buffer.asUint8List().toList();
       });
     });
-    print(RGBAList);
+    //print(RGBAList.length);
     //print(image);
   }
 
@@ -574,435 +606,336 @@ class _HomeScreenState extends State<Home> {
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
     List<Widget> circle = [];
-    for (var j = 0; j < widget.userData.favouritecrops.length + 1; j++) {
-      if (j != widget.userData.favouritecrops.length) {
-        circle.add(Column(
-          children: <Widget>[
-            CircleAvatar(
-              child: Text(
-                widget.userData.favouritecrops[j][0].toUpperCase(),
-                style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-              radius: MediaQuery.of(context).size.width * 0.08,
-              backgroundColor: Colors.white,
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              widget.userData.favouritecrops[j],
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
-                  fontSize: MediaQuery.of(context).size.width * 0.03),
-            ),
-          ],
-        ));
-      } else {
-        circle.add(
-          InkWell(
-            onTap: () {
-              showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                        backgroundColor: Colors.white,
-                        content: StatefulBuilder(builder:
-                            (BuildContext context, StateSetter setState) {
-                          return Container(
-                            width: MediaQuery.of(context).size.width,
-                            child: FutureBuilder(
-                              future: DefaultAssetBundle.of(context).loadString(
-                                  "Crop_database/crop_database.json"),
-                              builder: (context, snapshot) {
-                                dynamic crop_list =
-                                    json.decode(snapshot.data.toString());
-                                return Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: <Widget>[
-                                    ListView.builder(
-                                        shrinkWrap: true,
-                                        itemCount: crop_list?.length ?? 0,
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          return RadioListTile(
-                                            activeColor: Colors.black,
-                                            groupValue: selectedRadio,
-                                            onChanged: (val) {
-                                              setState(
-                                                  () => selectedRadio = val);
-                                            },
-                                            value: index,
-                                            title:
-                                                Text(crop_list[index]['name'],
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                    )),
-                                          );
-                                        }),
-                                    FloatingActionButton.extended(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5)),
-                                      onPressed: () {
-                                        if (widget.userData.favouritecrops
-                                            .contains(crop_list[selectedRadio]
-                                                ['name'])) {
-                                          Navigator.pop(context);
-                                          showLongToast(
-                                              'already in your favourites');
-                                        } else {
-                                          Navigator.pop(context);
-                                          DatabaseService(
-                                                  uid: widget.userData.uid)
-                                              .updatefavorites(
-                                                  crop_list[selectedRadio]
-                                                      ['name'])
-                                              .then((value) {
-                                            if (value) {
-                                              showLongToast(
-                                                  'added to favourites');
-                                            }
-                                          });
-                                        }
-                                      },
-                                      label: Text(
-                                        'ok',
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      backgroundColor: Colors.black,
-                                    )
-                                  ],
-                                );
-                              },
-                            ),
-                          );
-                        }));
-                  });
-            },
-            child: Column(
-              children: <Widget>[
-                CircleAvatar(
-                  child: Icon(
-                    Icons.add,
-                    color: Colors.white,
-                  ),
-                  radius: MediaQuery.of(context).size.width * 0.08,
-                  backgroundColor: Colors.blue,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  AppLocalizations.of(context).translate('Add'),
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
-                      fontSize: MediaQuery.of(context).size.width * 0.03),
-                ),
-              ],
-            ),
-          ),
-        );
-      }
-    }
+
     return PageView(
       controller: pageController,
       children: <Widget>[
-        Scaffold(
-            backgroundColor: Colors.white,
-            body: SafeArea(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 15, right: 15),
-                  child: Column(
-                    children: <Widget>[
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            "GEXXX",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.navigate_next,
-                              color: Colors.black,
-                            ),
-                            onPressed: () {
-                              pageController.nextPage(
-                                  duration: Duration(microseconds: 700),
-                                  curve: Curves.easeIn);
-                            },
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10.0, right: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        StreamBuilder<Object>(
+            stream: DatabaseService().market,
+            builder: (context, msnapshot) {
+              List<DocumentSnapshot> ds = msnapshot.data;
+              print(ds[0]['commodity']);
+              return Scaffold(
+                  backgroundColor: Colors.white,
+                  body: SafeArea(
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 15, right: 15),
+                        child: Column(
                           children: <Widget>[
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Text(
-                                  AppLocalizations.of(context)
-                                      .translate('Dashboard'),
+                                  "GEXXX",
                                   style: TextStyle(
                                       color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize:
-                                          MediaQuery.of(context).size.width *
-                                              0.04),
+                                      fontWeight: FontWeight.bold),
                                 ),
-                                Text(
-                                  widget.userData.name,
-                                  style: TextStyle(
-                                      color: Colors.grey[800],
-                                      fontWeight: FontWeight.w400,
-                                      fontSize:
-                                          MediaQuery.of(context).size.width *
-                                              0.04),
-                                ),
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.navigate_next,
+                                    color: Colors.black,
+                                  ),
+                                  onPressed: () {
+                                    pageController.nextPage(
+                                        duration: Duration(microseconds: 700),
+                                        curve: Curves.easeIn);
+                                  },
+                                )
                               ],
                             ),
-                            currentWeatherData == null ||
-                                    locality == null ||
-                                    country == null
-                                ? Shimmer.fromColors(
-                                    child: Container(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.05,
-                                      width: MediaQuery.of(context).size.width *
-                                          0.2,
-                                      color: Colors.grey[200],
-                                    ),
-                                    baseColor: Colors.grey[300],
-                                    highlightColor: Colors.white)
-                                : Container(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: <Widget>[
-                                        Row(
-                                          children: <Widget>[
-                                            Icon(
-                                              Icons.wb_cloudy,
-                                              color: Colors.black,
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Text(
-                                              '${(currentWeatherData.temp - 273.15).toInt().toString()}°C',
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize:
-                                                      MediaQuery.of(context)
-                                                              .size
-                                                              .width *
-                                                          0.065),
-                                            ),
-                                          ],
-                                        ),
-                                        Text(
-                                          '${locality},${country}',
-                                          style: TextStyle(
-                                              color: Colors.grey[600],
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 10.0, right: 10),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        AppLocalizations.of(context)
+                                            .translate('Dashboard'),
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.04),
+                                      ),
+                                      Text(
+                                        widget.userData.name,
+                                        style: TextStyle(
+                                            color: Colors.grey[800],
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.04),
+                                      ),
+                                    ],
+                                  ),
+                                  currentWeatherData == null ||
+                                          locality == null ||
+                                          country == null
+                                      ? Shimmer.fromColors(
+                                          child: Container(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.05,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.2,
+                                            color: Colors.grey[200],
+                                          ),
+                                          baseColor: Colors.grey[300],
+                                          highlightColor: Colors.white)
+                                      : Container(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: <Widget>[
+                                              Row(
+                                                children: <Widget>[
+                                                  Icon(
+                                                    Icons.wb_cloudy,
+                                                    color: Colors.black,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Text(
+                                                    '${(currentWeatherData.temp - 273.15).toInt().toString()}°C',
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontSize: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.065),
+                                                  ),
+                                                ],
+                                              ),
+                                              Text(
+                                                '${locality},${country}',
+                                                style: TextStyle(
+                                                    color: Colors.grey[600],
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.03),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Center(
+                              child: Wrap(
+                                alignment: WrapAlignment.spaceBetween,
+                                runSpacing: 20,
+                                spacing: 20,
+                                children: <Widget>[
+                                  ActionCard(
+                                      AppLocalizations.of(context)
+                                          .translate('All Crops'),
+                                      Icons.tab,
+                                      Colors.blue, () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Cropslist()));
+                                  }),
+                                  ActionCard(
+                                      AppLocalizations.of(context)
+                                          .translate('Policies'),
+                                      Icons.panorama_wide_angle,
+                                      Colors.red,
+                                      () {}),
+                                  ActionCard(
+                                      AppLocalizations.of(context)
+                                          .translate('News'),
+                                      Icons.public,
+                                      kThemeColor, () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => News(),
+                                        ));
+                                  }),
+                                  ActionCard(
+                                      AppLocalizations.of(context)
+                                          .translate('Weather'),
+                                      WeatherIcons.day_sunny,
+                                      kThemeColor, () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => WeatherPage(
+                                                  currentWeatherData:
+                                                      currentWeatherData,
+                                                  dailyweather:
+                                                      dailyweatherlist,
+                                                )));
+                                  }),
+                                  ActionCard(
+                                      AppLocalizations.of(context)
+                                          .translate('About us'),
+                                      Icons.priority_high,
+                                      Colors.red,
+                                      () async {}),
+                                  ActionCard(
+                                      AppLocalizations.of(context)
+                                          .translate('Logout'),
+                                      Icons.power_settings_new,
+                                      kThemeColor, () {
+                                    AuthService().signoutwithGoogle();
+                                  }),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Cropplan(
+                                            userData: widget.userData)));
+                              },
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                    color: Colors.blue,
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10.0,
+                                      right: 10,
+                                      top: 20,
+                                      bottom: 20),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Row(
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons.playlist_add_check,
+                                            color: Colors.white,
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(
+                                            'Crop Plan',
+                                            style: TextStyle(
+                                              color: Colors.white,
                                               fontWeight: FontWeight.w500,
-                                              fontSize: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.03),
-                                        ),
-                                      ],
-                                    ),
-                                  )
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Icon(
+                                        Icons.navigate_next,
+                                        color: Colors.white,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                _pickimage();
+                              },
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                    color: Colors.blue,
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10.0,
+                                      right: 10,
+                                      top: 10,
+                                      bottom: 10),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Row(
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons.playlist_add_check,
+                                            color: Colors.white,
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(
+                                            'pick image',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Icon(
+                                        Icons.navigate_next,
+                                        color: Colors.white,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            image == null
+                                ? Container()
+                                : Center(child: Image.file(image)),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            //_marketview(msnapshot.data),
+                            SizedBox(
+                              height: 20,
+                            ),
                           ],
                         ),
                       ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Center(
-                        child: Wrap(
-                          alignment: WrapAlignment.spaceBetween,
-                          runSpacing: 20,
-                          spacing: 20,
-                          children: <Widget>[
-                            ActionCard(
-                                AppLocalizations.of(context)
-                                    .translate('All Crops'),
-                                Icons.tab,
-                                Colors.blue, () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Cropslist()));
-                            }),
-                            ActionCard(
-                                AppLocalizations.of(context)
-                                    .translate('Policies'),
-                                Icons.panorama_wide_angle,
-                                Colors.red,
-                                () {}),
-                            ActionCard(
-                                AppLocalizations.of(context).translate('News'),
-                                Icons.public,
-                                kThemeColor, () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => News(),
-                                  ));
-                            }),
-                            ActionCard(
-                                AppLocalizations.of(context)
-                                    .translate('Weather'),
-                                WeatherIcons.day_sunny,
-                                kThemeColor, () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => WeatherPage(
-                                            currentWeatherData:
-                                                currentWeatherData,
-                                            dailyweather: dailyweatherlist,
-                                          )));
-                            }),
-                            ActionCard(
-                                AppLocalizations.of(context)
-                                    .translate('About us'),
-                                Icons.priority_high,
-                                Colors.red,
-                                () async {}),
-                            ActionCard(
-                                AppLocalizations.of(context)
-                                    .translate('Logout'),
-                                Icons.power_settings_new,
-                                kThemeColor, () {
-                              AuthService().signoutwithGoogle();
-                            }),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      InkWell(
-                        onTap: () {},
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                              color: Colors.blue,
-                              borderRadius: BorderRadius.circular(5)),
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 10.0, right: 10, top: 10, bottom: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    Icon(
-                                      Icons.playlist_add_check,
-                                      color: Colors.white,
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text(
-                                      'Crop Plan',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Icon(
-                                  Icons.navigate_next,
-                                  color: Colors.white,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          _pickimage();
-                        },
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                              color: Colors.blue,
-                              borderRadius: BorderRadius.circular(5)),
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 10.0, right: 10, top: 10, bottom: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    Icon(
-                                      Icons.playlist_add_check,
-                                      color: Colors.white,
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text(
-                                      'pick image',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Icon(
-                                  Icons.navigate_next,
-                                  color: Colors.white,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      image == null
-                          ? Container()
-                          : Center(child: Image.file(image)),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      _marketview(),
-                      SizedBox(
-                        height: 20,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            )),
+                    ),
+                  ));
+            }),
         Scaffold(
           backgroundColor: Colors.grey[200],
           body: SafeArea(
