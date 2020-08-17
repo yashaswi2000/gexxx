@@ -2,14 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class marketview extends StatefulWidget {
-  DocumentSnapshot snapshot;
-  marketview({this.snapshot});
+  List<DocumentSnapshot> snapshots;
+  marketview({this.snapshots});
   @override
   _marketviewState createState() => _marketviewState();
 }
 
 class _marketviewState extends State<marketview> {
-  Widget cropbox(List list, int i) {
+  Widget cropbox(List list, String commodity) {
     return Column(
       children: <Widget>[
         Container(
@@ -22,7 +22,7 @@ class _marketviewState extends State<marketview> {
               SizedBox(
                 width: 10,
               ),
-              Text(list[i]['commodity'],
+              Text(commodity,
                   style: TextStyle(
                     color: Colors.white,
                   )),
@@ -35,17 +35,36 @@ class _marketviewState extends State<marketview> {
         ListView.builder(
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            itemCount: list[i]['pricelist'].length,
+            itemCount: list.length,
             itemBuilder: (c, index) {
               int day = DateTime.fromMillisecondsSinceEpoch(
-                      int.parse(list[i]['timestamp']) * 1000)
+                      int.parse(list[index]['market_list'][0]['timestamp']) *
+                          1000)
                   .day;
               int month = DateTime.fromMillisecondsSinceEpoch(
-                      int.parse(list[i]['timestamp']) * 1000)
+                      int.parse(list[index]['market_list'][0]['timestamp']) *
+                          1000)
                   .day;
               int year = DateTime.fromMillisecondsSinceEpoch(
-                      int.parse(list[i]['timestamp']) * 1000)
+                      int.parse(list[index]['market_list'][0]['timestamp']) *
+                          1000)
                   .year;
+              int percentage = 0;
+              Color co = Colors.grey[200];
+              int size = list[index]['market_list'].length;
+              if (size > 1) {
+                int diff = list[index]['market_list'][size]['modal_price'] -
+                    list[index]['market_list'][size - 1]['modal_price'];
+
+                percentage = ((diff /
+                        list[index]['market_list'][size - 1]['modal_price']))
+                    .toInt();
+                if (diff >= 0) {
+                  co = Colors.green;
+                } else {
+                  co = Colors.red;
+                }
+              }
               return Padding(
                 padding: const EdgeInsets.only(bottom: 10.0),
                 child: Container(
@@ -61,7 +80,7 @@ class _marketviewState extends State<marketview> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              list[i]['pricelist'][index]['market'],
+                              list[index]['market'],
                               style: TextStyle(
                                   color: Colors.grey[800],
                                   fontWeight: FontWeight.w500,
@@ -72,7 +91,7 @@ class _marketviewState extends State<marketview> {
                               height: 5,
                             ),
                             Text(
-                              '${list[i]['pricelist'][index]['district']} , ${list[i]['pricelist'][index]['state']}',
+                              '${list[index]['district']} , ${list[index]['state']}',
                               style: TextStyle(
                                   color: Colors.grey[800],
                                   fontWeight: FontWeight.w500,
@@ -94,7 +113,7 @@ class _marketviewState extends State<marketview> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
                             Text(
-                              '₹ ${list[i]['pricelist'][index]['modal_price']}/-',
+                              '₹ ${list[index]['market_list'][0]['modal_price']}/-',
                               style: TextStyle(
                                   color: Colors.grey[800],
                                   fontWeight: FontWeight.bold,
@@ -104,12 +123,24 @@ class _marketviewState extends State<marketview> {
                             SizedBox(
                               height: 5,
                             ),
-                            Text(
-                              '${list[i]['pricelist'][index]['modal_price_trend']}',
-                              style: TextStyle(
-                                  color: Colors.grey[800],
-                                  fontWeight: FontWeight.w400),
-                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  color: co,
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 20.0, right: 20, top: 10, bottom: 10),
+                                child: Text(
+                                  percentage.toString(),
+                                  style: TextStyle(
+                                      color: Colors.grey[800],
+                                      fontWeight: FontWeight.bold,
+                                      fontSize:
+                                          MediaQuery.of(context).size.height *
+                                              0.017),
+                                ),
+                              ),
+                            )
                           ],
                         )
                       ],
@@ -145,11 +176,12 @@ class _marketviewState extends State<marketview> {
                 ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: widget.snapshot.data['list'].length,
+                    itemCount: widget.snapshots.length,
                     itemBuilder: (c, i) {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 10.0),
-                        child: cropbox(widget.snapshot.data['list'], i),
+                        child: cropbox(widget.snapshots[i]['pricelist'],
+                            widget.snapshots[i]['commodity']),
                       );
                     }),
                 SizedBox(

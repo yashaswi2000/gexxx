@@ -426,97 +426,119 @@ class _HomeScreenState extends State<Home> {
     );
   }
 
-  Widget _pricebox(List obj, int index) {
-    print(obj[index]['commodity']);
-    print(int.parse(obj[index]['timestamp']));
-    int day = DateTime.fromMillisecondsSinceEpoch(
-            (int.parse(obj[index]['timestamp'])) * 1000)
+  Widget _pricebox(DocumentSnapshot snapshot) {
+    print(int.parse(snapshot['pricelist'][0]['market_list'][0]['timestamp']));
+    int day = DateTime.fromMillisecondsSinceEpoch((int.parse(
+                snapshot['pricelist'][0]['market_list'][0]['timestamp'])) *
+            1000)
         .day;
-    int year = DateTime.fromMillisecondsSinceEpoch(
-            (int.parse(obj[index]['timestamp'])) * 1000)
+    int year = DateTime.fromMillisecondsSinceEpoch((int.parse(
+                snapshot['pricelist'][0]['market_list'][0]['timestamp'])) *
+            1000)
         .year;
-    int month = DateTime.fromMillisecondsSinceEpoch(
-            (int.parse(obj[index]['timestamp'])) * 1000)
+    int month = DateTime.fromMillisecondsSinceEpoch((int.parse(
+                snapshot['pricelist'][0]['market_list'][0]['timestamp'])) *
+            1000)
         .month;
-    return InkWell(
-      child: Container(
-        color: Colors.grey[100],
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    obj[index]['commodity'],
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: MediaQuery.of(context).size.height * 0.02),
-                  ),
-                  Text(
-                    '₹ ${obj[index]['pricelist'][0]['modal_price']}/-',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: MediaQuery.of(context).size.height * 0.02),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        obj[index]['pricelist'][0]['market'],
-                        style: TextStyle(
-                            color: Colors.grey[800],
-                            fontWeight: FontWeight.w400),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        '${day}-${month}-${year}',
-                        style: TextStyle(
-                            color: Colors.grey[800],
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        color: Colors.green,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 20.0, right: 20, top: 10, bottom: 10),
-                      child: Text(
-                        "^ 11.12 %",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize:
-                                MediaQuery.of(context).size.height * 0.017),
-                      ),
+    int percentage = 0;
+    Color c = Colors.grey[200];
+    int size = snapshot['pricelist'][0]['market_list'].length;
+    if (size > 1) {
+      int diff = snapshot['pricelist'][0]['market_list'][size]['modal_price'] -
+          snapshot['pricelist'][0]['market_list'][size - 1]['modal_price'];
+
+      percentage = ((diff /
+              snapshot['pricelist'][0]['market_list'][size - 1]['modal_price']))
+          .toInt();
+      if (diff >= 0) {
+        c = Colors.red;
+      } else {
+        c = Colors.red;
+      }
+    }
+    return snapshot.data.isNotEmpty
+        ? InkWell(
+            child: Container(
+              color: Colors.grey[100],
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          snapshot['commodity'],
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize:
+                                  MediaQuery.of(context).size.height * 0.02),
+                        ),
+                        Text(
+                          '₹ ${snapshot['pricelist'][0]['market_list'][0]['modal_price']}/-',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize:
+                                  MediaQuery.of(context).size.height * 0.02),
+                        ),
+                      ],
                     ),
-                  )
-                ],
-              )
-            ],
-          ),
-        ),
-      ),
-    );
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              snapshot['pricelist'][0]['market'],
+                              style: TextStyle(
+                                  color: Colors.grey[800],
+                                  fontWeight: FontWeight.w400),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              '${day}-${month}-${year}',
+                              style: TextStyle(
+                                  color: Colors.grey[800],
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          ],
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                              color: c,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 20.0, right: 20, top: 10, bottom: 10),
+                            child: Text(
+                              percentage.toString(),
+                              style: TextStyle(
+                                  color: Colors.grey[800],
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: MediaQuery.of(context).size.height *
+                                      0.017),
+                            ),
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+          )
+        : Container();
   }
 
-  Widget _marketview(DocumentSnapshot snapshot) {
+  Widget _marketview(List<DocumentSnapshot> snapshots) {
     return Container(
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
@@ -533,7 +555,7 @@ class _HomeScreenState extends State<Home> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => marketview(
-                            snapshot: snapshot,
+                            snapshots: snapshots,
                           )));
             },
             child: Container(
@@ -564,12 +586,14 @@ class _HomeScreenState extends State<Home> {
               ),
             ),
           ),
-          ListView.builder(
-              shrinkWrap: true,
-              itemCount: 3,
-              itemBuilder: (c, i) {
-                return _pricebox(snapshot.data['list'], i);
-              })
+          ListView(
+            shrinkWrap: true,
+            children: <Widget>[
+              _pricebox(snapshots[0]),
+              _pricebox(snapshots[1]),
+              _pricebox(snapshots[2]),
+            ],
+          )
         ],
       ),
     );
@@ -613,8 +637,8 @@ class _HomeScreenState extends State<Home> {
         StreamBuilder<Object>(
             stream: DatabaseService().market,
             builder: (context, msnapshot) {
-              List<DocumentSnapshot> ds = msnapshot.data;
-              print(ds[0]['commodity']);
+              List<DocumentSnapshot> dsnapshot = msnapshot.data;
+
               return Scaffold(
                   backgroundColor: Colors.white,
                   body: SafeArea(
@@ -926,7 +950,7 @@ class _HomeScreenState extends State<Home> {
                             SizedBox(
                               height: 10,
                             ),
-                            //_marketview(msnapshot.data),
+                            _marketview(dsnapshot),
                             SizedBox(
                               height: 20,
                             ),
