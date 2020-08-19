@@ -73,6 +73,7 @@ flutter:
       - Phone_code/Phone_code.json
       - State_names/State_names.json
       - Crop_database/crop_database.json
+      - Crop_database/pest_crops.json
       - Crop_database/crop_plan.json
       - assets/images/wheat1.jpg
       - assets/images/maize1.jpg

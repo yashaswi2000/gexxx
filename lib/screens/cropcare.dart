@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:gexxx_flutter/screens/croppest.dart';
 
@@ -7,31 +9,11 @@ class CropCare extends StatefulWidget {
 }
 
 class _CropCareState extends State<CropCare> {
-  List<String> crops;
+  List<String> crops = [];
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    crops = [
-      'Soybean',
-      'Paddy',
-      'Cotton',
-      'Sugarcane',
-      'Potato',
-      'Chilli',
-      'Brinjal',
-      'Onion',
-      'Tomato',
-      'Okra',
-      'Cabbage & Cauliflower',
-      'Wheat',
-      'Tea',
-      'Grapes',
-      'Cucurbits',
-      'Basmati',
-      'Maize',
-      'Groundnut'
-    ];
   }
 
   @override
@@ -95,42 +77,59 @@ class _CropCareState extends State<CropCare> {
               SizedBox(
                 height: 20,
               ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Wrap(
-                  alignment: WrapAlignment.center,
-                  runSpacing: 20,
-                  spacing: 20,
-                  children: crops.map((e) {
-                    return InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => CropPest(
-                                      crop: e,
-                                    )));
-                      },
-                      child: Container(
-                        height: MediaQuery.of(context).size.height * 0.06,
-                        width: MediaQuery.of(context).size.width / 2 - 20,
-                        decoration: BoxDecoration(
-                            color: Colors.blue,
-                            borderRadius: BorderRadius.circular(5)),
-                        child: Center(
-                          child: Text(
-                            e,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500),
-                            overflow: TextOverflow.ellipsis,
-                          ),
+              FutureBuilder(
+                  future: DefaultAssetBundle.of(context)
+                      .loadString("Crop_database/pest_crops.json"),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      dynamic pestcrops = json.decode(snapshot.data.toString());
+                      int len = pestcrops['crops'].length;
+                      for (int i = 0; i < len; i++) {
+                        crops.add(pestcrops['crops'][i]);
+                      }
+                      print(crops);
+                      return Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Wrap(
+                          alignment: WrapAlignment.start,
+                          runSpacing: 20,
+                          spacing: 20,
+                          children: crops.map((e) {
+                            return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => CropPest(
+                                              crop: e,
+                                            )));
+                              },
+                              child: Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.06,
+                                width:
+                                    MediaQuery.of(context).size.width / 2 - 20,
+                                decoration: BoxDecoration(
+                                    color: Colors.blue,
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Center(
+                                  child: Text(
+                                    e.toString(),
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w500),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }).toList(),
                         ),
-                      ),
-                    );
-                  }).toList(),
-                ),
-              )
+                      );
+                    } else {
+                      return CircularProgressIndicator();
+                    }
+                  })
             ],
           ),
         ),
