@@ -51,13 +51,13 @@ class _marketviewState extends State<marketview> {
                   .year;
               int percentage = 0;
               Color co = Colors.grey[200];
-              int size = list[index]['market_list'].length;
-              if (size > 1) {
-                int diff = list[index]['market_list'][size]['modal_price'] -
-                    list[index]['market_list'][size - 1]['modal_price'];
+              int size = list[index]['market_list'].length-1;
+              if (size > 0) {
+                int diff =  int.parse(list[index]['market_list'][size]['modal_price']) -
+                    int.parse(list[index]['market_list'][size - 1]['modal_price']);
 
                 percentage = ((diff /
-                        list[index]['market_list'][size - 1]['modal_price']))
+                        int.parse(list[index]['market_list'][size - 1]['modal_price'])))
                     .toInt();
                 if (diff >= 0) {
                   co = Colors.green;
