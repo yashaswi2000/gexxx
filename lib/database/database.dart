@@ -109,7 +109,7 @@ class DatabaseService {
   Future<List<DocumentSnapshot>> getpests(String crop) async {
     try {
       QuerySnapshot qs =
-          await PestsCollection.where('cropname', isEqualTo: 'Tomato')
+          await PestsCollection.where("cropname", isEqualTo: crop + ' ')
               .getDocuments();
 
       return qs.documents.map((e) {
