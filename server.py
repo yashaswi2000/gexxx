@@ -310,12 +310,12 @@ class Hello(Resource):
 
       articles = []
       #getschema(articles)
-      #gettimesofindia(articles)
-      #gethindu(articles)
+      gettimesofindia(articles)
+      gethindu(articles)
       #getschema(articles)
       #print(articles)
       #getprice()
-      #gettrend()
+      gettrend()
       getpestssolution()
       return jsonify(articles)
 

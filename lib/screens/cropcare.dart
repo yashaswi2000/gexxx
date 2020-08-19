@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:gexxx_flutter/app_localizations.dart';
 import 'package:gexxx_flutter/screens/croppest.dart';
 
 class CropCare extends StatefulWidget {
@@ -40,7 +41,7 @@ class _CropCareState extends State<CropCare> {
                       },
                     ),
                     Text(
-                      'Crop Care',
+                      AppLocalizations.of(context).translate('Crop Care'),
                       style: TextStyle(
                           color: Colors.black, fontWeight: FontWeight.bold),
                     ),
@@ -57,7 +58,7 @@ class _CropCareState extends State<CropCare> {
               Padding(
                 padding: const EdgeInsets.only(left: 20.0, top: 10, bottom: 10),
                 child: Text(
-                  'Select a Crop',
+                  AppLocalizations.of(context).translate('Select a Crop'),
                   style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -67,7 +68,7 @@ class _CropCareState extends State<CropCare> {
               Padding(
                 padding: const EdgeInsets.only(left: 20.0, right: 20),
                 child: Text(
-                  'Get all the information regarding Pests Or Diseases and their Recommended Product Solutions',
+                  AppLocalizations.of(context).translate('Get all the information regarding Pests Or Diseases and their Recommended Product Solutions'),
                   style: TextStyle(
                       color: Colors.grey[800],
                       fontWeight: FontWeight.w500,
@@ -85,9 +86,11 @@ class _CropCareState extends State<CropCare> {
                       dynamic pestcrops = json.decode(snapshot.data.toString());
                       int len = pestcrops['crops'].length;
                       for (int i = 0; i < len; i++) {
-                        crops.add(pestcrops['crops'][i]);
+                        String t = pestcrops['crops'][i];
+                        crops.add(t);
                       }
                       print(crops);
+                      int index_crop = 0;
                       return Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: Wrap(
@@ -95,6 +98,12 @@ class _CropCareState extends State<CropCare> {
                           runSpacing: 20,
                           spacing: 20,
                           children: crops.map((e) {
+                            print('"'+e.toString()+'"');
+                            //index_crop++;
+                            print(index_crop);
+                            String tem = pestcrops['crops'][index_crop];
+                            print(tem);
+                            index_crop++;
                             return InkWell(
                               onTap: () {
                                 Navigator.push(
@@ -114,7 +123,7 @@ class _CropCareState extends State<CropCare> {
                                     borderRadius: BorderRadius.circular(5)),
                                 child: Center(
                                   child: Text(
-                                    e.toString(),
+                                    AppLocalizations.of(context).translate(tem),
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w500),

@@ -628,6 +628,8 @@ class _HomeScreenState extends State<Home> {
     //print(image);
   }
 
+  String tem = 'Crop Care'; 
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
@@ -886,7 +888,7 @@ class _HomeScreenState extends State<Home> {
                                               width: 10,
                                             ),
                                             Text(
-                                              AppLocalizations.of(context).translate('Crop Plan'),
+                                              AppLocalizations.of(context).translate(tem),
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w500,
@@ -940,7 +942,7 @@ class _HomeScreenState extends State<Home> {
                                               width: 10,
                                             ),
                                             Text(
-                                              'Crop Care',
+                                              AppLocalizations.of(context).translate('Crop Care'),
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w500,
