@@ -575,7 +575,7 @@ class _HomeScreenState extends State<Home> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      'Market view',
+                      AppLocalizations.of(context).translate('Market view'),
                       style: TextStyle(
                           color: Colors.white, fontWeight: FontWeight.w500),
                     ),
@@ -886,7 +886,7 @@ class _HomeScreenState extends State<Home> {
                                               width: 10,
                                             ),
                                             Text(
-                                              'Crop Plan',
+                                              AppLocalizations.of(context).translate('Crop Plan'),
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w500,

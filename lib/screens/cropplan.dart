@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:gexxx_flutter/app_localizations.dart';
 import 'package:gexxx_flutter/database/database.dart';
 import 'package:gexxx_flutter/models/pcrop.dart';
 import 'package:gexxx_flutter/models/sharedpreference.dart';
@@ -116,7 +117,7 @@ class _CropplanState extends State<Cropplan> with TickerProviderStateMixin {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: <Widget>[
-                                    Text('-- Current task --',
+                                    Text(AppLocalizations.of(context).translate('-- Current task --'),
                                         style: TextStyle(
                                             fontSize: MediaQuery.of(context)
                                                     .size
@@ -220,8 +221,8 @@ class _CropplanState extends State<Cropplan> with TickerProviderStateMixin {
                                   children: <Widget>[
                                     Text(
                                         index2 < currentindex
-                                            ? '-- Previous Task --'
-                                            : '-- Upcoming task --',
+                                            ? AppLocalizations.of(context).translate("-- Previous Task --")
+                                            : AppLocalizations.of(context).translate("-- Upcoming task --"),
                                         style: TextStyle(
                                             fontSize: MediaQuery.of(context)
                                                     .size
@@ -287,7 +288,7 @@ class _CropplanState extends State<Cropplan> with TickerProviderStateMixin {
                                       children: <Widget>[
                                         FlatButton(
                                           child: Text(
-                                            'Previous task',
+                                            AppLocalizations.of(context).translate("Previous task"),
                                             style:
                                                 TextStyle(color: Colors.blue),
                                           ),
@@ -300,7 +301,7 @@ class _CropplanState extends State<Cropplan> with TickerProviderStateMixin {
                                         ),
                                         FlatButton(
                                           child: Text(
-                                            'Next task',
+                                            AppLocalizations.of(context).translate("Next task"),
                                             style:
                                                 TextStyle(color: Colors.blue),
                                           ),
@@ -341,7 +342,7 @@ class _CropplanState extends State<Cropplan> with TickerProviderStateMixin {
                 });
               },
               child: Text(
-                'remove crop',
+                AppLocalizations.of(context).translate('remove crop'),
                 style: TextStyle(color: Colors.white),
               ),
             ),

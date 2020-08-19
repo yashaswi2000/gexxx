@@ -1,4 +1,12 @@
 {
+    "remove crop":"remove crop",
+    "Next task":"Next task",
+    "Previous task":"Previous task",
+    "-- Upcoming task --":"-- Upcoming task --",
+    "-- Previous Task --":"-- Previous Task --",
+    "-- Current task --":"-- Current task --",
+    "Crop Plan":"Crop Plan",
+    "Market view":"Market view",    
     "Add":"Add",
     "languages":"languages",
     "settings":"settings",
