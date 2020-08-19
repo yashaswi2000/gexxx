@@ -213,7 +213,7 @@ def getpestssolution():
               solname = pagetag('div',{'class':'ProDetailRtSec1'})[0]('h1')[0].text
               #print(solname)
               j = {'solutionname':solname,'image':image,'url':solurl}
-              solutionobj+=[json.dumps(j)]
+              solutionobj.append(j)
           #print(solutionobj)
           f = {'cropname':cropname,'pestname':pest,'pestimages':pestimages,'solobj':solutionobj}
           print(f)
