@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -49,7 +51,7 @@ class _marketviewState extends State<marketview> {
                       int.parse(list[index]['market_list'][0]['timestamp']) *
                           1000)
                   .year;
-              int percentage = 0;
+              String percentage = '0';
               Color co = Colors.grey[200];
               int size = list[index]['market_list'].length-1;
               if (size > 0) {
@@ -57,8 +59,7 @@ class _marketviewState extends State<marketview> {
                     int.parse(list[index]['market_list'][size - 1]['modal_price']);
 
                 percentage = ((diff /
-                        int.parse(list[index]['market_list'][size - 1]['modal_price'])))
-                    .toInt();
+                        int.parse(list[index]['market_list'][size - 1]['modal_price']))).abs().toStringAsPrecision(2);
                 if (diff >= 0) {
                   co = Colors.green;
                 } else {
