@@ -172,14 +172,55 @@ def gettrend():
       
 
 def getpestssolution():
-  url = "https://www.dhanuka.com/crops/soybean"
-  page_request = requests.get(url)
-  data = page_request.content
-  soup = BeautifulSoup(data,'html.parser')
-  for divtag in soup.findAll('div',{'class':'CROP_sec2Table'}):
-    for divtag2 in divtag.findAll('div',{'class':'CROP_sec2ProductListMain'}):
-      for divtag3 in divtag2.findAll('div',{'class':'CROP_sec2ProductList cropAccordian_Parent activeMe3'}):
-        print(divtag3('div',{'class':'CROP_sec2TableLTBody'})[0]('h4'))
+
+  mainurl = "https://www.dhanuka.com/crops"
+  mainpagerequest = requests.get(mainurl)
+  mdata =  mainpagerequest.content
+  msoup = BeautifulSoup(mdata,'html.parser')
+  h3list=[]
+  for divtag in msoup.findAll('div',{'class':'SAR_sec2ContentDiv style--2'}):
+    h3list.append(divtag('h3'))
+  for h3 in h3list[0]:
+    cropname = h3.text
+    #print(cropname)
+    url = "https://www.dhanuka.com/crops/"+cropname
+    page_request = requests.get(url)
+    data = page_request.content
+    soup = BeautifulSoup(data,'html.parser')
+    for divtag in soup.findAll('div',{'class':'CROP_sec2Table'}):
+      for divtag2 in divtag.findAll('div',{'class':'CROP_sec2ProductListMain'}):
+        for main in divtag2.findAll('div',{'class':'CROP_sec2ProductList cropAccordian_Parent activeMe3'}):
+          pest = main('div',{'class':'CROP_sec2TableLTBody'})[0]('h4')[0].text
+          #print(pest)
+          downloadlinktag =  main('div',{'class':'CROP_sec2TableLTBody'})[0]('img')
+          #print(downloadlink)
+          pestimages = []
+          for d in downloadlinktag:
+            pestimages.append('https://www.dhanuka.com/'+d['src'])
+          #print(pestimages)
+          pestsolutiontag = main('div',{'class':'CROP_sec2TableRTBody'})[0]('a',{'class':'CROP_solutionLink'})
+          pestsolutionlinks=[]
+          solutionobj = []
+          for p in pestsolutiontag:
+            pestsolutionlinks.append(p['href'])
+            solurl = 'https://www.dhanuka.com'+p['href']
+            solreq =  requests.get(solurl)
+            soldata = solreq.content
+            #print(solurl)
+            solsoup = BeautifulSoup(soldata,'html.parser')
+            for pagetag in solsoup('div',{'class':'dhanukaProDetail'}):
+              image=pagetag('div',{'class':'ProDetailLtSec1'})[0]('img')[0]['src']
+              solname = pagetag('div',{'class':'ProDetailRtSec1'})[0]('h1')[0].text
+              #print(solname)
+              j = {'solutionname':solname,'image':image,'url':solurl}
+              solutionobj+=[json.dumps(j)]
+          #print(solutionobj)
+          f = {'cropname':cropname,'pestname':pest,'pestimages':pestimages,'solobj':solutionobj}
+          print(f)
+          try:
+            doc_ref = db.collection('pests').document().create(f)
+          except:
+            print("exception pests\n")
 
 
 def gethindu(articles):
@@ -274,7 +315,8 @@ class Hello(Resource):
       #getschema(articles)
       #print(articles)
       #getprice()
-      gettrend()
+      #gettrend()
+      getpestssolution()
       return jsonify(articles)
 
     # Corresponds to POST request
