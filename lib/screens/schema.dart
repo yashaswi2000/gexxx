@@ -43,7 +43,9 @@ class _SchemaState extends State<Schema> {
                                 Icons.arrow_back,
                                 color: Colors.black,
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
                             ),
                             Text(
                               widget.category,

@@ -25,7 +25,7 @@ class _PoliciesState extends State<Policies> {
               borderRadius: BorderRadius.circular(5)),
           child: Center(
             child: Text(
-              name,
+              AppLocalizations.of(context).translate(name),
               style:
                   TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               overflow: TextOverflow.ellipsis,
@@ -91,7 +91,9 @@ class _PoliciesState extends State<Policies> {
                         Icons.arrow_back,
                         color: Colors.black,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                     ),
                     Text(
                       AppLocalizations.of(context).translate('Policies'),

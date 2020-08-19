@@ -72,6 +72,7 @@ class _CropPestState extends State<CropPest> {
                         height: 20,
                       ),
                       ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           itemCount: snapshots.length,
                           itemBuilder: (c, i) {
@@ -216,6 +217,7 @@ class _PestState extends State<Pest> {
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height * 0.3,
                 child: ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     itemCount: widget.snapshot['pestimages'].length,

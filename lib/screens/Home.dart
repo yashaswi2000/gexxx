@@ -628,7 +628,7 @@ class _HomeScreenState extends State<Home> {
     //print(image);
   }
 
-  String tem = 'Crop Care'; 
+  String tem = 'Crop Plan';
 
   @override
   Widget build(BuildContext context) {
@@ -888,7 +888,8 @@ class _HomeScreenState extends State<Home> {
                                               width: 10,
                                             ),
                                             Text(
-                                              AppLocalizations.of(context).translate(tem),
+                                              AppLocalizations.of(context)
+                                                  .translate(tem),
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w500,
@@ -942,7 +943,8 @@ class _HomeScreenState extends State<Home> {
                                               width: 10,
                                             ),
                                             Text(
-                                              AppLocalizations.of(context).translate('Crop Care'),
+                                              AppLocalizations.of(context)
+                                                  .translate('Crop Care'),
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w500,
@@ -1044,28 +1046,6 @@ class _HomeScreenState extends State<Home> {
                     SizedBox(
                       height: 20,
                     ),
-                    Text(
-                        AppLocalizations.of(context)
-                            .translate('Your Favourites'),
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w500)),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                          color: Colors.grey[800],
-                          borderRadius: BorderRadius.circular(5)),
-                      padding: EdgeInsets.only(
-                          left: 15, right: 15, top: 30, bottom: 30),
-                      child: Wrap(
-                        alignment: WrapAlignment.start,
-                        spacing: 20,
-                        runSpacing: 20,
-                        children: circle,
-                      ),
-                    ),
                     SizedBox(
                       height: 10,
                     ),
@@ -1084,78 +1064,6 @@ class _HomeScreenState extends State<Home> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
-                          _customtextbox(
-                              AppLocalizations.of(context)
-                                  .translate('Your orders'),
-                              () {}),
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(left: 20.0, right: 20),
-                            child: Divider(
-                              color: Colors.grey[700],
-                              height: 5,
-                            ),
-                          ),
-                          _customtextbox(
-                              AppLocalizations.of(context)
-                                  .translate('Your Account'),
-                              () {}),
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(left: 20.0, right: 20),
-                            child: Divider(
-                              color: Colors.grey[700],
-                              height: 5,
-                            ),
-                          ),
-                          _customtextbox(
-                              AppLocalizations.of(context)
-                                  .translate('Your Whishlist'),
-                              () {}),
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(left: 20.0, right: 20),
-                            child: Divider(
-                              color: Colors.grey[700],
-                              height: 5,
-                            ),
-                          ),
-                          _customtextbox(
-                              AppLocalizations.of(context)
-                                  .translate('Change Phone number'),
-                              () {}),
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(left: 20.0, right: 20),
-                            child: Divider(
-                              color: Colors.grey[700],
-                              height: 5,
-                            ),
-                          ),
-                          _customtextbox(
-                              AppLocalizations.of(context)
-                                  .translate('Address Book'),
-                              () {}),
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(left: 20.0, right: 20),
-                            child: Divider(
-                              color: Colors.grey[700],
-                              height: 5,
-                            ),
-                          ),
-                          _customtextbox(
-                              AppLocalizations.of(context)
-                                  .translate('settings'),
-                              () {}),
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(left: 20.0, right: 20),
-                            child: Divider(
-                              color: Colors.grey[700],
-                              height: 5,
-                            ),
-                          ),
                           _customtextbox(
                               AppLocalizations.of(context)
                                   .translate('languages'), () {

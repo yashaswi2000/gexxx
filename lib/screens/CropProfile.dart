@@ -149,7 +149,7 @@ class _CropProfileScreenState extends State<CropProfile> {
             height: 20,
           ),
         ),
-        Container(
+        /* Container(
           width: MediaQuery.of(context).size.width * 0.9,
           height: MediaQuery.of(context).size.height * 0.07,
           child: RaisedButton(
@@ -186,7 +186,7 @@ class _CropProfileScreenState extends State<CropProfile> {
             color: Colors.black,
             height: 20,
           ),
-        ),
+        ),*/
         //SizedBox(height: 20),
         Padding(
           padding: const EdgeInsets.all(20),

@@ -106,227 +106,244 @@ class _WeatherPageScreenState extends State<WeatherPage> {
   @override
   Widget build(BuildContext context) {
     double value = (MediaQuery.of(context).size.height * 0.2);
-    return Scaffold(
-      backgroundColor: Colors.grey[200],
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Container(
-                child: Row(
-                  children: <Widget>[
-                    IconButton(
-                      icon: Icon(
-                        Icons.arrow_back,
-                        color: Colors.black,
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    )
-                  ],
+    return widget.dailyweather == null
+        ? Scaffold(
+            backgroundColor: Colors.grey[200],
+            body: SafeArea(
+              child: Center(
+                child: Text(
+                  'error getting data',
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
                 ),
               ),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 0.25,
-                decoration: BoxDecoration(color: Colors.grey[200]),
+            ),
+          )
+        : Scaffold(
+            backgroundColor: Colors.grey[200],
+            body: SafeArea(
+              child: SingleChildScrollView(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    Container(
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          AutoSizeText(
-                            '${(widget.currentWeatherData.temp - 273.15).toInt().toString()} °C',
-                            style: TextStyle(
+                          IconButton(
+                            icon: Icon(
+                              Icons.arrow_back,
                               color: Colors.black,
-                              fontFamily: 'Circular',
-                              fontWeight: FontWeight.normal,
                             ),
-                            maxFontSize: 70,
-                            minFontSize: 50,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          )
+                        ],
+                      ),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 0.25,
+                      decoration: BoxDecoration(color: Colors.grey[200]),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                AutoSizeText(
+                                  '${(widget.currentWeatherData.temp - 273.15).toInt().toString()} °C',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'Circular',
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                  maxFontSize: 70,
+                                  minFontSize: 50,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: AutoSizeText(
+                              '${widget.currentWeatherData.main} , ${widget.currentWeatherData.description}',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontFamily: 'Circular',
+                                fontWeight: FontWeight.normal,
+                              ),
+                              maxFontSize: 30,
+                              minFontSize: 20,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: AutoSizeText(
+                              '${DateTime.parse(widget.currentWeatherData.date.toString()).day},${getmonth(DateTime.parse(widget.currentWeatherData.date.toString()).month)},${DateTime.parse(widget.currentWeatherData.date.toString()).year}',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontFamily: 'Circular',
+                                fontWeight: FontWeight.normal,
+                              ),
+                              maxFontSize: 20,
+                              minFontSize: 10,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         ],
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: AutoSizeText(
-                        '${widget.currentWeatherData.main} , ${widget.currentWeatherData.description}',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'Circular',
-                          fontWeight: FontWeight.normal,
+                      padding: const EdgeInsets.only(left: 10.0, right: 10),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.12,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.grey[200],
+                                  spreadRadius: 2,
+                                  blurRadius: 4)
+                            ]),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.ac_unit,
+                                    color: Colors.black,
+                                  ),
+                                  AutoSizeText(
+                                    '${widget.currentWeatherData.humidity.toString()}%',
+                                    style: TextStyle(
+                                        fontFamily: 'Circular',
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                    maxLines: 1,
+                                    minFontSize: 20,
+                                    maxFontSize: 20,
+                                  ),
+                                  AutoSizeText(
+                                    'HUMIDITY',
+                                    style: TextStyle(
+                                        fontFamily: 'Circular',
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 10),
+                                    maxLines: 1,
+                                    minFontSize: 10,
+                                    maxFontSize: 10,
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.label_outline,
+                                    color: Colors.black,
+                                  ),
+                                  AutoSizeText(
+                                    '${widget.currentWeatherData.windspeed.toString()}m/s',
+                                    style: TextStyle(
+                                        fontFamily: 'Circular',
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                    maxLines: 1,
+                                    minFontSize: 20,
+                                    maxFontSize: 20,
+                                  ),
+                                  AutoSizeText(
+                                    'WIND',
+                                    style: TextStyle(
+                                        fontFamily: 'Circular',
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 10),
+                                    maxLines: 1,
+                                    minFontSize: 10,
+                                    maxFontSize: 10,
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.timelapse,
+                                    color: Colors.black,
+                                  ),
+                                  AutoSizeText(
+                                    '${widget.currentWeatherData.pressure.toString()}hpa',
+                                    style: TextStyle(
+                                        fontFamily: 'Circular',
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                    maxLines: 1,
+                                    minFontSize: 20,
+                                    maxFontSize: 20,
+                                  ),
+                                  AutoSizeText(
+                                    'PRESSURE',
+                                    style: TextStyle(
+                                        fontFamily: 'Circular',
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 10),
+                                    maxLines: 1,
+                                    minFontSize: 10,
+                                    maxFontSize: 10,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                        maxFontSize: 30,
-                        minFontSize: 20,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: AutoSizeText(
-                        '${DateTime.parse(widget.currentWeatherData.date.toString()).day},${getmonth(DateTime.parse(widget.currentWeatherData.date.toString()).month)},${DateTime.parse(widget.currentWeatherData.date.toString()).year}',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'Circular',
-                          fontWeight: FontWeight.normal,
-                        ),
-                        maxFontSize: 20,
-                        minFontSize: 10,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                    SizedBox(
+                      height: 20,
                     ),
+                    ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: widget.dailyweather?.length ?? 0,
+                        itemBuilder: (BuildContext context, int index) {
+                          return dailyweatherbox(widget.dailyweather[index]);
+                        }),
+                    MyhorizontalDivider(),
+                    SizedBox(
+                      height: 20,
+                    )
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10.0, right: 10),
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.12,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(5),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.grey[200],
-                            spreadRadius: 2,
-                            blurRadius: 4)
-                      ]),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(
-                              Icons.ac_unit,
-                              color: Colors.black,
-                            ),
-                            AutoSizeText(
-                              '${widget.currentWeatherData.humidity.toString()}%',
-                              style: TextStyle(
-                                  fontFamily: 'Circular',
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20),
-                              maxLines: 1,
-                              minFontSize: 20,
-                              maxFontSize: 20,
-                            ),
-                            AutoSizeText(
-                              'HUMIDITY',
-                              style: TextStyle(
-                                  fontFamily: 'Circular',
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 10),
-                              maxLines: 1,
-                              minFontSize: 10,
-                              maxFontSize: 10,
-                            ),
-                          ],
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(
-                              Icons.label_outline,
-                              color: Colors.black,
-                            ),
-                            AutoSizeText(
-                              '${widget.currentWeatherData.windspeed.toString()}m/s',
-                              style: TextStyle(
-                                  fontFamily: 'Circular',
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20),
-                              maxLines: 1,
-                              minFontSize: 20,
-                              maxFontSize: 20,
-                            ),
-                            AutoSizeText(
-                              'WIND',
-                              style: TextStyle(
-                                  fontFamily: 'Circular',
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 10),
-                              maxLines: 1,
-                              minFontSize: 10,
-                              maxFontSize: 10,
-                            ),
-                          ],
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(
-                              Icons.timelapse,
-                              color: Colors.black,
-                            ),
-                            AutoSizeText(
-                              '${widget.currentWeatherData.pressure.toString()}hpa',
-                              style: TextStyle(
-                                  fontFamily: 'Circular',
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20),
-                              maxLines: 1,
-                              minFontSize: 20,
-                              maxFontSize: 20,
-                            ),
-                            AutoSizeText(
-                              'PRESSURE',
-                              style: TextStyle(
-                                  fontFamily: 'Circular',
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 10),
-                              maxLines: 1,
-                              minFontSize: 10,
-                              maxFontSize: 10,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: widget.dailyweather?.length ?? 0,
-                  itemBuilder: (BuildContext context, int index) {
-                    return dailyweatherbox(widget.dailyweather[index]);
-                  }),
-              MyhorizontalDivider(),
-              SizedBox(
-                height: 20,
-              )
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+          );
   }
 }
