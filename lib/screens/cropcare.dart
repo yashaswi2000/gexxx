@@ -101,9 +101,9 @@ class _CropCareState extends State<CropCare> {
                             print('"'+e.toString()+'"');
                             //index_crop++;
                             print(index_crop);
-                            String tem = pestcrops['crops'][index_crop];
+                            String tem = pestcrops['crops'][9];
                             print(tem);
-                            index_crop++;
+                            //index_crop++;
                             return InkWell(
                               onTap: () {
                                 Navigator.push(
@@ -123,7 +123,7 @@ class _CropCareState extends State<CropCare> {
                                     borderRadius: BorderRadius.circular(5)),
                                 child: Center(
                                   child: Text(
-                                    AppLocalizations.of(context).translate(tem),
+                                    AppLocalizations.of(context).translate(e),
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w500),
