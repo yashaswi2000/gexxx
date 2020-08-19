@@ -18,6 +18,9 @@ class DatabaseService {
   final CollectionReference MarketCollection =
       Firestore.instance.collection('pricelist');
 
+  final CollectionReference PoliciesCollection =
+      Firestore.instance.collection('policies');
+
   Future<bool> updatefavorites(String crop) async {
     try {
       await UsersCollection.document(uid).updateData({
@@ -87,6 +90,17 @@ class DatabaseService {
     } catch (e) {
       return false;
     }
+  }
+
+  Future<List<DocumentSnapshot>> getpolicies(String category) async {
+    try {
+      QuerySnapshot qs =
+          await PoliciesCollection.where('category', isEqualTo: category)
+              .getDocuments();
+      return qs.documents.map((e) {
+        return e;
+      }).toList();
+    } catch (e) {}
   }
 
   Future<bool> cropexists(String crop) async {
