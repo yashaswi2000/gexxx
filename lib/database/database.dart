@@ -18,6 +18,9 @@ class DatabaseService {
   final CollectionReference MarketCollection =
       Firestore.instance.collection('pricelist');
 
+  final CollectionReference PoliciesCollection =
+      Firestore.instance.collection('policies');
+
   Future<bool> updatefavorites(String crop) async {
     try {
       await UsersCollection.document(uid).updateData({
@@ -76,6 +79,28 @@ class DatabaseService {
       print(e.toString());
       return false;
     }
+  }
+
+  Future<bool> removefav(Pcrop pcrop) async {
+    try {
+      await UsersCollection.document(uid).updateData({
+        'favouritecrops': FieldValue.arrayRemove([pcrop.toJson()]),
+      });
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<List<DocumentSnapshot>> getpolicies(String category) async {
+    try {
+      QuerySnapshot qs =
+          await PoliciesCollection.where('category', isEqualTo: category)
+              .getDocuments();
+      return qs.documents.map((e) {
+        return e;
+      }).toList();
+    } catch (e) {}
   }
 
   Future<bool> cropexists(String crop) async {
@@ -155,6 +180,16 @@ class DatabaseService {
   //collection stream
   Stream<UserData> get userData {
     return UsersCollection.document(uid).snapshots().map(_userDataFromSnapShot);
+  }
+
+  List<Pcrop> _favDataFromSnapShot(DocumentSnapshot snapshot) {
+    return snapshot.data['favouritecrops'].map<Pcrop>((e) {
+      return Pcrop.fromJson(e);
+    }).toList();
+  }
+
+  Stream<List<Pcrop>> get favcrop {
+    return UsersCollection.document(uid).snapshots().map(_favDataFromSnapShot);
   }
 
   _marketDataFromSnapshot(QuerySnapshot querysnapshot) {

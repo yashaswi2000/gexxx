@@ -44,7 +44,7 @@ class _marketviewState extends State<marketview> {
               int month = DateTime.fromMillisecondsSinceEpoch(
                       int.parse(list[index]['market_list'][0]['timestamp']) *
                           1000)
-                  .day;
+                  .month;
               int year = DateTime.fromMillisecondsSinceEpoch(
                       int.parse(list[index]['market_list'][0]['timestamp']) *
                           1000)
