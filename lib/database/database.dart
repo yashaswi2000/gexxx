@@ -21,6 +21,9 @@ class DatabaseService {
   final CollectionReference PoliciesCollection =
       Firestore.instance.collection('policies');
 
+  final CollectionReference PestsCollection =
+      Firestore.instance.collection('pests');
+
   Future<bool> updatefavorites(String crop) async {
     try {
       await UsersCollection.document(uid).updateData({
@@ -96,6 +99,17 @@ class DatabaseService {
     try {
       QuerySnapshot qs =
           await PoliciesCollection.where('category', isEqualTo: category)
+              .getDocuments();
+      return qs.documents.map((e) {
+        return e;
+      }).toList();
+    } catch (e) {}
+  }
+
+  Future<List<DocumentSnapshot>> getpests(String crop) async {
+    try {
+      QuerySnapshot qs =
+          await PestsCollection.where('cropname', isEqualTo: crop)
               .getDocuments();
       return qs.documents.map((e) {
         return e;

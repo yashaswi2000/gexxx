@@ -1,0 +1,140 @@
+import 'package:flutter/material.dart';
+import 'package:gexxx_flutter/screens/croppest.dart';
+
+class CropCare extends StatefulWidget {
+  @override
+  _CropCareState createState() => _CropCareState();
+}
+
+class _CropCareState extends State<CropCare> {
+  List<String> crops;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    crops = [
+      'Soybean',
+      'Paddy',
+      'Cotton',
+      'Sugarcane',
+      'Potato',
+      'Chilli',
+      'Brinjal',
+      'Onion',
+      'Tomato',
+      'Okra',
+      'Cabbage & Cauliflower',
+      'Wheat',
+      'Tea',
+      'Grapes',
+      'Cucurbits',
+      'Basmati',
+      'Maize',
+      'Groundnut'
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    IconButton(
+                      icon: Icon(
+                        Icons.arrow_back,
+                        color: Colors.black,
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    Text(
+                      'Crop Care',
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.bold),
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        Icons.search,
+                        color: Colors.black,
+                      ),
+                      onPressed: () {},
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20.0, top: 10, bottom: 10),
+                child: Text(
+                  'Select a Crop',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: MediaQuery.of(context).size.height * 0.02),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20.0, right: 20),
+                child: Text(
+                  'Get all the information regarding Pests Or Diseases and their Recommended Product Solutions',
+                  style: TextStyle(
+                      color: Colors.grey[800],
+                      fontWeight: FontWeight.w500,
+                      fontSize: MediaQuery.of(context).size.height * 0.015),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Wrap(
+                  alignment: WrapAlignment.center,
+                  runSpacing: 20,
+                  spacing: 20,
+                  children: crops.map((e) {
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CropPest(
+                                      crop: e,
+                                    )));
+                      },
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.06,
+                        width: MediaQuery.of(context).size.width / 2 - 20,
+                        decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(5)),
+                        child: Center(
+                          child: Text(
+                            e,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
