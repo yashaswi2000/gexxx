@@ -8,6 +8,7 @@ import 'package:gexxx_flutter/models/sharedpreference.dart';
 import 'package:gexxx_flutter/models/user.dart';
 import 'package:gexxx_flutter/screens/addcrop_plan.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Cropplan extends StatefulWidget {
   UserData userData;
@@ -19,13 +20,13 @@ class Cropplan extends StatefulWidget {
 class _CropplanState extends State<Cropplan> with TickerProviderStateMixin {
   SharedPref sharedPref = SharedPref();
   TabController tabController;
-  String lang = 'hi';
+  String lang;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    print("dfghj");
+    //print("dfghj");
     getdata();
   }
 
@@ -35,8 +36,9 @@ class _CropplanState extends State<Cropplan> with TickerProviderStateMixin {
   getdata() async {
     try {
       Pcrop c = Pcrop.fromJson(await sharedPref.read('cropplan'));
-      lang = await sharedPref.read('language_code');
-      print(lang + "dfghj");
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      lang = prefs.getString('language_code');
+      print("dfghj111");
       setState(() {
         crop = c;
         this.lang = lang; 
@@ -44,17 +46,25 @@ class _CropplanState extends State<Cropplan> with TickerProviderStateMixin {
     } catch (e) {}
   }
 
+Future<String> getstring() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String tt = prefs.getString('language_code');
+    print(tt);
+    return tt;
+  }
+
   List<PageController> pagecontrollers = [];
 
-  Widget tabbody(Pcrop crop, String uid) {
+  Widget tabbody(Pcrop crop, String uid, String tt) {
     PageController pageController = PageController();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Expanded(
           child: FutureBuilder(
-            future: DefaultAssetBundle.of(context).loadString("Crop_database/crop_plan_hi.json"),
+            future: (tt == 'en') ? DefaultAssetBundle.of(context).loadString("Crop_database/crop_plan.json"):DefaultAssetBundle.of(context).loadString("Crop_database/crop_plan_hi.json"),
             builder: (context, snapshot) {
+              
               if (snapshot.hasData) {
                 dynamic crops = json.decode(snapshot.data.toString());
                 DateTime cdate = crop.cultivationdate;
@@ -359,7 +369,11 @@ class _CropplanState extends State<Cropplan> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
-
+    String tt;
+    getstring().then((value) => {
+      tt = value
+    });
+    print(tt);
     return StreamBuilder<Object>(
         stream: DatabaseService(uid: user.uid).favcrop,
         builder: (context, snapshot) {
@@ -438,7 +452,7 @@ class _CropplanState extends State<Cropplan> with TickerProviderStateMixin {
                                 child: TabBarView(
                               controller: tabController,
                               children: crops.map((e) {
-                                return tabbody(e, user.uid);
+                                return tabbody(e, user.uid,tt);
                               }).toList(),
                             ))
                           ],

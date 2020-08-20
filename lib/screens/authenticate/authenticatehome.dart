@@ -32,7 +32,7 @@ class _AuthenticateHomeState extends State<AuthenticateHome> {
               ),
               Center(
                   child: Text(
-                "Gexxx",
+                "Agri Support",
                 style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -48,7 +48,7 @@ class _AuthenticateHomeState extends State<AuthenticateHome> {
                   width: MediaQuery.of(context).size.width * 0.7,
                   child: Center(
                       child: Text(
-                    "Manage your projects and create your own workspace and assign tasks",
+                    "An info support platform for farmers",
                     style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w300,
