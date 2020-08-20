@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:gexxx_flutter/app_localizations.dart';
 import 'package:gexxx_flutter/database/database.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -41,7 +42,7 @@ class _CropPestState extends State<CropPest> {
                               },
                             ),
                             Text(
-                              widget.crop,
+                              AppLocalizations.of(context).translate(widget.crop),
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold),
@@ -60,7 +61,7 @@ class _CropPestState extends State<CropPest> {
                         padding: const EdgeInsets.only(
                             left: 20.0, top: 10, bottom: 10),
                         child: Text(
-                          'Pests/Diseases',
+                          AppLocalizations.of(context).translate('Pests/Diseases'),
                           style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
@@ -128,7 +129,7 @@ class _CropPestState extends State<CropPest> {
                             },
                           ),
                           Text(
-                            widget.crop,
+                            AppLocalizations.of(context).translate(widget.crop),
                             style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold),
@@ -232,7 +233,7 @@ class _PestState extends State<Pest> {
                 padding: const EdgeInsets.only(
                     left: 10.0, top: 20, bottom: 20, right: 40),
                 child: Text(
-                  'Recommended Solutions for this Pest/Disease',
+                  AppLocalizations.of(context).translate('Recommended Solutions for this Pest/Disease'),
                   style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -275,7 +276,7 @@ class _PestState extends State<Pest> {
                                 leading: Image.network(
                                     widget.snapshot['solobj'][i]['image']),
                                 title: Text(
-                                  'Get more info',
+                                  AppLocalizations.of(context).translate('Get more info'),
                                   style: TextStyle(
                                       color: Colors.grey[800],
                                       fontWeight: FontWeight.w500),

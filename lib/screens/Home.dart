@@ -888,8 +888,7 @@ class _HomeScreenState extends State<Home> {
                                               width: 10,
                                             ),
                                             Text(
-                                              AppLocalizations.of(context)
-                                                  .translate(tem),
+                                              AppLocalizations.of(context).translate('Crop Plan'),
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w500,

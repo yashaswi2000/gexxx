@@ -75,6 +75,7 @@ flutter:
       - Crop_database/crop_database.json
       - Crop_database/pest_crops.json
       - Crop_database/crop_plan.json
+      - Crop_database/crop_plan_hi.json
       - assets/images/wheat1.jpg
       - assets/images/maize1.jpg
       - assets/images/bajra1.jpg

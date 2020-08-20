@@ -19,22 +19,27 @@ class Cropplan extends StatefulWidget {
 class _CropplanState extends State<Cropplan> with TickerProviderStateMixin {
   SharedPref sharedPref = SharedPref();
   TabController tabController;
+  String lang = 'hi';
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    print("dfghj");
     getdata();
   }
 
   Pcrop crop = Pcrop();
+  
 
   getdata() async {
     try {
       Pcrop c = Pcrop.fromJson(await sharedPref.read('cropplan'));
+      lang = await sharedPref.read('language_code');
+      print(lang + "dfghj");
       setState(() {
         crop = c;
+        this.lang = lang; 
       });
     } catch (e) {}
   }
@@ -48,8 +53,7 @@ class _CropplanState extends State<Cropplan> with TickerProviderStateMixin {
       children: <Widget>[
         Expanded(
           child: FutureBuilder(
-            future: DefaultAssetBundle.of(context)
-                .loadString("Crop_database/crop_plan.json"),
+            future: DefaultAssetBundle.of(context).loadString("Crop_database/crop_plan_hi.json"),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 dynamic crops = json.decode(snapshot.data.toString());
