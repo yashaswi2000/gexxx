@@ -42,7 +42,8 @@ class _CropPestState extends State<CropPest> {
                               },
                             ),
                             Text(
-                              AppLocalizations.of(context).translate(widget.crop),
+                              AppLocalizations.of(context)
+                                  .translate(widget.crop),
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold),
@@ -61,7 +62,8 @@ class _CropPestState extends State<CropPest> {
                         padding: const EdgeInsets.only(
                             left: 20.0, top: 10, bottom: 10),
                         child: Text(
-                          AppLocalizations.of(context).translate('Pests/Diseases'),
+                          AppLocalizations.of(context)
+                              .translate('Pests/Diseases'),
                           style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
@@ -218,7 +220,6 @@ class _PestState extends State<Pest> {
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height * 0.3,
                 child: ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     itemCount: widget.snapshot['pestimages'].length,
@@ -233,7 +234,8 @@ class _PestState extends State<Pest> {
                 padding: const EdgeInsets.only(
                     left: 10.0, top: 20, bottom: 20, right: 40),
                 child: Text(
-                  AppLocalizations.of(context).translate('Recommended Solutions for this Pest/Disease'),
+                  AppLocalizations.of(context)
+                      .translate('Recommended Solutions for this Pest/Disease'),
                   style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -276,7 +278,8 @@ class _PestState extends State<Pest> {
                                 leading: Image.network(
                                     widget.snapshot['solobj'][i]['image']),
                                 title: Text(
-                                  AppLocalizations.of(context).translate('Get more info'),
+                                  AppLocalizations.of(context)
+                                      .translate('Get more info'),
                                   style: TextStyle(
                                       color: Colors.grey[800],
                                       fontWeight: FontWeight.w500),
