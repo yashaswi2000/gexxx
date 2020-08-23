@@ -50,6 +50,10 @@ Future<String> getstring() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String tt = prefs.getString('language_code');
     print(tt);
+    if(tt == null)
+      {
+        tt = 'en';
+      }
     return tt;
   }
 
